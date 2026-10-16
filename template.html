@@ -121,7 +121,7 @@ main{display:flex;flex-direction:column;min-width:0;height:100vh}
 
 /* ---------- table ---------- */
 .tbl-wrap{overflow:auto;max-height:calc(100vh - 140px)}
-.overview .tbl-wrap{max-height:420px}
+.overview .tbl-wrap{max-height:none}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.2px}
 th{position:sticky;top:0;background:var(--th);z-index:1;text-align:left;font-weight:600;color:var(--ink-2);font-size:11px;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
 th.r,td.r{text-align:right}
@@ -302,6 +302,7 @@ main{height:calc(100vh - 20px);border-radius:22px;overflow:hidden}
 .content{padding:4px 4px 14px}
 .filters{background:var(--card);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);gap:10px 14px}
 .filters select{background-color:var(--sage)!important;color:#fff!important;border:0!important;border-radius:6px;font-weight:600;min-width:150px;padding:7px 28px 7px 10px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23ffffff' fill='none' stroke-width='1.6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 10px center!important}
+#fShift,#fUnit{display:none!important}
 .filters select option{background:#fff;color:#1E3A33}
 .chip{background:var(--sage-l);color:var(--sage-d)}:root[data-theme="dark"] .chip{color:var(--mint)}
 .linkbtn{color:var(--sage)}:root[data-theme="dark"] .linkbtn{color:var(--mint)}
@@ -409,12 +410,6 @@ th.sorted{color:var(--sage)!important}
           <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Net profit</span></div></div>
           <div class="card"><div class="card-h"><h3>Net margin by candidate</h3><span class="hint">red = below 10% · click a bar</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
-        <div class="grid-charts g2">
-          <div class="card"><div class="card-h"><h3>Net revenue and total pay cost by start month</h3></div><div class="chart-box" style="height:220px"><canvas id="chMonth"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Total pay cost (incl. 13% burden)</span></div></div>
-          <div class="card"><div class="card-h"><h3>Start dates</h3><span class="hint">by week</span></div><div class="chart-box" style="height:220px"><canvas id="chStart"></canvas></div><div class="legend" id="lgStart"></div></div>
-          <div class="card"><div class="card-h"><h3>Bill rate vs weekly gross pay</h3></div><div class="chart-box" style="height:220px"><canvas id="chScatter"></canvas></div><div class="legend" id="lgScatter"></div></div>
-        </div>
-        <div class="kpis" id="kpis"></div>
         <div class="card">
           <div class="card-h" style="padding-bottom:8px"><h3 id="tblTitle">Candidates</h3><span class="hint" id="tblHint"></span></div>
           <div class="tbl-wrap"><table id="tbl"></table></div>
@@ -616,6 +611,7 @@ function renderKPIs(rs){
   $("#hero").querySelectorAll(".htile").forEach(el=>{ const k=el.dataset.k;
     el.onclick=()=>{ const key={count:"candidate",belowT:"marginPct",payCost:"netRev"}[k]||k; setSort(key,["candidate"].includes(key)||k==="belowT"?1:-1); document.querySelector(".tbl-wrap").scrollIntoView({behavior:"smooth",block:"nearest"}); };
     el.onkeydown=ev=>{ if(ev.key==="Enter") el.click(); }; });
+  if(!$("#kpis")) return;
   $("#kpis").innerHTML = cards.filter(c=>!["count","netProfit","belowT"].includes(c.id)).map(kpiCard).join("");
   const bk=$('#kpis .kpi[data-k="belowT"]'); if(bk && act.some(r=>tStat(r.marginPct)==="below")) bk.classList.add("warnk");
   $("#kpis").querySelectorAll(".kpi").forEach(el=>{
@@ -637,7 +633,7 @@ function rangeTxt(a,f){ return a.length>1 ? `Range ${f(Math.min(...a))} – ${f(
 Chart.defaults.font.family = "Inter, system-ui, sans-serif"; Chart.defaults.font.size = 11;
 const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const grid = {color:"#EEF2F7",drawTicks:false}, tip = {backgroundColor:"#0B1B33",padding:8,cornerRadius:6,displayColors:false};
-function mk(id, cfg){ if(charts[id]) charts[id].destroy(); charts[id] = new Chart($("#"+id), cfg); }
+function mk(id, cfg){ if(charts[id]) charts[id].destroy(); const el=$("#"+id); if(!el) return; charts[id] = new Chart(el, cfg); }
 const valLabels = (fmt, horiz) => ({id:"vl",afterDatasetsDraw(ch){ const {ctx}=ch; ctx.save(); ctx.font="600 10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-2");
   ch.data.datasets.forEach((ds,di)=>{ const meta=ch.getDatasetMeta(di); if(meta.hidden) return; meta.data.forEach((el,i)=>{ const v=ds.data[i]; if(v==null||v===0) return; const t=fmt(v);
     if(horiz){ ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.fillText(t, Math.max(el.x,el.base)+4, el.y); } else { ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText(t, el.x, Math.min(el.y,el.base)-2); } }); }); ctx.restore(); }});
@@ -685,26 +681,26 @@ function renderCharts(rs){
   mk("chStart",{type:"bar",data:{labels:weeks.map(w=>"Wk of "+fdateS(w)),datasets:cls.map(c=>({label:c,data:weeks.map(w=>act.filter(r=>r.client===c&&r.start&&wk(r.start)===w).length),backgroundColor:color(c),borderRadius:2,maxBarThickness:28}))},
     options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,displayColors:true,filter:i=>i.raw>0,callbacks:{afterBody:c=>{const w=weeks[c[0].dataIndex];return act.filter(r=>r.start&&wk(r.start)===w).map(r=>`• ${r.candidate} (${fdateS(r.start)})`);}}}},
       scales:{x:{stacked:true,grid:{display:false},border:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid,border:{display:false},ticks:{stepSize:1,precision:0}}}}});
-  $("#lgStart").innerHTML = cls.map(c=>`<span><i style="background:${color(c)}"></i>${esc(c.replace(" (via HWL)",""))}</span>`).join("");
+  if($("#lgStart")) $("#lgStart").innerHTML = cls.map(c=>`<span><i style="background:${color(c)}"></i>${esc(c.replace(" (via HWL)",""))}</span>`).join("");
   // 4. scatter
   const sc = act.filter(r=>r.bill!=null&&r.weeklyGross!=null);
   mk("chScatter",{type:"scatter",data:{datasets:cls.map(c=>({label:c,data:sc.filter(r=>r.client===c).map(r=>({x:r.bill,y:r.weeklyGross,r})),backgroundColor:color(c),pointRadius:5,pointHoverRadius:7}))},
     options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>{const r=c.raw.r;return [r.candidate,`Bill ${money2(r.bill)} · Pay ${money(r.weeklyGross)}/wk`,`${r.guarHrs} hrs/wk · margin ${pct(r.marginPct)}`];}}}},
       scales:{x:{grid,border:{display:false},title:{display:true,text:"Bill rate ($/hr)",font:{size:10}},ticks:{callback:v=>"$"+v}},y:{grid,border:{display:false},title:{display:true,text:"Weekly gross pay",font:{size:10}},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}}},
       onClick:(e,els)=>{ if(els.length){ const r=charts.chScatter.data.datasets[els[0].datasetIndex].data[els[0].index].r; openDrawer(r.row,r.sheet);} }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"}});
-  $("#lgScatter").innerHTML = $("#lgStart").innerHTML;
+  if($("#lgScatter")) $("#lgScatter").innerHTML = $("#lgStart").innerHTML;
 }
 
 /* ---------- table ---------- */
 const COLS = [
   {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Started</span>':""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
   {k:"client",t:"Client / Facility",f:r=>`<span class="cdot" style="background:${color(r.client)}"></span>${esc(r.client)}<span class="s" title="${esc(r.facilityUnit)}">${esc(r.facilityUnit)}</span>`},
-  {k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
+  //{k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
   {k:"start",t:"Start",f:r=>`${fdateS(r.start)}<span class="s">${r.weeks??"—"} wks · to ${fdateS(r.end)}</span>`},
   {k:"w2",t:"W2 / OT",r:1,f:r=>`${money2(r.w2)}<span class="s">OT ${money2(r.ot)}</span>`},
-  {k:"weeklyGross",t:"Gross pay/wk",r:1,f:r=>`<b>${money(r.weeklyGross)}</b><span class="s">stipend ${money(r.stipend)}</span>`},
+  //{k:"weeklyGross",t:"Gross pay/wk",r:1,f:r=>`<b>${money(r.weeklyGross)}</b><span class="s">stipend ${money(r.stipend)}</span>`},
   {k:"bill",t:"Bill rate",r:1,f:r=>`${money2(r.bill)}<span class="s">MSP ${pct(r.msp,1)}</span>`},
-  {k:"netRev",t:"Net rev",r:1,f:r=>`${money(r.netRev)}<span class="s">gross ${money(r.grossRev)}</span>`,cls:"hide-m hide-s"},
+  {k:"netRev",t:"Net revenue",r:1,f:r=>`${money(r.netRev)}<span class="s">gross ${money(r.grossRev)}</span>`,cls:"hide-m"},
   {k:"netProfit",t:"Net profit",r:1,f:r=>`<b>${money(r.netProfit)}</b><span class="s">${money(r.weeklyProfit)}/wk</span>`},
   {k:"marginPct",t:"Net margin",r:1,f:r=>`${pct(r.marginPct)}${tPill(r.marginPct)}<span class="mbar" title="Bar runs 0–20%; marker = ${pct(TGT(),0)} target"><i class="${tStat(r.marginPct)==="below"?"below":""}" style="width:${Math.max(0,Math.min(100,(r.marginPct||0)/(2*TGT())*100))}%"></i><b class="tgt"></b></span><span class="s">${ppts(r.marginPct==null?null:r.marginPct-TGT())}</span>`},
 ];
@@ -721,7 +717,7 @@ function renderTable(rs){
   const body = rows.length ? rows.map(r=>`<tr data-row="${r.row}" data-sheet="${esc(r.sheet)}" class="${S.sel&&S.sel.row===r.row&&S.sel.sheet===r.sheet?"sel":""}">${COLS.map(c=>`<td class="${c.r?"r num ":""}${c.cls||""}">${c.f(r)}</td>`).join("")}</tr>`).join("")
     : `<tr><td colspan="${COLS.length}" class="empty">No candidates match these filters.</td></tr>`;
   const ag = sum(act.map(r=>r.netRev)), ap = sum(act.map(r=>r.netProfit));
-  const foot = rows.length ? `<tfoot><tr><td>${act.length} active</td><td></td><td class="hide-m"></td><td></td><td class="r num">avg ${money2(avg(vals(rs,"w2")))}</td><td class="r num">avg ${money(avg(vals(rs,"weeklyGross")))}</td><td class="r num">avg ${money2(avg(vals(rs,"bill")))}</td><td class="r num hide-m hide-s">${money(ag)}</td><td class="r num">${money(ap)}</td><td class="r num">${pct(bookM(act))}</td></tr></tfoot>` : "";
+  const foot = rows.length ? `<tfoot><tr><td>${act.length} active</td><td></td><td></td><td class="r num">avg ${money2(avg(vals(rs,"w2")))}</td><td class="r num">avg ${money2(avg(vals(rs,"bill")))}</td><td class="r num hide-m hide-s">${money(ag)}</td><td class="r num">${money(ap)}</td><td class="r num">${pct(bookM(act))}</td></tr></tfoot>` : "";
   $("#tbl").innerHTML = head + `<tbody>${body}</tbody>` + foot;
   $("#tbl").querySelectorAll("th").forEach(th=>th.onclick=()=>setSort(th.dataset.k));
   $("#tbl").querySelectorAll("tbody tr[data-row]").forEach(tr=>tr.onclick=()=>openDrawer(+tr.dataset.row,tr.dataset.sheet));
@@ -796,7 +792,7 @@ function openDrawer(row, sheet){
         <div><span>W2 hourly</span><b class="num">${money2(r.w2)}</b></div><div><span>OT rate</span><b class="num">${money2(r.ot)}</b></div>
         <div><span>Weekly stipend</span><b class="num">${money(r.stipend)}</b></div><div><span>Taxable / wk</span><b class="num">${money2(r.weeklyTaxable)}</b></div>
         <div><span>Gross pay / wk</span><b class="num">${money2(r.weeklyGross)}</b></div><div><span>Contract gross pay</span><b class="num">${money(r.contractGrossPay)}</b></div>
-        ${r.oneTime?`<div><span>One-time costs</span><b class="num">${money(r.oneTime)}</b></div><div><span></span><b></b></div>`:""}</div></div>
+        ${r.oneTime?`<div><span>One-time costs${D.method.oneTimeIncluded?"":" (not in profit)"}</span><b class="num">${money(r.oneTime)}</b></div><div><span></span><b></b></div>`:""}</div></div>
       <div class="sec"><h5>Billing</h5><div class="kv">
         <div><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div><div><span>Weekly billing</span><b class="num">${money(r.weeklyBill)}</b></div>
         ${r.billAfter?`<div><span>Bill after increase</span><b class="num">${money2(r.billAfter)}</b></div><div><span></span><b></b></div>`:""}

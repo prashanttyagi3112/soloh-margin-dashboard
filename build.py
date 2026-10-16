@@ -29,7 +29,7 @@ No other rounding is applied.
 
 One-time costs: the Margin Dashboard carries a per-candidate "One-time costs" column
 (e.g. travel reimbursement). Peter's sheet has no such column; it is deducted together
-with col W (Client fees) so no known cost is dropped. Set ONE_TIME_IN_PROFIT = False to exclude.
+is NOT deducted (Prashant's decision, 10/16/2026), matching Peter's sheet. It is shown for reference only.
 """
 import argparse, base64, datetime as dt, json, os, re, secrets, sys
 from zoneinfo import ZoneInfo
@@ -44,7 +44,7 @@ PBKDF2_ITER = 310000
 BURDEN = 0.13
 TARGET = 0.10
 ONBOARDING_COST = 0.0      # Peter's 'Client Fees'!B11
-ONE_TIME_IN_PROFIT = True
+ONE_TIME_IN_PROFIT = False   # Prashant 10/16/2026: leave one-time costs out (Tiana McCullom $700)
 METHOD_VERSION = "CFO method v1 (Peter, 10/16/2026)"
 
 
@@ -138,9 +138,9 @@ def main():
         cfo(r, dq)
         if r["status"] != "Cancelled" and r.get("netProfit") is not None and r["netProfit"] < 0:
             dq.append({"sev": "error", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"], "msg": "Negative net profit (CFO method)."})
-        if r.get("oneTime") and ONE_TIME_IN_PROFIT:
+        if r.get("oneTime"):
             dq.append({"sev": "info", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"],
-                       "msg": f"One-time costs of ${r['oneTime']:,.0f} deducted with Client fees (col W). Peter's sheet has no one-time column."})
+                       "msg": f"One-time costs of ${r['oneTime']:,.0f} " + ("deducted with Client fees (col W)." if ONE_TIME_IN_PROFIT else "not deducted (left out, as in Peter's sheet).")})
     names = {}
     for r in D["records"]:
         k = (r.get("candidate") or "").strip().lower()
