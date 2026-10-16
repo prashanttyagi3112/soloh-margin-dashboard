@@ -1,0 +1,5 @@
+# Raw workbook holds unencrypted pay data. Never commit it.
+data/*.xlsx
+*.json
+!vendor/*.json
+__pycache__/

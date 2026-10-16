@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Soloh Margin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="vendor/chart.umd.min.js"></script>
+<script>(function(){var t=null;try{t=localStorage.getItem("soloh_margin_theme");}catch(e){}if(!t){t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.dataset.theme=t;})();</script>
+<style>
+:root{
+  --navy:#0B1B33; --navy-2:#12264A; --navy-3:#1B3461; --ink:#0F1E36; --ink-2:#44536B; --ink-3:#7A879C;
+  --bg:#F3F6FA; --card:#FFFFFF; --line:#E3E8F0; --line-2:#EEF2F7;
+  --teal:#0EA5A0; --teal-50:#E6F7F6; --blue:#2F6FED; --blue-50:#EAF1FE;
+  --green:#12A150; --green-50:#E7F6EE; --amber:#C77C02; --amber-50:#FDF4E3; --red:#D64545; --red-50:#FCEBEB;
+  --r:10px; --sh:0 1px 2px rgba(15,30,54,.06),0 2px 8px rgba(15,30,54,.04);
+  --th:#F8FAFD; --hover:#F6F9FE; --border-hi:#B9C7DD; --nights-bg:#EEEAFB; --nights:#5B42C9;
+  --note-bd:#F3DDAE; --note-ink:#7A4E00; --note-red-bd:#F2C6C6; --note-red-ink:#8E2A2A;
+  --bar-muted:#B9CBEA; --seg-muted:#C3CCDA; --grid:#EEF2F7; --tick:#5B6A82;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --navy:#060D1A; --navy-2:#0E1A30; --navy-3:#172A4D;
+  --ink:#E6ECF5; --ink-2:#A9B6CA; --ink-3:#7F8DA5;
+  --bg:#0A1120; --card:#111B2E; --line:#22314A; --line-2:#1A263B;
+  --teal-50:rgba(14,165,160,.16); --blue-50:rgba(47,111,237,.2); --green-50:rgba(18,161,80,.18); --amber-50:rgba(199,124,2,.18); --red-50:rgba(214,69,69,.18);
+  --teal:#1CC2BC; --blue:#5B8CF5; --green:#3CC47A; --amber:#F0A63A; --red:#F07575;
+  --sh:0 1px 2px rgba(0,0,0,.3);
+  --th:#15213A; --hover:#17243F; --border-hi:#3A4E73; --nights-bg:rgba(124,92,224,.22); --nights:#B4A2F5;
+  --note-bd:rgba(240,166,58,.35); --note-ink:#F5C77E; --note-red-bd:rgba(240,117,117,.35); --note-red-ink:#F4A9A9;
+  --bar-muted:#3A4E73; --seg-muted:#4A5A78; --grid:#1E2B42; --tick:#94A3BA;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:13px;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.hidden{display:none!important}
+
+/* ---------- login ---------- */
+#login{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(1200px 600px at 20% 0%,#1B3461 0%,var(--navy) 55%,#07122A 100%);z-index:50;padding:16px}
+.login-card{width:100%;max-width:380px;background:var(--card);color:var(--ink);border-radius:14px;padding:28px 26px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--blue));display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px}
+.login-card h1{font-size:18px;margin:18px 0 4px}
+.login-card p{margin:0 0 18px;color:var(--ink-2)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:var(--ink-2)}
+.input{border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:var(--card);outline:none;width:100%}
+.input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-50)}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--line-2)}
+.btn-primary{background:var(--navy);border-color:var(--navy);color:#fff;width:100%;justify-content:center;padding:10px}
+.btn-primary:hover{background:var(--navy-3)}
+.err{color:var(--red);font-size:12px;min-height:16px;margin-top:8px}
+.login-foot{margin-top:16px;font-size:11px;color:var(--ink-3)}
+
+/* ---------- shell ---------- */
+#app{display:grid;grid-template-columns:var(--sbw,214px) 1fr;height:100vh}
+#app.collapsed{--sbw:60px}
+aside{background:var(--navy);color:#C9D4E5;display:flex;flex-direction:column;padding:14px 10px;gap:4px;overflow:hidden}
+aside .brand{padding:2px 6px 14px;color:#fff}
+aside .brand b{font-size:14px;white-space:nowrap}
+aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
+.nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;border:0;background:none;color:inherit;text-align:left;width:100%}
+.nav:hover{background:var(--navy-2);color:#fff}
+.nav.active{background:var(--navy-3);color:#fff;box-shadow:inset 3px 0 0 var(--teal)}
+.nav svg{flex:0 0 18px}
+.nav .count{margin-left:auto;background:rgba(255,255,255,.1);border-radius:10px;padding:0 7px;font-size:11px}
+.collapsed .nav span,.collapsed .nav .count,.collapsed aside .brand div{display:none}
+aside .spacer{flex:1}
+main{display:flex;flex-direction:column;min-width:0;height:100vh}
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line)}
+.topbar h2{margin:0;font-size:16px;font-weight:700;white-space:nowrap}
+.topbar .meta{color:var(--ink-3);font-size:11.5px;white-space:nowrap}
+.topbar .grow{flex:1}
+.search{position:relative;width:min(280px,32vw)}
+.search input{padding-left:30px}
+.search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+.iconbtn{border:1px solid var(--line);background:var(--card);border-radius:8px;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;flex:0 0 auto}
+.iconbtn:hover{background:var(--line-2)}
+.content{flex:1;overflow:auto;padding:12px 18px 18px}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+.filters select{border:1px solid var(--line);border-radius:8px;padding:6px 26px 6px 10px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A879C' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 9px center;appearance:none;cursor:pointer;max-width:200px}
+.toggle{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);cursor:pointer;user-select:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blue-50);color:var(--blue);border-radius:20px;padding:3px 6px 3px 10px;font-size:12px;font-weight:500}
+.chip button{border:0;background:none;cursor:pointer;color:inherit;padding:0 2px;font-size:14px;line-height:1}
+.linkbtn{border:0;background:none;color:var(--blue);cursor:pointer;font-size:12px;font-weight:500;padding:2px 4px}
+
+/* ---------- KPIs ---------- */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;box-shadow:var(--sh);cursor:pointer;text-align:left;transition:border-color .12s,box-shadow .12s;position:relative;min-width:0}
+.kpi:hover{border-color:var(--border-hi);box-shadow:0 2px 10px rgba(15,30,54,.08)}
+.kpi.on{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-50)}
+.kpi .lbl{font-size:11px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .tag{font-size:9.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-3);background:var(--line-2);border-radius:4px;padding:1px 5px;margin-left:auto}
+.kpi .val{font-size:20px;font-weight:700;margin-top:4px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .sub{font-size:11.5px;color:var(--ink-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+.kpi.accent{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 100%);border-color:var(--navy);color:#fff}
+.kpi.accent .lbl,.kpi.accent .sub{color:#AFC0DA}.kpi.accent .tag{background:rgba(255,255,255,.12);color:#CFE0F5}
+.split{display:flex;gap:4px;margin-top:6px}
+.split button{flex:1;border:1px solid var(--line);background:var(--line-2);border-radius:6px;padding:3px 0;font-size:11.5px;cursor:pointer}
+.split button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ---------- cards / charts ---------- */
+.grid-charts{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);min-width:0}
+.card-h{display:flex;align-items:center;gap:8px;padding:9px 12px 0}
+.card-h h3{margin:0;font-size:12.5px;font-weight:600}
+.card-h .hint{color:var(--ink-3);font-size:11px;margin-left:auto}
+.chart-box{position:relative;height:190px;padding:6px 10px 8px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;padding:0 12px 9px;font-size:11px;color:var(--ink-2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:0}
+
+/* ---------- table ---------- */
+.tbl-wrap{overflow:auto;max-height:calc(100vh - 140px)}
+.overview .tbl-wrap{max-height:420px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.2px}
+th{position:sticky;top:0;background:var(--th);z-index:1;text-align:left;font-weight:600;color:var(--ink-2);font-size:11px;padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.r,td.r{text-align:right}
+th:hover{color:var(--ink)}
+th .arr{opacity:.35;margin-left:3px;font-size:9px}
+th.sorted .arr{opacity:1;color:var(--blue)}
+td{padding:7px 8px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--hover)}
+tbody tr.sel td{background:var(--blue-50)}
+td .s{display:block;color:var(--ink-3);font-size:11px;margin-top:1px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+td b{font-weight:600}
+tfoot td{white-space:nowrap;position:sticky;bottom:0;background:var(--th);font-weight:600;border-top:1px solid var(--line);border-bottom:0}
+.pill{display:inline-block;border-radius:20px;padding:1px 8px;font-size:11px;font-weight:600;white-space:nowrap}
+.p-days{background:var(--amber-50);color:var(--amber)}.p-nights{background:var(--nights-bg);color:var(--nights)}
+.p-active{background:var(--green-50);color:var(--green)}.p-onb{background:var(--blue-50);color:var(--blue)}.p-team{background:var(--teal-50);color:var(--teal);margin-right:4px}.p-cancelled{background:var(--red-50);color:var(--red)}
+.cdot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.mbar{display:inline-block;width:38px;height:5px;background:var(--line-2);border-radius:3px;margin-left:6px;vertical-align:2px;overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--teal)}
+.empty{padding:30px;text-align:center;color:var(--ink-3)}
+
+/* ---------- candidate cards ---------- */
+.ccards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--sh);cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.ccard:hover{border-color:var(--border-hi)}
+.ccard .top{display:flex;align-items:flex-start;gap:8px}
+.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:12px;flex:0 0 32px}
+.ccard h4{margin:0;font-size:13.5px}
+.ccard .loc{color:var(--ink-3);font-size:11.5px}
+.ccard .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mini{background:var(--line-2);border-radius:7px;padding:6px 8px}
+.mini span{display:block;font-size:10.5px;color:var(--ink-3)}
+.mini b{font-size:13px}
+
+/* ---------- drawer ---------- */
+#scrim{position:fixed;inset:0;background:rgba(11,27,51,.35);z-index:20;opacity:0;pointer-events:none;transition:opacity .15s}
+#scrim.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;height:100vh;width:min(480px,100vw);background:var(--card);z-index:21;transform:translateX(100%);transition:transform .18s ease;display:flex;flex-direction:column}
+#drawer.on{transform:none;box-shadow:-10px 0 30px rgba(11,27,51,.15)}
+.dh{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+.dh h3{margin:0;font-size:16px}
+.dh .loc{color:var(--ink-2);font-size:12px;margin-top:2px}
+.db{flex:1;overflow:auto;padding:12px 16px 20px}
+.sec{margin-bottom:14px}
+.sec h5{margin:0 0 6px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kv div{padding:7px 10px;border-bottom:1px solid var(--line-2);display:flex;justify-content:space-between;gap:8px}
+.kv div:nth-child(odd){border-right:1px solid var(--line-2)}
+.kv span{color:var(--ink-2)}
+.kv.one{grid-template-columns:1fr}.kv.one div{border-right:0!important}
+.stack{display:flex;height:22px;border-radius:6px;overflow:hidden;margin:4px 0 6px}
+.stack i{display:block;height:100%}
+.slegend{display:grid;grid-template-columns:1fr auto auto;gap:3px 12px;font-size:12px}
+.slegend em{font-style:normal;color:var(--ink-3);text-align:right}
+.note{background:var(--amber-50);border:1px solid var(--note-bd);color:var(--note-ink);border-radius:8px;padding:8px 10px;font-size:12px;margin-bottom:6px}
+.note.red{background:var(--red-50);border-color:var(--note-red-bd);color:var(--note-red-ink)}
+.big3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.big3 .mini b{font-size:16px}
+
+/* ---------- misc pages ---------- */
+.page-h{display:flex;align-items:baseline;gap:10px;margin:2px 0 10px}
+.page-h h3{margin:0;font-size:15px}
+.page-h p{margin:0;color:var(--ink-3)}
+.qlist{display:flex;flex-direction:column}
+.q{display:flex;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line-2);align-items:flex-start}
+.sev{font-size:10px;font-weight:700;text-transform:uppercase;border-radius:4px;padding:2px 6px;flex:0 0 auto;margin-top:1px}
+.sev.error{background:var(--red-50);color:var(--red)}.sev.warn{background:var(--amber-50);color:var(--amber)}.sev.info{background:var(--blue-50);color:var(--blue)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pad{padding:10px 12px}
+.muted{color:var(--ink-3)}
+.foot{color:var(--ink-3);font-size:11px;margin-top:10px}
+
+@media (max-width:1440px){td .s{max-width:165px}th,td{padding-left:6px;padding-right:6px}}
+@media (max-width:1300px){.hide-s{display:none}}
+@media (max-width:1280px){.grid-charts{grid-template-columns:1fr 1fr}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.topbar .meta{display:none}}
+@media (max-width:760px){
+  #app,#app.collapsed{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  aside{flex-direction:row;padding:6px 8px;overflow-x:auto}
+  aside .brand,aside .spacer,#collapseBtn{display:none}
+  .nav{width:auto;padding:7px 10px}.nav .count{display:none}
+  main{height:auto;min-height:0}
+  #app{height:100vh;overflow:hidden}
+  .content{padding:10px 16px 16px}
+  .topbar{padding:8px 16px;flex-wrap:wrap}
+  .search{width:100%;order:5}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-charts,.two{grid-template-columns:1fr}
+  .hide-m{display:none}
+  .kv{grid-template-columns:1fr}.kv div{border-right:0!important}
+}
+@media print{aside,.topbar .search,.filters,#drawer,#scrim{display:none!important}#app{display:block}.content{overflow:visible}}
+
+/* ---------- space theme ---------- */
+:root{--star:rgba(40,62,110,.5);--star2:rgba(80,70,160,.36);--neb1:rgba(124,92,224,.18);--neb2:rgba(14,165,160,.16);--neb3:rgba(47,111,237,.12);--space-base:#EEF2FA;
+  --lstar:rgba(255,255,255,.9);--lstar2:rgba(190,215,255,.65)}
+:root[data-theme="dark"]{--star:rgba(255,255,255,.8);--star2:rgba(185,210,255,.5);--neb1:rgba(124,92,224,.38);--neb2:rgba(14,165,160,.26);--neb3:rgba(47,111,237,.22);--space-base:#050A16}
+main{position:relative;isolation:isolate;background:radial-gradient(1.2px 1.2px at 165px 77px,var(--star) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 24px 37px,var(--star) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 48px 187px,var(--star) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 29px 259px,var(--star) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 19px 44px,var(--star) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 214px 35px,var(--star) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 46px 217px,var(--star) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 63px 114px,var(--star) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 31px 203px,var(--star) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 113px 23px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 68px 148px,var(--star2) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 73px 276px,var(--star2) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 292px 157px,var(--star2) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 349px 92px,var(--star2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 297px 292px,var(--star2) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 190px 49px,var(--star2) 50%,transparent 100%),radial-gradient(1.5px 1.5px at 364px 32px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 61px 210px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 544px 437px,var(--star) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 476px 599px,var(--star) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 370px 306px,var(--star) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 184px 249px,var(--star) 50%,transparent 100%),radial-gradient(1.6px 1.6px at 588px 307px,var(--star) 50%,transparent 100%),radial-gradient(900px 520px at 88% -8%,var(--neb1),transparent 62%),radial-gradient(760px 520px at -5% 105%,var(--neb2),transparent 60%),radial-gradient(620px 420px at 48% 58%,var(--neb3),transparent 66%),var(--space-base);background-size:260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,auto,auto,auto}
+main::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(1.2px 1.2px at 253px 175px,var(--star) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 147px 37px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 214px 84px,var(--star) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 77px 250px,var(--star) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 20px 39px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 160px 174px,var(--star) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 254px 233px,var(--star) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 47px 138px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 33px 31px,var(--star) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 331px 295px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 145px 366px,var(--star2) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 342px 177px,var(--star2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 236px 181px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 312px 59px,var(--star2) 50%,transparent 100%),radial-gradient(1px 1px at 30px 111px,var(--star2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 66px 378px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 203px 200px,var(--star2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 82px 170px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 411px 562px,var(--star) 50%,transparent 100%),radial-gradient(1.6px 1.6px at 140px 440px,var(--star) 50%,transparent 100%),radial-gradient(1px 1px at 285px 425px,var(--star) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 389px 236px,var(--star) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 84px 180px,var(--star) 50%,transparent 100%);background-size:260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px;background-position:130px 70px;animation:twinkle 5s ease-in-out infinite alternate}
+.content{background:transparent}
+.topbar{background:color-mix(in srgb,var(--card) 80%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@keyframes twinkle{0%{opacity:.15}100%{opacity:1}}
+#login{overflow:hidden;background:radial-gradient(0.6px 0.6px at 118px 119px,var(--lstar) 50%,transparent 100%),radial-gradient(1px 1px at 248px 93px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 144px 2px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 214px 189px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 163px 64px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 27px 233px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 200px 203px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 201px 53px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 205px 31px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 34px 106px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 83px 56px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 307px 26px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 0px 290px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 274px 51px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 314px 13px,var(--lstar2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 106px 314px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 76px 324px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 355px 616px,var(--lstar) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 485px 125px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 499px 477px,var(--lstar) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 495px 319px,var(--lstar) 50%,transparent 100%),radial-gradient(1px 1px at 147px 104px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 271px 490px,var(--lstar) 50%,transparent 100%),
+  radial-gradient(circle 230px at 86% 104%,#3B6BC7 0%,#20407F 45%,#0F2350 70%,rgba(15,35,80,0) 71%),
+  radial-gradient(circle 300px at 86% 104%,rgba(80,140,255,.28),transparent 72%),
+  radial-gradient(900px 600px at 12% 8%,rgba(124,92,224,.38),transparent 62%),
+  radial-gradient(800px 520px at 70% 30%,rgba(14,165,160,.20),transparent 60%),
+  radial-gradient(1200px 700px at 50% 120%,rgba(47,111,237,.25),transparent 60%),
+  #050A17;background-size:260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,auto,auto,auto,auto,auto}
+#login::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(1.4px 1.4px at 11px 105px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 185px 75px,var(--lstar) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 13px 152px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 133px 187px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 182px 114px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 257px 168px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 99px 122px,var(--lstar) 50%,transparent 100%),radial-gradient(1.4px 1.4px at 116px 102px,var(--lstar) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 252px 182px,var(--lstar) 50%,transparent 100%),radial-gradient(1px 1px at 14px 404px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 241px 132px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 354px 309px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 228px 370px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 186px 41px,var(--lstar2) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 52px 116px,var(--lstar2) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 100px 172px,var(--lstar2) 50%,transparent 100%),radial-gradient(1.8px 1.8px at 247px 319px,var(--lstar2) 50%,transparent 100%),radial-gradient(1px 1px at 1px 490px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 86px 122px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 204px 489px,var(--lstar) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 444px 340px,var(--lstar) 50%,transparent 100%),radial-gradient(1.2px 1.2px at 405px 474px,var(--lstar) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 86px 162px,var(--lstar) 50%,transparent 100%);background-size:260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,260px 260px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,410px 410px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px,620px 620px;background-position:90px 140px;animation:twinkle 4s ease-in-out infinite alternate}
+#login::after{content:"";position:absolute;width:620px;height:150px;right:-150px;bottom:40px;border:1.5px solid rgba(150,190,255,.35);border-radius:50%;transform:rotate(-14deg);pointer-events:none}
+.shoot{position:absolute;top:12%;left:-10%;width:140px;height:1.5px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.9));transform:rotate(18deg);opacity:0;animation:shoot 9s ease-in 2s infinite;pointer-events:none}
+.shoot.s2{top:38%;animation-delay:6.5s;animation-duration:11s}
+@keyframes shoot{0%{transform:translate(0,0) rotate(18deg);opacity:0}2%{opacity:1}9%{transform:translate(70vw,23vw) rotate(18deg);opacity:0}100%{opacity:0}}
+.login-card{position:relative;z-index:1;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12)}
+@media (prefers-reduced-motion:reduce){main::before,#login::before,.shoot{animation:none}.shoot{display:none}}
+@media print{main{background:#fff}main::before{display:none}}
+
+aside{position:relative;isolation:isolate;background:radial-gradient(1.3px 1.3px at 115px 130px,rgba(255,255,255,0.9) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 131px 121px,rgba(255,255,255,0.9) 50%,transparent 100%),radial-gradient(0.8px 0.6px at 114px 77px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(0.6px 0.6px at 152px 101px,rgba(255,255,255,0.7) 50%,transparent 100%),radial-gradient(0.8px 0.6px at 135px 16px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(0.6px 0.8px at 61px 153px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(1.3px 1px at 112px 151px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(0.8px 1px at 127px 1px,rgba(255,255,255,0.9) 50%,transparent 100%),radial-gradient(0.8px 1.2px at 142px 208px,rgba(255,255,255,0.9) 50%,transparent 100%),radial-gradient(0.8px 1.7px at 130px 161px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(1.7px 1.2px at 15px 35px,rgba(255,255,255,0.9) 50%,transparent 100%),radial-gradient(0.8px 1.2px at 55px 148px,rgba(255,255,255,0.7) 50%,transparent 100%),radial-gradient(0.8px 0.8px at 0px 109px,rgba(255,255,255,0.5) 50%,transparent 100%),radial-gradient(0.8px 1.2px at 192px 203px,rgba(255,255,255,0.7) 50%,transparent 100%),
+  radial-gradient(420px 360px at 0% 0%,rgba(124,92,224,.35),transparent 70%),
+  radial-gradient(380px 420px at 100% 100%,rgba(14,165,160,.22),transparent 70%),
+  var(--navy);background-size:180px 180px,180px 180px,180px 180px,180px 180px,180px 180px,180px 180px,180px 180px,180px 180px,330px 330px,330px 330px,330px 330px,330px 330px,330px 330px,330px 330px,auto,auto,auto}
+:root[data-theme="dark"] .kpi:not(.accent),:root[data-theme="dark"] .card,:root[data-theme="dark"] .ccard{background:color-mix(in srgb,var(--card) 84%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#login .btn-primary{background:linear-gradient(135deg,#0EA5A0,#2F6FED);border:0;box-shadow:0 6px 20px rgba(47,111,237,.35)}
+#login .btn-primary:hover{filter:brightness(1.08)}
+
+/* ---------- light/dark switch ---------- */
+.theme-sw{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:999px;background:var(--line-2);border:1px solid var(--line);flex:0 0 auto}
+.theme-sw button{display:inline-flex;align-items:center;gap:5px;border:0;background:transparent;color:var(--ink-2);font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1}
+.theme-sw button:hover{color:var(--ink)}
+.theme-sw button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(15,30,54,.18)}
+.theme-sw button[data-t="light"].on{color:#C77C02}
+:root[data-theme="dark"] .theme-sw{background:#0B1426;border-color:#2C3D5C}
+:root[data-theme="dark"] .theme-sw button.on{background:#22355A;color:#fff;box-shadow:0 0 0 1px #3D5A8C,0 0 12px rgba(91,140,245,.35)}
+:root[data-theme="dark"] .theme-sw button[data-t="dark"].on svg{color:#B4C8FF}
+@media (max-width:760px){.theme-sw span{display:none}.theme-sw button{padding:6px 8px}}
+.sumstrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.sumstrip .mini{background:var(--card);border:1px solid var(--line);box-shadow:var(--sh)}
+.sumstrip .mini b{font-size:16px}
+@media (max-width:760px){.sumstrip{grid-template-columns:repeat(2,1fr)}}
+.tpill{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.t-above{background:rgba(14,165,160,.14);color:#0B7F7B}.t-at{background:rgba(224,138,0,.16);color:#A86400}.t-below{background:rgba(201,58,58,.14);color:#B42318}
+:root[data-theme="dark"] .t-above{color:#4FD1C5}:root[data-theme="dark"] .t-at{color:#F4B740}:root[data-theme="dark"] .t-below{color:#F59A9A}
+.mbar{position:relative}.mbar b.tgt{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:var(--ink-3);border-radius:1px}
+.mbar i.below{background:#D64545!important}
+.kpi.warnk .val{color:#B42318}:root[data-theme="dark"] .kpi.warnk .val{color:#F59A9A}
+.calc{width:100%;border-collapse:collapse;font-size:12.5px}.calc td{padding:4px 0;border-bottom:1px dashed var(--line)}.calc td.r{text-align:right}.calc td.f{color:var(--ink-3);font-size:11.5px;padding-left:8px}.calc tr.tot td{font-weight:700;border-bottom:none;border-top:1px solid var(--line)}
+
+/* ================= Sage theme (Power BI style) ================= */
+:root{--sage-d:#2F5A4E;--sage:#3E6B5E;--sage-2:#4E7D6F;--sage-l:#D6E4DE;--sage-xl:#E8F0EC;--mint:#5FBFA6;
+  --bg:#DCE6E1;--card:#F4F7F5;--line:#D3DFD9;--line-2:#E4ECE8;--ink:#1E3A33;--ink-2:#4A635B;--ink-3:#7B9089;
+  --navy:#2F5A4E;--navy-2:#3A6A5D;--navy-3:#4E7D6F;--teal:#5FBFA6;--blue:#3E6B5E;--blue-50:#DCEAE4;
+  --th:#E9F0EC;--hover:#E6EFEA;--border-hi:#9DB9AE;--bar-muted:#3E6B5E;--grid:#E1E9E5;--tick:#557068;--seg-muted:#A9BDB5;
+  --sh:0 1px 2px rgba(30,58,51,.08),0 3px 10px rgba(30,58,51,.06);--r:14px;--accent:#3E6B5E}
+:root[data-theme="dark"]{--sage-d:#16302A;--sage:#2C5248;--sage-2:#3A6A5D;--sage-l:#24433B;--sage-xl:#1B342E;--mint:#6FD3B8;
+  --bg:#0E1A17;--card:#15241F;--line:#25403A;--line-2:#1C302A;--ink:#E3EEEA;--ink-2:#A9C1B8;--ink-3:#7E978F;
+  --navy:#16302A;--navy-2:#1F3F37;--navy-3:#2C5248;--teal:#6FD3B8;--blue:#6FD3B8;--blue-50:rgba(111,211,184,.15);
+  --th:#1A2C27;--hover:#1C302A;--border-hi:#3E6B5E;--bar-muted:#6E9C8E;--grid:#203530;--tick:#9AB3AA;--seg-muted:#3E5A52;--accent:#5FBFA6}
+main{background:var(--bg)!important}main::before,main::after{display:none!important}
+#app{background:var(--bg);padding:10px;gap:10px;grid-template-columns:var(--sbw,196px) 1fr}
+aside{background:linear-gradient(180deg,var(--sage-2) 0%,var(--sage) 45%,var(--sage-d) 100%)!important;border-radius:22px;padding:18px 0 14px;color:#E3EEEA;box-shadow:var(--sh)}
+aside .brand{flex-direction:column;text-align:center;padding:0 10px 16px;gap:8px}
+aside .brand .brand-mark{width:64px;height:64px;border-radius:50%;background:#F4F7F5;color:var(--sage-d);font-size:24px;box-shadow:0 0 0 4px rgba(255,255,255,.25)}
+aside .brand small{color:#CFE0D9}
+.nav{border-radius:0;padding:12px 16px;justify-content:center;font-weight:600;color:#E3EEEA;position:relative}
+.nav svg{display:none}
+.nav:hover{background:rgba(255,255,255,.08)}
+.nav.active{background:#E8F0EC!important;color:var(--sage-d)!important;box-shadow:none!important;border-radius:16px 0 0 16px;margin-left:12px;width:calc(100% - 12px)}
+:root[data-theme="dark"] .nav.active{background:var(--bg)!important;color:var(--mint)!important}
+.nav .count{position:absolute;right:12px;margin:0;background:rgba(255,255,255,.18)}
+.nav.active .count{background:var(--sage-l);color:var(--sage-d)}
+#collapseBtn svg,#logoutBtn svg{display:block}#collapseBtn,#logoutBtn{justify-content:flex-start;font-weight:500;opacity:.85}
+.collapsed .nav{justify-content:center}.collapsed .nav svg{display:block}
+main{height:calc(100vh - 20px);border-radius:22px;overflow:hidden}
+.topbar{background:transparent!important;backdrop-filter:none!important;border:0;padding:0 4px 8px;position:relative;flex-wrap:wrap}
+.topbar h2{background:var(--sage);color:#fff;font-size:22px;letter-spacing:.01em;padding:10px 40px 11px;border-radius:0 0 22px 22px;margin:-10px 0 0;box-shadow:var(--sh)}
+:root[data-theme="dark"] .topbar h2{background:var(--sage-2)}
+.content{padding:4px 4px 14px}
+.filters{background:var(--card);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);gap:10px 14px}
+.filters select{background-color:var(--sage)!important;color:#fff!important;border:0!important;border-radius:6px;font-weight:600;min-width:150px;padding:7px 28px 7px 10px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23ffffff' fill='none' stroke-width='1.6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 10px center!important}
+.filters select option{background:#fff;color:#1E3A33}
+.chip{background:var(--sage-l);color:var(--sage-d)}:root[data-theme="dark"] .chip{color:var(--mint)}
+.linkbtn{color:var(--sage)}:root[data-theme="dark"] .linkbtn{color:var(--mint)}
+/* hero tiles */
+.hero{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.htile{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);text-align:center;padding:0 10px 12px;cursor:pointer;position:relative;border:1px solid transparent;transition:border-color .12s,transform .12s;min-width:0}
+.htile::before{content:"";display:block;height:9px;margin:0 10px 8px;background:var(--accent);border-radius:0 0 8px 8px}
+.htile:hover{border-color:var(--border-hi);transform:translateY(-1px)}
+.htile.on{border-color:var(--sage)}
+.htile .hv{font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.15;white-space:nowrap}
+.htile .hl{font-size:14px;font-weight:600;color:var(--ink-2);margin-top:2px}
+.htile .hs{font-size:11.5px;color:var(--ink-3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.htile.bad::before{background:#C24A4A}.htile.bad .hv{color:#B42318}:root[data-theme="dark"] .htile.bad .hv{color:#F59A9A}
+.kpis{grid-template-columns:repeat(8,minmax(0,1fr))}
+.kpi{border-radius:12px;padding:8px 10px}.kpi .val{font-size:16px}
+.kpi.accent{background:linear-gradient(135deg,var(--sage) 0%,var(--sage-d) 100%)!important;border-color:var(--sage)}
+.kpi.accent .lbl,.kpi.accent .sub{color:#CFE0D9}
+.kpi.on{border-color:var(--sage);box-shadow:0 0 0 2px var(--sage-l)}
+.card{border:0}
+.card-h h3{font-size:14px;font-weight:700;color:var(--ink);margin:0 auto 0 0}
+.grid-charts{grid-template-columns:1fr 1.15fr 1.35fr}
+.grid-charts.g2{grid-template-columns:2fr 1fr 1fr}
+.gauge-box{position:relative;height:236px;padding:4px 10px 0}
+.gauge-txt{position:absolute;left:0;right:0;bottom:30px;text-align:center;pointer-events:none}
+.gauge-txt b{display:block;font-size:42px;font-weight:700;color:var(--sage-d);letter-spacing:-.02em;line-height:1}
+:root[data-theme="dark"] .gauge-txt b{color:var(--mint)}
+.gauge-txt.bad b{color:#B42318}:root[data-theme="dark"] .gauge-txt.bad b{color:#F59A9A}
+.gauge-txt span{font-size:11.5px;color:var(--ink-3)}
+.split button.on{background:var(--sage);border-color:var(--sage)}
+.kpi .tag{background:var(--line-2)}
+th.sorted{color:var(--sage)!important}
+.mbar i{background:var(--sage)!important}.mbar i.below{background:#D64545!important}
+:root[data-theme="dark"] .mbar i{background:var(--mint)!important}
+#login{background:radial-gradient(900px 500px at 20% 0%,#4E7D6F 0%,#2F5A4E 55%,#1C3A32 100%)!important}
+#login::before,#login::after,#login .shoot{display:none}
+#login .btn-primary{background:var(--sage)!important;box-shadow:0 6px 20px rgba(30,58,51,.35)!important}
+.login-card .brand-mark,aside .brand-mark{background-image:none}
+.login-card .brand-mark{background:var(--sage);color:#fff}
+@media (max-width:1280px){.hero{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-charts,.grid-charts.g2{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){#app,#app.collapsed{padding:0;gap:0;grid-template-columns:1fr;grid-template-rows:auto 1fr}main{border-radius:0;height:auto;min-height:0;overflow:visible}aside{border-radius:0;padding:4px 6px;flex-direction:row}.nav{width:auto!important;padding:9px 12px;margin:0!important}.nav.active{border-radius:10px!important}.htile .hl{font-size:12.5px}.htile .hs{display:none}.hero{grid-template-columns:repeat(2,minmax(0,1fr))}.htile .hv{font-size:22px}.topbar h2{font-size:16px;padding:8px 18px;margin:0}.grid-charts,.grid-charts.g2{grid-template-columns:1fr}.filters select{min-width:0;flex:1 1 140px}}
+@media print{#app{padding:0}main{height:auto;border-radius:0}}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login">
+  <i class="shoot"></i><i class="shoot s2"></i>
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="brand"><div class="brand-mark">S</div><div><b>Soloh Partners</b><div class="muted" style="font-size:11.5px">Soloh Margin Dashboard · CFO method</div></div></div>
+    <h1>Sign in</h1>
+    <p>This dashboard holds confidential pay data. Enter the team password.</p>
+    <input type="text" name="username" value="soloh" autocomplete="username" hidden>
+    <div class="field"><label for="pw">Password</label><input class="input" id="pw" type="password" autocomplete="current-password" required autofocus></div>
+    <button class="btn btn-primary" id="loginBtn" type="submit">Unlock dashboard</button>
+    <div class="err" id="loginErr"></div>
+    <div class="login-foot">Data is encrypted (AES-256). It can only be read with the correct password.</div>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <aside>
+    <div class="brand"><div class="brand-mark">S</div><div><b>Soloh Partners</b><small>Soloh Margin Dashboard</small></div></div>
+    <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
+    <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
+    <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Started</span><em class="count" id="cntStarted"></em></button>
+    <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
+    <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
+    <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
+    <div class="spacer"></div>
+    <button class="nav" id="collapseBtn" title="Collapse sidebar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg><span>Collapse</span></button>
+    <button class="nav" id="logoutBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"/></svg><span>Sign out</span></button>
+  </aside>
+  <main>
+    <div class="topbar">
+      <h2 id="viewTitle">Soloh Margin Dashboard</h2>
+      <div class="meta" id="metaLine"></div>
+      <div class="grow"></div>
+      <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input class="input" id="q" placeholder="Search name, facility, req…" autocomplete="off"></label>
+      <div class="theme-sw" id="themeSw" role="radiogroup" aria-label="Color mode">
+        <button type="button" role="radio" data-t="light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Light</span></button>
+        <button type="button" role="radio" data-t="dark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span>Dark</span></button>
+      </div>
+      <button class="iconbtn" id="printBtn" title="Print / save as PDF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg></button>
+    </div>
+    <div class="content" id="content">
+      <div class="filters" id="filters">
+        <select id="fStatus"></select>
+        <select id="fClient"></select>
+        <select id="fShift"></select>
+        <select id="fUnit"></select>
+        <select id="fMonth"></select>
+        <select id="fTeam"></select>
+        <select id="fRecruiter"></select>
+        <label class="toggle"><input type="checkbox" id="fCancelled"> Include cancelled</label>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <!-- overview -->
+      <section data-page="overview" class="overview">
+        <div class="hero" id="hero"></div>
+        <div class="grid-charts">
+          <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
+          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Net profit</span></div></div>
+          <div class="card"><div class="card-h"><h3>Net margin by candidate</h3><span class="hint">red = below 10% · click a bar</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
+        </div>
+        <div class="grid-charts g2">
+          <div class="card"><div class="card-h"><h3>Net revenue and total pay cost by start month</h3></div><div class="chart-box" style="height:220px"><canvas id="chMonth"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Total pay cost (incl. 13% burden)</span></div></div>
+          <div class="card"><div class="card-h"><h3>Start dates</h3><span class="hint">by week</span></div><div class="chart-box" style="height:220px"><canvas id="chStart"></canvas></div><div class="legend" id="lgStart"></div></div>
+          <div class="card"><div class="card-h"><h3>Bill rate vs weekly gross pay</h3></div><div class="chart-box" style="height:220px"><canvas id="chScatter"></canvas></div><div class="legend" id="lgScatter"></div></div>
+        </div>
+        <div class="kpis" id="kpis"></div>
+        <div class="card">
+          <div class="card-h" style="padding-bottom:8px"><h3 id="tblTitle">Candidates</h3><span class="hint" id="tblHint"></span></div>
+          <div class="tbl-wrap"><table id="tbl"></table></div>
+        </div>
+        <div class="foot" id="footNote"></div>
+      </section>
+
+      <!-- candidates -->
+      <section data-page="onboarding" class="hidden">
+        <div class="page-h"><h3>Onboarding</h3><p>Accepted offers that have not started yet. Click a card for the full pay package.</p></div>
+        <div class="sumstrip" id="sumOnb"></div>
+        <div class="ccards" id="ccOnb"></div>
+      </section>
+
+      <section data-page="started" class="hidden">
+        <div class="page-h"><h3>Started</h3><p>Candidates marked started on the Soloh Compliance Board. Click a card for the full pay package.</p></div>
+        <div class="sumstrip" id="sumStarted"></div>
+        <div class="ccards" id="ccStarted"></div>
+      </section>
+
+      <!-- cancelled -->
+      <section data-page="cancelled" class="hidden">
+        <div class="page-h"><h3>Cancelled offers</h3><p>From the "Cancelled Offers" sheet. Not counted in the active KPIs.</p></div>
+        <div id="cancelList" class="ccards" style="grid-template-columns:1fr"></div>
+      </section>
+
+      <!-- fees -->
+      <section data-page="fees" class="hidden">
+        <div class="page-h"><h3>Calculation method &amp; client fees</h3><p>The CFO's method, and the MSP fee and NBO hours used for each client.</p></div>
+        <div class="two">
+          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="feeTbl"></table></div></div>
+          <div class="card pad" id="settingsBox"></div>
+        </div>
+      </section>
+
+      <!-- quality -->
+      <section data-page="quality" class="hidden">
+        <div class="page-h"><h3>Data quality</h3><p>Nothing is deleted. Issues are flagged here so the workbook can be corrected.</p></div>
+        <div class="two">
+          <div class="card"><div class="card-h" style="padding-bottom:6px"><h3>Flags</h3></div><div class="qlist" id="qList"></div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="card pad" id="sheetBox"></div>
+            <div class="card pad" id="unavailBox"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="scrim"></div>
+<div id="drawer" aria-hidden="true"></div>
+
+<script>
+const ENC = /*__ENCRYPTED_DATA__*/null;
+let D = null;                        // decrypted dataset
+const LIVE = r => r.status!=="Cancelled";
+const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
+const charts = {};
+// Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
+const COLORS = ["#3E6B5E","#5FBFA6","#C9A227","#8E7CC3","#D9822B","#7FA3C0","#B5544A","#9CB8AD","#5A6B8C"];
+const PALETTE = {};
+function color(client){ if(!(client in PALETTE)){ PALETTE[client]=COLORS[Object.keys(PALETTE).length % COLORS.length]; } return PALETTE[client]; }
+
+/* ---------- formatting ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = (v,d=0) => v==null||isNaN(v) ? "—" : (v<0?"-$":"$") + Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const money2 = v => money(v,2);
+const kfmt = v => v==null ? "—" : Math.abs(v)>=1e6 ? "$"+(v/1e6).toFixed(2)+"M" : Math.abs(v)>=1e4 ? "$"+(v/1e3).toFixed(1)+"K" : money(v);
+const pct = (v,d=1) => v==null ? "—" : (v*100).toFixed(d)+"%";
+const nfmt = v => v==null ? "—" : (+v).toLocaleString("en-US",{maximumFractionDigits:2});
+const pdate = s => s ? new Date(s+"T12:00:00") : null;
+const fdate = s => s ? pdate(s).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "—";
+const fdateS = s => s ? pdate(s).toLocaleDateString("en-US",{month:"short",day:"numeric"}) : "—";
+const monthKey = s => s ? s.slice(0,7) : "";
+const monthLbl = k => k ? new Date(k+"-15T12:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"}) : "";
+const initials = n => (n||"?").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+const avg = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
+const sum = a => a.reduce((x,y)=>x+(y||0),0);
+const vals = (rs,k) => rs.map(r=>r[k]).filter(v=>v!=null && !isNaN(v));
+const TGT = () => (D&&D.method&&D.method.target)||0.10;
+const tStat = m => m==null ? null : (Math.round(m*1000)/10 > TGT()*100 ? "above" : Math.round(m*1000)/10 === Math.round(TGT()*1000)/10 ? "at" : "below");
+const tPill = m => { const t=tStat(m); return t ? `<span class="tpill t-${t}">${{above:"Above",at:"At",below:"Below"}[t]} ${pct(TGT(),0)}</span>` : `<span class="tpill t-below">Not calculated</span>`; };
+const ppts = v => v==null ? "—" : (v>=0?"+":"")+(v*100).toFixed(1)+" pts";
+const bookM = rs => { const n=sum(rs.filter(r=>r.netProfit!=null).map(r=>r.netRev)), p=sum(rs.map(r=>r.netProfit)); return n?p/n:null; };
+
+/* ---------- decrypt ---------- */
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decrypt(pw){
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(ENC.salt),iterations:ENC.iter,hash:"SHA-256"}, base, {name:"AES-GCM",length:256}, false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(ENC.iv)}, key, b64(ENC.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function unlock(pw, remember){
+  try{
+    D = await decrypt(pw);
+    if(remember){ try{ sessionStorage.setItem("soloh_cfo_pw", pw); }catch(e){} }
+    $("#login").classList.add("hidden"); $("#app").classList.remove("hidden");
+    init();
+    return true;
+  }catch(e){ return false; }
+}
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn=$("#loginBtn"); btn.disabled=true; btn.textContent="Unlocking…"; $("#loginErr").textContent="";
+  const ok = await unlock($("#pw").value, true);
+  if(!ok){ $("#loginErr").textContent="Incorrect password. Please try again."; $("#pw").select(); }
+  btn.disabled=false; btn.textContent="Unlock dashboard";
+});
+(async()=>{ let pw=null; try{ pw=sessionStorage.getItem("soloh_cfo_pw"); }catch(e){} if(pw && !(await unlock(pw,false))){ try{sessionStorage.removeItem("soloh_cfo_pw");}catch(e){} } })();
+$("#logoutBtn").onclick = () => { try{sessionStorage.removeItem("soloh_cfo_pw");}catch(e){} location.reload(); };
+
+/* ---------- filtering ---------- */
+function filtered(opts={}){
+  const q = S.q.trim().toLowerCase();
+  return D.records.filter(r =>
+    (opts.status ? r.status===opts.status : ((S.cancelled || LIVE(r)) && (!S.status || r.status===S.status || r.status==="Cancelled"))) &&
+    (!S.client || r.client===S.client) && (!S.shift || r.shift===S.shift) &&
+    (!S.team || r.team===S.team) && (!S.recruiter || r.recruiter===S.recruiter) &&
+    (!S.unit || r.unit===S.unit) && (!S.month || monthKey(r.start)===S.month) &&
+    (!q || [r.candidate,r.client,r.facilityUnit,r.req,r.unit,r.shift,r.team,r.recruiter].join(" ").toLowerCase().includes(q)));
+}
+function opts(sel, label, values, cur, fmt=v=>v){
+  sel.innerHTML = `<option value="">${label}: All</option>` + values.map(v=>`<option value="${esc(v)}"${v===cur?" selected":""}>${esc(label)}: ${esc(fmt(v))}</option>`).join("");
+}
+function buildFilters(){
+  const all = D.records;
+  const uniq = k => [...new Set(all.map(r=>r[k]).filter(Boolean))].sort();
+  opts($("#fStatus"),"Candidate status",["Onboarding","Started"],S.status);
+  opts($("#fClient"),"Client",uniq("client"),S.client);
+  opts($("#fShift"),"Shift",uniq("shift"),S.shift);
+  opts($("#fUnit"),"Unit",uniq("unit"),S.unit);
+  opts($("#fMonth"),"Start month",[...new Set(all.map(r=>monthKey(r.start)).filter(Boolean))].sort(),S.month,monthLbl);
+  opts($("#fTeam"),"Team",uniq("team"),S.team);
+  opts($("#fRecruiter"),"Recruiter",[...new Set(all.filter(r=>!S.team||r.team===S.team).map(r=>r.recruiter).filter(Boolean))].sort(),S.recruiter);
+  $("#fCancelled").checked = S.cancelled;
+  const chips=[];
+  if(S.status) chips.push(["status",S.status]);
+  if(S.client) chips.push(["client",S.client]); if(S.shift) chips.push(["shift",S.shift]);
+  if(S.unit) chips.push(["unit",S.unit]); if(S.month) chips.push(["month",monthLbl(S.month)]);
+  if(S.team) chips.push(["team",S.team]); if(S.recruiter) chips.push(["recruiter",S.recruiter]);
+  if(S.q) chips.push(["q",`“${S.q}”`]); if(S.cancelled) chips.push(["cancelled","Incl. cancelled"]);
+  $("#chips").innerHTML = chips.map(([k,v])=>`<span class="chip">${esc(v)}<button data-k="${k}" title="Remove">×</button></span>`).join("") + (chips.length>1?`<button class="linkbtn" id="clearAll">Clear all</button>`:"");
+  $("#chips").querySelectorAll("button[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; if(k==="cancelled") S.cancelled=false; else if(k==="q"){S.q="";$("#q").value="";} else S[k]=""; render(); });
+  const ca=$("#clearAll"); if(ca) ca.onclick=()=>{ Object.assign(S,{status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:""}); $("#q").value=""; render(); };
+}
+["Status","Client","Shift","Unit","Month","Team","Recruiter"].forEach(n=>$("#f"+n).addEventListener("change",e=>{S[n.toLowerCase()]=e.target.value; if(n==="Team") S.recruiter=""; render();}));
+$("#fCancelled").addEventListener("change",e=>{S.cancelled=e.target.checked;render();});
+let qT; $("#q").addEventListener("input",e=>{clearTimeout(qT);qT=setTimeout(()=>{S.q=e.target.value;render();},120);});
+
+/* ---------- KPIs ---------- */
+function kpiCard({id,lbl,val,sub,tag,dot,accent,action,extra=""}){
+  return `<div class="kpi${accent?" accent":""}" data-k="${id}" role="button" tabindex="0" title="${esc(action||"")}">
+    <div class="lbl">${dot?`<span class="dot" style="background:${dot}"></span>`:""}${esc(lbl)}${tag?`<span class="tag">${tag}</span>`:""}</div>
+    <div class="val num">${val}</div><div class="sub">${sub||"&nbsp;"}</div>${extra}</div>`;
+}
+function renderKPIs(rs){
+  const act = rs.filter(LIVE);
+  const uniqueNames = new Set(rs.map(r=>(r.candidate||"").toLowerCase().trim()).filter(Boolean));
+  const clients = new Set(rs.map(r=>r.client).filter(Boolean));
+  const facs = new Set(rs.map(r=>r.facility).filter(Boolean));
+  const top = [...rs].filter(r=>r.weeklyGross!=null).sort((a,b)=>b.weeklyGross-a.weeklyGross)[0];
+  const gross = sum(act.map(r=>r.grossRev)), profit = sum(act.map(r=>r.netProfit));
+  const wkProfit = sum(act.map(r=>r.weeklyProfit));
+  const days = rs.filter(r=>r.shift==="Days").length, nights = rs.filter(r=>r.shift==="Nights").length;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const upcoming = act.filter(r=>r.start && pdate(r.start)>=today).sort((a,b)=>a.start.localeCompare(b.start));
+  const in14 = upcoming.filter(r=>(pdate(r.start)-today)/864e5<=14).length;
+  const next = upcoming[0];
+  const cards = [
+    {id:"count",lbl:"Active offers",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
+    {id:"clients",lbl:"Clients · Facilities",tag:"count",val:`${clients.size} <span style="font-weight:500;color:var(--ink-3);font-size:15px">/ ${facs.size}</span>`,sub:[...clients].map(c=>c.replace(/ \(.*\)/,"").replace(" Health","")).join(", ")+" · facilities",action:"Sort table by client"},
+    {id:"grossRev",lbl:"Gross revenue",tag:"total",val:kfmt(gross),sub:`Net of MSP ${kfmt(sum(act.map(r=>r.netRev)))}`,action:"Sort table by gross revenue"},
+    {id:"netProfit",lbl:"Net profit",tag:"total",val:kfmt(profit),sub:`${pct(bookM(act))} of net revenue · ${money(wkProfit)}/wk`,dot:"var(--teal)",action:"Sort table by net profit"},
+    {id:"marginBook",lbl:"Net margin vs "+pct(TGT(),0)+" target",tag:"total",val:pct(bookM(act)),sub:`${ppts(bookM(act)==null?null:bookM(act)-TGT())} vs target · profit ÷ net revenue`,accent:true,action:"Sort table by margin"},
+    {id:"belowT",lbl:"Below "+pct(TGT(),0)+" target",tag:"count",val:act.filter(r=>tStat(r.marginPct)==="below").length,sub:(act.filter(r=>tStat(r.marginPct)==="below").map(r=>esc(r.candidate)).join(", ")||"All offers meet the target")+(act.some(r=>r.marginPct==null)?` · ${act.filter(r=>r.marginPct==null).length} not calculated`:""),action:"Sort table by margin, lowest first"},
+    {id:"weeklyGross",lbl:"Top weekly pay",tag:"individual",val:top?money(top.weeklyGross):"—",sub:top?esc(top.candidate):"",action:"Open this candidate"},
+    {id:"start",lbl:"Next start",tag:"individual",val:next?fdateS(next.start):"—",sub:next?`${esc(next.candidate)} · ${in14} in next 14 days`:"No upcoming starts",action:"Sort table by start date"},
+    {id:"w2",lbl:"Avg W2 hourly",tag:"avg",val:money2(avg(vals(rs,"w2"))),sub:rangeTxt(vals(rs,"w2"),money2),action:"Sort table by W2 rate"},
+    {id:"bill",lbl:"Avg bill rate",tag:"avg",val:money2(avg(vals(rs,"bill"))),sub:rangeTxt(vals(rs,"bill"),money2),action:"Sort table by bill rate"},
+    {id:"stipend",lbl:"Avg weekly stipend",tag:"avg",val:money(avg(vals(rs,"stipend"))),sub:rangeTxt(vals(rs,"stipend"),money),action:"Sort table by stipend"},
+    {id:"weeklyGross2",lbl:"Avg weekly gross pay",tag:"avg",val:money(avg(vals(rs,"weeklyGross"))),sub:"Taxable pay + stipend",action:"Sort table by weekly gross pay"},
+    {id:"marginPct",lbl:"Avg net margin per offer",tag:"avg",val:pct(avg(vals(act,"marginPct"))),sub:rangeTxt(vals(act,"marginPct"),v=>pct(v)),action:"Sort table by margin"},
+    {id:"shift",lbl:"By shift",tag:"count",val:`${days} <span style="font-weight:500;color:var(--ink-3);font-size:13px">days</span> · ${nights} <span style="font-weight:500;color:var(--ink-3);font-size:13px">nights</span>`,sub:"",action:"Filter by shift",
+      extra:`<div class="split"><button data-shift="Days" class="${S.shift==="Days"?"on":""}">Days</button><button data-shift="Nights" class="${S.shift==="Nights"?"on":""}">Nights</button></div>`},
+  ];
+  const payCost = sum(act.map(r=>r.cfo&&r.cfo.net!=null ? r.cfo.regular+r.cfo.ot+r.cfo.stipend+r.cfo.nbo : 0));
+  const nBelow = act.filter(r=>tStat(r.marginPct)==="below").length;
+  const hero = [
+    {k:"count",v:act.length,l:"Active Offers",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started`},
+    {k:"netRev",v:kfmt(sum(act.map(r=>r.netRev))),l:"Net Revenue",s:`Gross ${kfmt(gross)} less MSP`},
+    {k:"payCost",v:kfmt(payCost),l:"Total Pay Cost",s:"Pay + OT + NBO (13% burden) + stipend"},
+    {k:"netProfit",v:kfmt(profit),l:"Net Profit",s:`${pct(bookM(act))} net margin · ${money(wkProfit)}/wk`},
+    {k:"belowT",v:nBelow,l:"Below 10% Target",s:nBelow?act.filter(r=>tStat(r.marginPct)==="below").map(r=>r.candidate).join(", "):"All offers meet the target",bad:nBelow>0},
+  ];
+  $("#hero").innerHTML = hero.map(h=>`<div class="htile${h.bad?" bad":""}${S.sort===({count:"candidate",belowT:"marginPct"}[h.k]||h.k)?" on":""}" data-k="${h.k}" role="button" tabindex="0" title="${esc(h.s)}"><div class="hv num">${h.v}</div><div class="hl">${h.l}</div><div class="hs">${esc(h.s)}</div></div>`).join("");
+  $("#hero").querySelectorAll(".htile").forEach(el=>{ const k=el.dataset.k;
+    el.onclick=()=>{ const key={count:"candidate",belowT:"marginPct",payCost:"netRev"}[k]||k; setSort(key,["candidate"].includes(key)||k==="belowT"?1:-1); document.querySelector(".tbl-wrap").scrollIntoView({behavior:"smooth",block:"nearest"}); };
+    el.onkeydown=ev=>{ if(ev.key==="Enter") el.click(); }; });
+  $("#kpis").innerHTML = cards.filter(c=>!["count","netProfit","belowT"].includes(c.id)).map(kpiCard).join("");
+  const bk=$('#kpis .kpi[data-k="belowT"]'); if(bk && act.some(r=>tStat(r.marginPct)==="below")) bk.classList.add("warnk");
+  $("#kpis").querySelectorAll(".kpi").forEach(el=>{
+    const k=el.dataset.k;
+    if(["grossRev","netProfit","w2","bill","stipend","marginPct","start"].includes(k)||k==="weeklyGross2"||k==="count"||k==="clients") el.classList.toggle("on", S.sort===({weeklyGross2:"weeklyGross",count:"candidate",clients:"client"}[k]||k));
+    el.onclick = ev => {
+      if(k==="shift"){ const b=ev.target.closest("button[data-shift]"); if(b){ S.shift = S.shift===b.dataset.shift?"":b.dataset.shift; render(); } return; }
+      if(k==="weeklyGross"){ if(top) openDrawer(top.row, top.sheet); return; }
+      const map={weeklyGross2:"weeklyGross",count:"candidate",clients:"client",marginBook:"marginPct",belowT:"marginPct"};
+      const key=map[k]||k; setSort(key, ["candidate","client","start"].includes(key)||k==="belowT"?1:-1);
+      document.querySelector(".tbl-wrap").scrollIntoView({behavior:"smooth",block:"nearest"});
+    };
+    el.onkeydown = ev => { if(ev.key==="Enter") el.click(); };
+  });
+}
+function rangeTxt(a,f){ return a.length>1 ? `Range ${f(Math.min(...a))} – ${f(Math.max(...a))}` : a.length?"1 offer":"No data"; }
+
+/* ---------- charts ---------- */
+Chart.defaults.font.family = "Inter, system-ui, sans-serif"; Chart.defaults.font.size = 11;
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const grid = {color:"#EEF2F7",drawTicks:false}, tip = {backgroundColor:"#0B1B33",padding:8,cornerRadius:6,displayColors:false};
+function mk(id, cfg){ if(charts[id]) charts[id].destroy(); charts[id] = new Chart($("#"+id), cfg); }
+const valLabels = (fmt, horiz) => ({id:"vl",afterDatasetsDraw(ch){ const {ctx}=ch; ctx.save(); ctx.font="600 10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-2");
+  ch.data.datasets.forEach((ds,di)=>{ const meta=ch.getDatasetMeta(di); if(meta.hidden) return; meta.data.forEach((el,i)=>{ const v=ds.data[i]; if(v==null||v===0) return; const t=fmt(v);
+    if(horiz){ ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.fillText(t, Math.max(el.x,el.base)+4, el.y); } else { ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText(t, el.x, Math.min(el.y,el.base)-2); } }); }); ctx.restore(); }});
+const tgtLine = {id:"tl",afterDatasetsDraw(ch){ const x=ch.scales.x; if(!x) return; const px=x.getPixelForValue(TGT()); const {top,bottom}=ch.chartArea; const ctx=ch.ctx; ctx.save(); ctx.strokeStyle="#C24A4A"; ctx.setLineDash([4,3]); ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(px,top); ctx.lineTo(px,bottom); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#C24A4A"; ctx.font="600 10px Inter, sans-serif"; ctx.textAlign="center"; ctx.fillText(pct(TGT(),0)+" target",px,top-3); ctx.restore(); }};
+function renderCharts(rs){
+  Chart.defaults.color = cssv("--tick"); grid.color = cssv("--grid");
+  const act = rs;
+  // 0. gauge: book net margin vs target
+  const live = act.filter(LIVE), bm = bookM(live), gMax = Math.max(0.2, (bm||0)*1.25);
+  mk("chGauge",{type:"doughnut",data:{datasets:[{data:[Math.max(0,Math.min(bm||0,gMax)), gMax-Math.max(0,Math.min(bm||0,gMax))],backgroundColor:[bm!=null&&tStat(bm)==="below"?"#C24A4A":cssv("--accent"),cssv("--line-2")],borderWidth:0}]},
+    options:{rotation:-90,circumference:180,cutout:"72%",maintainAspectRatio:false,layout:{padding:{top:30,bottom:22,left:12,right:12}},plugins:{legend:{display:false},tooltip:{enabled:false}}},
+    plugins:[{id:"gt",afterDatasetsDraw(ch){ const a=ch.getDatasetMeta(0).data[0]; if(!a) return; const {x,y,outerRadius:R,innerRadius:r}=a; const ang=Math.PI+(TGT()/gMax)*Math.PI; const ctx=ch.ctx; ctx.save(); ctx.strokeStyle=cssv("--ink"); ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x+Math.cos(ang)*(r-6),y+Math.sin(ang)*(r-6)); ctx.lineTo(x+Math.cos(ang)*(R+6),y+Math.sin(ang)*(R+6)); ctx.stroke(); ctx.fillStyle=cssv("--ink-2"); ctx.font="600 10.5px Inter, sans-serif"; ctx.textAlign="center"; ctx.fillText(pct(TGT(),0)+" target",x+Math.cos(ang)*(R+14),y+Math.sin(ang)*(R+14)-2); ctx.font="10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-3"); ctx.fillText("0%",x-(R+r)/2,y+14); ctx.fillText(pct(gMax,0),x+(R+r)/2,y+14); ctx.restore(); }}]});
+  $("#gaugeTxt").className = "gauge-txt"+(bm!=null&&tStat(bm)==="below"?" bad":"");
+  $("#gaugeTxt").innerHTML = `<b class="num">${pct(bm)}</b><span>${ppts(bm==null?null:bm-TGT())} vs ${pct(TGT(),0)} · ${live.filter(r=>tStat(r.marginPct)!=="below"&&r.marginPct!=null).length} of ${live.length} offers at or above</span>`;
+  // 1. net margin by candidate
+  const byP = [...act].filter(r=>r.marginPct!=null).sort((a,b)=>b.marginPct-a.marginPct);
+  mk("chProfit",{type:"bar",data:{labels:byP.map(r=>r.candidate),datasets:[{data:byP.map(r=>r.marginPct),backgroundColor:byP.map(r=>r.status==="Cancelled"?"#E3B4B4":tStat(r.marginPct)==="below"?"#C24A4A":cssv("--accent")),borderRadius:3,barThickness:"flex",maxBarThickness:13}]},
+    options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:34,top:12}},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>{const r=byP[c.dataIndex];return [`${pct(r.marginPct)} net margin (${ppts(r.marginPct-TGT())} vs target)`,`${money(r.netProfit)} net profit · ${money(r.weeklyProfit)}/wk`,r.client+(r.status==="Cancelled"?" · cancelled":"")];}}}},
+      scales:{x:{grid,border:{display:false},min:0,suggestedMax:0.2,ticks:{callback:v=>pct(v,0),maxTicksLimit:5}},y:{grid:{display:false},border:{display:false},ticks:{autoSkip:false,font:{size:10.5}}}},
+      onClick:(e,els)=>{ if(els.length){const r=byP[els[0].index]; openDrawer(r.row,r.sheet);} }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"},
+    plugins:[valLabels(v=>pct(v),true),tgtLine]});
+  // 2. by client
+  const cl = [...new Set(act.map(r=>r.client))].sort((a,b)=>sum(act.filter(r=>r.client===b).map(r=>r.netRev))-sum(act.filter(r=>r.client===a).map(r=>r.netRev)));
+  const g = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netRev)));
+  const p = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netProfit)));
+  const n = cl.map(c=>act.filter(r=>r.client===c&&LIVE(r)).length);
+  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cssv("--bar-muted"),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:cssv("--teal"),borderRadius:3,maxBarThickness:26}]},
+    plugins:[valLabels(kfmt,false)],
+    options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
+      scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}},
+      onClick:(e,els)=>{ if(els.length){ const c=cl[els[0].index]; setTimeout(()=>{ S.client = S.client===c?"":c; render(); },0); } }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"}});
+  // 2b. net revenue vs pay cost by start month
+  const mons = [...new Set(act.filter(r=>r.start&&LIVE(r)).map(r=>monthKey(r.start)))].sort();
+  const pc = r => r.cfo&&r.cfo.net!=null ? r.cfo.regular+r.cfo.ot+r.cfo.stipend+r.cfo.nbo : 0;
+  mk("chMonth",{type:"bar",data:{labels:mons.map(m=>monthLbl(m)),datasets:[
+      {label:"Net revenue",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(r=>r.netRev))),backgroundColor:cssv("--bar-muted"),borderRadius:3,maxBarThickness:46},
+      {label:"Total pay cost",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(pc))),backgroundColor:cssv("--teal"),borderRadius:3,maxBarThickness:46}]},
+    plugins:[valLabels(kfmt,false)],
+    options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${c[0].label} starts · ${act.filter(r=>LIVE(r)&&monthKey(r.start)===mons[c[0].dataIndex]).length} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
+      scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}}}});
+  // 3. start dates by week (Monday)
+  const wk = s => { const d=pdate(s); const m=new Date(d); m.setDate(d.getDate()-((d.getDay()+6)%7)); return m.toISOString().slice(0,10); };
+  const weeks = [...new Set(act.filter(r=>r.start).map(r=>wk(r.start)))].sort();
+  const cls = [...new Set(act.map(r=>r.client))];
+  mk("chStart",{type:"bar",data:{labels:weeks.map(w=>"Wk of "+fdateS(w)),datasets:cls.map(c=>({label:c,data:weeks.map(w=>act.filter(r=>r.client===c&&r.start&&wk(r.start)===w).length),backgroundColor:color(c),borderRadius:2,maxBarThickness:28}))},
+    options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,displayColors:true,filter:i=>i.raw>0,callbacks:{afterBody:c=>{const w=weeks[c[0].dataIndex];return act.filter(r=>r.start&&wk(r.start)===w).map(r=>`• ${r.candidate} (${fdateS(r.start)})`);}}}},
+      scales:{x:{stacked:true,grid:{display:false},border:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid,border:{display:false},ticks:{stepSize:1,precision:0}}}}});
+  $("#lgStart").innerHTML = cls.map(c=>`<span><i style="background:${color(c)}"></i>${esc(c.replace(" (via HWL)",""))}</span>`).join("");
+  // 4. scatter
+  const sc = act.filter(r=>r.bill!=null&&r.weeklyGross!=null);
+  mk("chScatter",{type:"scatter",data:{datasets:cls.map(c=>({label:c,data:sc.filter(r=>r.client===c).map(r=>({x:r.bill,y:r.weeklyGross,r})),backgroundColor:color(c),pointRadius:5,pointHoverRadius:7}))},
+    options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>{const r=c.raw.r;return [r.candidate,`Bill ${money2(r.bill)} · Pay ${money(r.weeklyGross)}/wk`,`${r.guarHrs} hrs/wk · margin ${pct(r.marginPct)}`];}}}},
+      scales:{x:{grid,border:{display:false},title:{display:true,text:"Bill rate ($/hr)",font:{size:10}},ticks:{callback:v=>"$"+v}},y:{grid,border:{display:false},title:{display:true,text:"Weekly gross pay",font:{size:10}},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}}},
+      onClick:(e,els)=>{ if(els.length){ const r=charts.chScatter.data.datasets[els[0].datasetIndex].data[els[0].index].r; openDrawer(r.row,r.sheet);} }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"}});
+  $("#lgScatter").innerHTML = $("#lgStart").innerHTML;
+}
+
+/* ---------- table ---------- */
+const COLS = [
+  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Started</span>':""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
+  {k:"client",t:"Client / Facility",f:r=>`<span class="cdot" style="background:${color(r.client)}"></span>${esc(r.client)}<span class="s" title="${esc(r.facilityUnit)}">${esc(r.facilityUnit)}</span>`},
+  {k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
+  {k:"start",t:"Start",f:r=>`${fdateS(r.start)}<span class="s">${r.weeks??"—"} wks · to ${fdateS(r.end)}</span>`},
+  {k:"w2",t:"W2 / OT",r:1,f:r=>`${money2(r.w2)}<span class="s">OT ${money2(r.ot)}</span>`},
+  {k:"weeklyGross",t:"Gross pay/wk",r:1,f:r=>`<b>${money(r.weeklyGross)}</b><span class="s">stipend ${money(r.stipend)}</span>`},
+  {k:"bill",t:"Bill rate",r:1,f:r=>`${money2(r.bill)}<span class="s">MSP ${pct(r.msp,1)}</span>`},
+  {k:"netRev",t:"Net rev",r:1,f:r=>`${money(r.netRev)}<span class="s">gross ${money(r.grossRev)}</span>`,cls:"hide-m hide-s"},
+  {k:"netProfit",t:"Net profit",r:1,f:r=>`<b>${money(r.netProfit)}</b><span class="s">${money(r.weeklyProfit)}/wk</span>`},
+  {k:"marginPct",t:"Net margin",r:1,f:r=>`${pct(r.marginPct)}${tPill(r.marginPct)}<span class="mbar" title="Bar runs 0–20%; marker = ${pct(TGT(),0)} target"><i class="${tStat(r.marginPct)==="below"?"below":""}" style="width:${Math.max(0,Math.min(100,(r.marginPct||0)/(2*TGT())*100))}%"></i><b class="tgt"></b></span><span class="s">${ppts(r.marginPct==null?null:r.marginPct-TGT())}</span>`},
+];
+function setSort(k,dir){ if(S.sort===k && dir==null) S.dir*=-1; else { S.sort=k; S.dir=dir ?? (["candidate","client","unit","start"].includes(k)?1:-1); } render(); }
+function sortRows(rs){
+  const k=S.sort, d=S.dir;
+  return [...rs].sort((a,b)=>{ const x=a[k], y=b[k]; if(x==null&&y==null) return 0; if(x==null) return 1; if(y==null) return -1;
+    return (typeof x==="string" ? x.localeCompare(y) : x-y)*d; });
+}
+function renderTable(rs){
+  const rows = sortRows(rs);
+  const act = rs.filter(LIVE);
+  const head = `<thead><tr>${COLS.map(c=>`<th class="${c.r?"r ":""}${S.sort===c.k?"sorted ":""}${c.cls||""}" data-k="${c.k}">${c.t}<span class="arr">${S.sort===c.k?(S.dir>0?"▲":"▼"):"▲▼"}</span></th>`).join("")}</tr></thead>`;
+  const body = rows.length ? rows.map(r=>`<tr data-row="${r.row}" data-sheet="${esc(r.sheet)}" class="${S.sel&&S.sel.row===r.row&&S.sel.sheet===r.sheet?"sel":""}">${COLS.map(c=>`<td class="${c.r?"r num ":""}${c.cls||""}">${c.f(r)}</td>`).join("")}</tr>`).join("")
+    : `<tr><td colspan="${COLS.length}" class="empty">No candidates match these filters.</td></tr>`;
+  const ag = sum(act.map(r=>r.netRev)), ap = sum(act.map(r=>r.netProfit));
+  const foot = rows.length ? `<tfoot><tr><td>${act.length} active</td><td></td><td class="hide-m"></td><td></td><td class="r num">avg ${money2(avg(vals(rs,"w2")))}</td><td class="r num">avg ${money(avg(vals(rs,"weeklyGross")))}</td><td class="r num">avg ${money2(avg(vals(rs,"bill")))}</td><td class="r num hide-m hide-s">${money(ag)}</td><td class="r num">${money(ap)}</td><td class="r num">${pct(bookM(act))}</td></tr></tfoot>` : "";
+  $("#tbl").innerHTML = head + `<tbody>${body}</tbody>` + foot;
+  $("#tbl").querySelectorAll("th").forEach(th=>th.onclick=()=>setSort(th.dataset.k));
+  $("#tbl").querySelectorAll("tbody tr[data-row]").forEach(tr=>tr.onclick=()=>openDrawer(+tr.dataset.row,tr.dataset.sheet));
+  $("#tblHint").textContent = `${rows.length} row${rows.length===1?"":"s"} · totals are for active offers · click a row for details`;
+}
+
+/* ---------- candidate cards ---------- */
+function ccard(r){
+  return `<div class="ccard" data-row="${r.row}" data-sheet="${esc(r.sheet)}">
+    <div class="top"><div class="avatar" style="background:${color(r.client)}">${initials(r.candidate)}</div>
+      <div style="min-width:0;flex:1"><h4>${esc(r.candidate)}</h4><div class="loc">${esc(r.client)} · ${esc(r.facility)}</div></div>
+      <span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span></div>
+    <div class="loc">${esc(r.unit)} · ${r.hrsShift}h × ${r.guarHrs/r.hrsShift||"—"} · starts ${fdate(r.start)} (${r.weeks} wks)</div>
+    ${r.recruiter||r.team?`<div class="loc"><span class="pill p-team">${esc(r.team||"No team")}</span> Recruiter: <b style="color:var(--ink-2)">${esc(r.recruiter||"—")}</b></div>`:""}
+    <div class="row3"><div class="mini"><span>W2 / hr</span><b class="num">${money2(r.w2)}</b></div><div class="mini"><span>Pay / wk</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div></div>
+    <div class="row3"><div class="mini"><span>Stipend / wk</span><b class="num">${money(r.stipend)}</b></div><div class="mini"><span>Net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
+  </div>`;
+}
+function renderCards(rs, status){
+  const box = status==="Started" ? "#ccStarted" : "#ccOnb", sumBox = status==="Started" ? "#sumStarted" : "#sumOnb";
+  rs = rs.filter(r=>r.status===status);
+  const g=sum(rs.map(r=>r.netRev)), p=sum(rs.map(r=>r.netProfit));
+  $(sumBox).innerHTML = [["Candidates",rs.length],["Net revenue",money(g)],["Net profit",money(p)],["Net margin",pct(bookM(rs))],["Below "+pct(TGT(),0)+" target",rs.filter(r=>tStat(r.marginPct)==="below").length]]
+    .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
+  const none = status==="Started"
+    ? `<div class="empty card">No candidates have started yet. When the Compliance Board marks a candidate as started, they move here with their full calculations.</div>`
+    : `<div class="empty card">No onboarding candidates match these filters.</div>`;
+  $(box).innerHTML = rs.length ? sortRows(rs).map(ccard).join("") : none;
+  $(box).querySelectorAll(".ccard").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.row,c.dataset.sheet));
+}
+function renderCancelled(){
+  const rs = filtered({status:"Cancelled"});
+  $("#cancelList").innerHTML = rs.length ? rs.map(r=>`<div class="ccard" data-row="${r.row}" data-sheet="${esc(r.sheet)}">
+    <div class="top"><div class="avatar" style="background:#B5544A">${initials(r.candidate)}</div><div style="flex:1"><h4>${esc(r.candidate)} <span class="pill p-cancelled">Cancelled</span></h4><div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)} · ${esc(r.req)}</div>${r.recruiter||r.team?`<div class="loc" style="margin-top:4px"><span class="pill p-team">${esc(r.team||"No team")}</span> Recruiter: <b style="color:var(--ink-2)">${esc(r.recruiter||"—")}</b></div>`:""}</div></div>
+    <div class="row3" style="grid-template-columns:repeat(5,1fr)"><div class="mini"><span>Was starting</span><b>${fdate(r.start)}</b></div><div class="mini"><span>W2 / OT</span><b class="num">${money2(r.w2)} / ${money2(r.ot)}</b></div><div class="mini"><span>Gross pay / wk</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Bill rate${r.billAfter?" → after increase":""}</span><b class="num">${money2(r.bill)}${r.billAfter?" → "+money2(r.billAfter):""}</b></div><div class="mini"><span>Profit lost (est.)</span><b class="num">${money(r.netProfit)}</b></div></div>
+    ${r.reason?`<div class="note red">${esc(r.reason)}</div>`:""}</div>`).join("") : `<div class="empty card">No cancelled offers match these filters.</div>`;
+  $("#cancelList").querySelectorAll(".ccard").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.row,c.dataset.sheet));
+}
+
+/* ---------- drawer ---------- */
+function openDrawer(row, sheet){
+  const r = D.records.find(x=>x.row===row && x.sheet===sheet); if(!r) return;
+  S.sel = {row,sheet};
+  const c = r.cfo||{}, load = c.burden ?? D.method.burden;
+  const parts = c.net!=null ? [["Regular pay (W2 × "+pct(1+load,0)+")",c.regular,"#2F6FED"],["OT pay (OT × "+pct(1+load,0)+")",c.ot,"#5B8DEF"],["Stipend",c.stipend,"#7FA6F2"],["NBO (hrs × W2 × "+pct(1+load,0)+")",c.nbo,"#E0A84A"]] : [];
+  if(c.net!=null && (c.clientFees||0)) parts.push([c.oneTime?"Client fees (onboarding + one-time costs)":"Client fees (onboarding)",c.clientFees,"#C2410C"]);
+  if(c.net!=null) parts.push(["Net profit",r.netProfit,"#0EA5A0"]);
+  const tot = r.netRev||1;
+  const notes = D.quality.filter(q=>q.sheet===r.sheet && q.row===r.row);
+  const list = sortRows(filtered()); const i = list.findIndex(x=>x.row===row&&x.sheet===sheet);
+  const prev = i>0?list[i-1]:null, next = i>=0&&i<list.length-1?list[i+1]:null;
+  const extra = Object.entries(r.extra||{}).filter(([k,v])=>v!=null&&v!=="");
+  $("#drawer").innerHTML = `
+    <div class="dh"><div class="avatar" style="background:${r.status==="Cancelled"?"#B5544A":color(r.client)};width:40px;height:40px;flex-basis:40px;font-size:14px">${initials(r.candidate)}</div>
+      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled"}[r.status]}">${{Onboarding:"Onboarding",Started:"Started",Cancelled:"Cancelled"}[r.status]}</span></h3>
+      <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)} · Excel row ${r.row} (${esc(r.sheet)})</div></div>
+      <button class="iconbtn" id="dPrev" ${prev?"":"disabled"} title="Previous">‹</button><button class="iconbtn" id="dNext" ${next?"":"disabled"} title="Next">›</button><button class="iconbtn" id="dClose" title="Close">✕</button></div>
+    <div class="db">
+      ${r.reason?`<div class="note red">${esc(r.reason)}</div>`:""}
+      ${notes.map(q=>`<div class="note${q.sev==="error"?" red":""}">${esc(q.msg)}</div>`).join("")}
+      <div class="big3"><div class="mini"><span>Gross pay / week</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Net profit${r.status==="Cancelled"?" (est.)":""}</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
+      ${c.net!=null?`<div class="sec"><h5>Against the ${pct(TGT(),0)} target</h5><div class="kv">
+        <div><span>Profit needed for ${pct(TGT(),0)}</span><b class="num">${money(c.targetProfit)}</b></div><div><span>${c.gapToTarget>=0?"Cushion above target":"Short of target"}</span><b class="num" style="color:${c.gapToTarget>=0?"#0B7F7B":"#B42318"}">${money(Math.abs(c.gapToTarget))}</b></div>
+        <div><span>Variance</span><b class="num">${ppts(c.variance)}</b></div><div><span>Per week</span><b class="num">${money(c.gapToTarget/(r.weeks||1))}/wk</b></div></div></div>`:`<div class="note red">Margin not calculated. Missing: ${esc((c.missing||[]).join(", "))}.</div>`}
+      <div class="sec"><h5>Assignment</h5><div class="kv">
+        <div><span>Start</span><b>${fdate(r.start)}</b></div><div><span>End</span><b>${fdate(r.end)}</b></div>
+        <div><span>Weeks</span><b>${r.weeks??"—"}</b></div><div><span>Shift</span><b>${esc(r.shift)}</b></div>
+        <div><span>Hours / shift</span><b>${nfmt(r.hrsShift)}</b></div><div><span>Guaranteed hrs / wk</span><b>${nfmt(r.guarHrs)}</b></div>
+        <div><span>Unit</span><b>${esc(r.unit)}</b></div><div><span>Facility</span><b style="text-align:right">${esc(r.facility)}</b></div>
+        <div><span>Team</span><b>${esc(r.team||"—")}</b></div><div><span>Recruiter</span><b>${esc(r.recruiter||"—")}</b></div></div></div>
+      <div class="sec"><h5>Pay package (nurse)</h5><div class="kv">
+        <div><span>W2 hourly</span><b class="num">${money2(r.w2)}</b></div><div><span>OT rate</span><b class="num">${money2(r.ot)}</b></div>
+        <div><span>Weekly stipend</span><b class="num">${money(r.stipend)}</b></div><div><span>Taxable / wk</span><b class="num">${money2(r.weeklyTaxable)}</b></div>
+        <div><span>Gross pay / wk</span><b class="num">${money2(r.weeklyGross)}</b></div><div><span>Contract gross pay</span><b class="num">${money(r.contractGrossPay)}</b></div>
+        ${r.oneTime?`<div><span>One-time costs</span><b class="num">${money(r.oneTime)}</b></div><div><span></span><b></b></div>`:""}</div></div>
+      <div class="sec"><h5>Billing</h5><div class="kv">
+        <div><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div><div><span>Weekly billing</span><b class="num">${money(r.weeklyBill)}</b></div>
+        ${r.billAfter?`<div><span>Bill after increase</span><b class="num">${money2(r.billAfter)}</b></div><div><span></span><b></b></div>`:""}
+        <div><span>MSP fee</span><b class="num">${pct(r.msp,1)}</b></div><div><span>NBO hours</span><b class="num">${nfmt(r.nbo)}</b></div>
+        <div><span>Gross revenue</span><b class="num">${money(r.grossRev)}</b></div><div><span>Net revenue</span><b class="num">${money(r.netRev)}</b></div></div></div>
+      ${c.net!=null?`<div class="sec"><h5>How this was calculated (CFO sheet columns)</h5><table class="calc">
+        <tr><td>Gross revenue (P)</td><td class="f">${money2(r.bill)} × ${nfmt(r.guarHrs)} hrs × ${r.weeks} wks</td><td class="r num">${money(c.gross)}</td></tr>
+        <tr><td>Net revenue (Q)</td><td class="f">× (1 − ${pct(r.msp,1)} MSP)</td><td class="r num">${money(c.net)}</td></tr>
+        <tr><td>− Regular (S)</td><td class="f">${r.weeks} × ${Math.min(r.guarHrs,40)} × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.regular)}</td></tr>
+        <tr><td>− OT (T)</td><td class="f">${r.weeks} × ${Math.max(r.guarHrs-40,0)} × ${money2(r.ot)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.ot)}</td></tr>
+        <tr><td>− Stipend (U)</td><td class="f">${money(r.stipend)} × ${r.weeks}</td><td class="r num">${money(c.stipend)}</td></tr>
+        <tr><td>− NBO (V)</td><td class="f">${nfmt(r.nbo)} hrs × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.nbo)}</td></tr>
+        <tr><td>− Client fees (W)</td><td class="f">onboarding ${money(c.onboarding)}${c.oneTime?` + one-time ${money(c.oneTime)}`:""}</td><td class="r num">${money(c.clientFees)}</td></tr>
+        <tr class="tot"><td>Net profit (X)</td><td class="f">÷ net revenue = ${pct(r.marginPct,2)} (Y)</td><td class="r num">${money(r.netProfit)}</td></tr></table>
+        <div class="foot">For reference, Peter's column Z (NBO at bill rate × (1 − MSP)) gives ${money(c.colZ)} · ${pct(c.colZMargin)}. The original Margin Dashboard showed ${money(r.orig&&r.orig.netProfit)} · ${pct(r.orig&&r.orig.marginPctGross)} of gross revenue (${pct(D.method.sourceLoad,0)} load).</div></div>`:""}
+      <div class="sec"><h5>Where the net revenue goes</h5>
+        <div class="stack">${parts.map(([l,v,c])=>`<i title="${esc(l)}: ${money(v)}" style="width:${Math.max(0,(v||0)/tot*100)}%;background:${c}"></i>`).join("")}</div>
+        <div class="slegend">${parts.map(([l,v,c])=>`<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c};margin-right:6px"></i>${esc(l)}</span><b class="num" style="text-align:right">${money(v)}</b><em class="num">${pct((v||0)/tot)}</em>`).join("")}
+        <span style="border-top:1px solid var(--line);padding-top:3px"><b>Net revenue</b></span><b class="num" style="text-align:right;border-top:1px solid var(--line);padding-top:3px">${money(r.netRev)}</b><em style="border-top:1px solid var(--line);padding-top:3px">100%</em></div>
+        <div class="foot">CFO formula: net revenue − (regular + OT) × (1 + ${pct(load,0)} burden) − stipends − NBO hours × W2 × (1 + ${pct(load,0)}) − client fees. Net margin = net profit ÷ net revenue.</div></div>
+      ${extra.length?`<div class="sec"><h5>Other columns</h5><div class="kv one">${extra.map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div></div>`:""}
+    </div>`;
+  $("#drawer").classList.add("on"); $("#scrim").classList.add("on"); $("#drawer").setAttribute("aria-hidden","false");
+  $("#dClose").onclick = closeDrawer;
+  if(prev) $("#dPrev").onclick=()=>openDrawer(prev.row,prev.sheet);
+  if(next) $("#dNext").onclick=()=>openDrawer(next.row,next.sheet);
+  document.querySelectorAll("#tbl tbody tr").forEach(tr=>tr.classList.toggle("sel", +tr.dataset.row===row && tr.dataset.sheet===sheet));
+}
+function closeDrawer(){ $("#drawer").classList.remove("on"); $("#scrim").classList.remove("on"); $("#drawer").setAttribute("aria-hidden","true"); S.sel=null; document.querySelectorAll("#tbl tbody tr.sel").forEach(t=>t.classList.remove("sel")); }
+$("#scrim").onclick = closeDrawer;
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeDrawer(); if(e.key==="/" && document.activeElement.tagName!=="INPUT"){ e.preventDefault(); $("#q").focus(); } });
+
+/* ---------- static pages ---------- */
+function renderFees(){
+  const used = new Set(D.records.map(r=>r.client));
+  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Active offers</th><th>Source</th></tr></thead><tbody>` +
+    Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
+  const m = D.method;
+  $("#settingsBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">CFO calculation method</h3>
+    <div class="kv one" style="margin-bottom:10px"><div><span>Burden (load)</span><b>${pct(m.burden,0)}</b></div><div><span>Target net margin</span><b>${pct(m.target,0)} minimum</b></div>
+    <div><span>Net margin</span><b>Net profit ÷ Net revenue</b></div><div><span>Recruiting + onboarding cost</span><b>${money(m.onboarding)}</b></div>
+    <div><span>Method</span><b>${esc(m.version)}</b></div></div>
+    <table class="calc"><tr><td>Gross revenue</td><td class="f">Bill × guaranteed hrs × weeks</td></tr><tr><td>Net revenue</td><td class="f">Gross × (1 − MSP %)</td></tr>
+    <tr><td>Regular</td><td class="f">Weeks × min(hrs,40) × W2 × (1 + burden)</td></tr><tr><td>OT</td><td class="f">Weeks × hrs over 40 × OT rate × (1 + burden)</td></tr>
+    <tr><td>Stipend</td><td class="f">Weekly stipend × weeks (no burden)</td></tr><tr><td>NBO</td><td class="f">NBO hrs × W2 × (1 + burden)</td></tr>
+    <tr><td>Client fees</td><td class="f">Onboarding cost${m.oneTimeIncluded?" + candidate one-time costs":""}</td></tr><tr class="tot"><td>Net profit</td><td class="f">Net revenue − all of the above</td></tr></table>
+    <p class="muted" style="margin:8px 0 6px">Weeks = round((end − start) ÷ 7). No other rounding. Target status is judged on the margin shown to one decimal.</p>
+    <p class="muted" style="margin:0 0 6px">Candidate data comes from the Margin Dashboard (updated ${esc(D.source&&D.source.builtAt)}). That dashboard uses an ${pct(m.sourceLoad,0)} load, NBO at the bill rate and margin on gross revenue, so its figures differ from these.</p>
+    ${(D.feeNotes||[]).map(n=>`<div class="note">${esc(n)}</div>`).join("")}`;
+}
+function renderQuality(){
+  const order={error:0,warn:1,info:2};
+  const q=[...D.quality].sort((a,b)=>order[a.sev]-order[b.sev]||a.row-b.row);
+  $("#qList").innerHTML = q.length ? q.map(x=>`<div class="q"><span class="sev ${x.sev}">${x.sev==="warn"?"check":x.sev}</span><div><b>${esc(x.who||"(no name)")}</b> <span class="muted">· ${esc(x.sheet)} row ${x.row}</span><div>${esc(x.msg)}</div></div></div>`).join("") : `<div class="empty">No issues found.</div>`;
+  $("#sheetBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">Workbook sheets read (via Margin Dashboard)</h3><div class="kv one">${D.sheets.map(s=>`<div><span>${esc(s.name)}</span><b>${s.rows} rows · ${esc(s.role)}</b></div>`).join("")}</div>
+    <p class="muted" style="margin:8px 0 0">Columns are matched by header name. Revenue, profit and margin are recalculated here with the CFO method; rows missing a required input are flagged, not estimated.</p>
+    ${D.sheets.some(s=>s.unmapped&&s.unmapped.length)?`<p class="muted">Extra columns shown under "Other columns" in the detail panel: ${D.sheets.flatMap(s=>s.unmapped||[]).map(esc).join(", ")}</p>`:""}`;
+  $("#unavailBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">Not available in this workbook</h3>
+    <div class="kv one"><div><span>Job location (city / state)</span><b class="muted">No column. Shown only inside Facility / Unit text</b></div>
+    <div><span>Specialty</span><b class="muted">No column. "Unit" is read from the Facility / Unit text</b></div>
+    <div><span>Submission status</span><b class="muted">No column</b></div>
+    <div><span>Unique candidates</span><b class="muted">Counted by name; no candidate ID column</b></div></div>`;
+}
+
+/* ---------- views ---------- */
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
+document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
+$("#collapseBtn").onclick=()=>{ $("#app").classList.toggle("collapsed"); try{localStorage.setItem("soloh_cfo_sb",$("#app").classList.contains("collapsed")?"1":"0");}catch(e){} setTimeout(()=>Object.values(charts).forEach(c=>c.resize()),50); };
+$("#printBtn").onclick=()=>window.print();
+function setThemeIcon(){ const t=document.documentElement.dataset.theme; document.querySelectorAll("#themeSw button").forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle("on",on); b.setAttribute("aria-checked",on); }); }
+setThemeIcon();
+document.querySelectorAll("#themeSw button").forEach(b=>b.onclick=()=>{ const t=b.dataset.t; if(document.documentElement.dataset.theme===t) return; document.documentElement.dataset.theme=t; try{localStorage.setItem("soloh_margin_theme",t);}catch(e){} setThemeIcon(); if(D) render(); if(S.sel) openDrawer(S.sel.row,S.sel.sheet); });
+
+function render(){
+  buildFilters();
+  document.querySelectorAll(".nav[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===S.view));
+  document.querySelectorAll("section[data-page]").forEach(s=>s.classList.toggle("hidden",s.dataset.page!==S.view));
+  $("#viewTitle").textContent = TITLES[S.view];
+  $("#filters").classList.toggle("hidden", ["fees","quality"].includes(S.view));
+  $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started"].includes(S.view));
+  $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started"].includes(S.view));
+  const rs = filtered();
+  if(S.view==="overview"){ renderKPIs(rs); renderCharts(rs); renderTable(rs); }
+  if(S.view==="onboarding") renderCards(rs,"Onboarding");
+  if(S.view==="started") renderCards(rs,"Started");
+  if(S.view==="cancelled") renderCancelled();
+}
+function init(){
+  Object.keys(D.fees||{}).forEach(color); D.records.forEach(r=>color(r.client));
+  try{ if(localStorage.getItem("soloh_cfo_sb")==="1") $("#app").classList.add("collapsed"); }catch(e){}
+  $("#metaLine").textContent = `Built ${D.builtAt} · from Margin Dashboard data of ${D.source?D.source.builtAt:"—"} · Burden ${pct(D.method.burden,0)} · Target ${pct(D.method.target,0)}`;
+  $("#cntOnb").textContent = D.records.filter(r=>r.status==="Onboarding").length;
+  $("#cntStarted").textContent = D.records.filter(r=>r.status==="Started").length;
+  $("#cntCancelled").textContent = D.records.filter(r=>r.status==="Cancelled").length;
+  $("#cntQuality").textContent = D.quality.filter(q=>q.sev!=="info").length || "";
+  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. KPI tags: TOTAL = sum of active offers, AVG = mean per offer, INDIVIDUAL = one candidate.`;
+  renderFees(); renderQuality(); render();
+}
+</script>
+</body>
+</html>
