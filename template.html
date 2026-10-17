@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Soloh Margin Dashboard</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="vendor/chart.umd.min.js"></script>
@@ -344,6 +345,17 @@ th.sorted{color:var(--sage)!important}
 @media (max-width:1280px){.hero{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-charts,.grid-charts.g2{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:760px){#app,#app.collapsed{padding:0;gap:0;grid-template-columns:1fr;grid-template-rows:auto 1fr}main{border-radius:0;height:auto;min-height:0;overflow:visible}aside{border-radius:0;padding:4px 6px;flex-direction:row}.nav{width:auto!important;padding:9px 12px;margin:0!important}.nav.active{border-radius:10px!important}.htile .hl{font-size:12.5px}.htile .hs{display:none}.hero{grid-template-columns:repeat(2,minmax(0,1fr))}.htile .hv{font-size:22px}.topbar h2{font-size:16px;padding:8px 18px;margin:0}.grid-charts,.grid-charts.g2{grid-template-columns:1fr}.filters select{min-width:0;flex:1 1 140px}}
 @media print{#app{padding:0}main{height:auto;border-radius:0}}
+.login-logo{background:var(--sage);margin:-28px -26px 18px;padding:22px 0 18px;border-radius:14px 14px 0 0;text-align:center}
+.login-logo img{height:64px}
+.login-sub{text-align:center;font-weight:700;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;font-size:12px;margin:-4px 0 6px}
+aside .side-logo{width:132px;height:auto;margin:4px auto 0;display:block}
+.collapsed aside .side-logo{width:44px;object-fit:cover;object-position:left;height:44px}
+.banner{display:flex;align-items:center;gap:14px;background:var(--sage);border-radius:0 0 22px 22px;margin:-10px 0 0;padding:16px 34px 10px 24px;box-shadow:var(--sh)}
+.banner img{height:38px}.banner .bsep{width:1px;height:28px;background:rgba(255,255,255,.35)}
+.topbar .banner h2{background:none!important;box-shadow:none;margin:0;padding:0;border-radius:0}
+:root[data-theme="dark"] .banner{background:var(--sage-2)}
+@media (max-width:760px){.banner{margin:0;padding:6px 14px;gap:10px}.banner img{height:26px}}
+@media print{.banner{background:#3E6B5E!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -352,7 +364,8 @@ th.sorted{color:var(--sage)!important}
 <div id="login">
   <i class="shoot"></i><i class="shoot s2"></i>
   <form class="login-card" id="loginForm" autocomplete="on">
-    <div class="brand"><div class="brand-mark">S</div><div><b>Soloh Partners</b><div class="muted" style="font-size:11.5px">Soloh Margin Dashboard · CFO method</div></div></div>
+    <div class="login-logo"><img src="assets/soloh-logo-white.png" alt="Soloh Partners"></div>
+    <div class="login-sub">Soloh Margin Dashboard</div>
     <h1>Sign in</h1>
     <p>This dashboard holds confidential pay data. Enter the team password.</p>
     <input type="text" name="username" value="soloh" autocomplete="username" hidden>
@@ -366,7 +379,7 @@ th.sorted{color:var(--sage)!important}
 <!-- ================= APP ================= -->
 <div id="app" class="hidden">
   <aside>
-    <div class="brand"><div class="brand-mark">S</div><div><b>Soloh Partners</b><small>Soloh Margin Dashboard</small></div></div>
+    <div class="brand"><img class="side-logo" src="assets/soloh-logo-white.png" alt="Soloh Partners"><div><small>Margin Dashboard</small></div></div>
     <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Started</span><em class="count" id="cntStarted"></em></button>
@@ -379,7 +392,7 @@ th.sorted{color:var(--sage)!important}
   </aside>
   <main>
     <div class="topbar">
-      <h2 id="viewTitle">Soloh Margin Dashboard</h2>
+      <div class="banner"><img src="assets/soloh-logo-white.png" alt="Soloh Partners"><span class="bsep"></span><h2 id="viewTitle">Soloh Margin Dashboard</h2></div>
       <div class="meta" id="metaLine"></div>
       <div class="grow"></div>
       <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input class="input" id="q" placeholder="Search name, facility, req…" autocomplete="off"></label>
