@@ -126,12 +126,21 @@ def main():
     ap.add_argument("--source-password", default=os.environ.get("SOURCE_PASSWORD"))
     ap.add_argument("--password", default=os.environ.get("DASHBOARD_PASSWORD"))
     ap.add_argument("--out", default=os.path.join(HERE, "index.html"))
+    ap.add_argument("--state", help="automation state file (default: <source repo>/vault/state.json.enc)")
     ap.add_argument("--dump-json", help="also write the decrypted dataset here (never commit it)")
     a = ap.parse_args()
     if not a.password or not a.source_password:
         sys.exit("Both --password and --source-password are required.")
 
     D = read_source(a.source, a.source_password)
+    # Candidates Prashant chose to keep off this dashboard (automation state, locked with the source password)
+    st_path = a.state or os.path.join(os.path.dirname(os.path.abspath(a.source)), "vault", "state.json.enc")
+    if os.path.exists(st_path):
+        sb = json.loads(open(st_path, encoding="utf-8").read())
+        st = json.loads(AESGCM(kdf(a.source_password, b64d(sb["salt"]), sb["iter"])).decrypt(b64d(sb["iv"]), b64d(sb["ct"]), None))
+        skip = {(k or "").strip().lower() for k in st.get("skipSoloh", {})}
+        if skip:
+            D["records"] = [r for r in D["records"] if (r.get("candidate") or "").strip().lower() not in skip]
     # Method-dependent notes from the source are recalculated here; data notes are kept.
     dq = [q for q in D.get("quality", []) if not re.search(r"Negative net profit|well above the group median|Excel shows", q.get("msg", ""))]
     for r in D["records"]:
