@@ -141,6 +141,11 @@ def main():
         skip = {(k or "").strip().lower() for k in st.get("skipSoloh", {})}
         if skip:
             D["records"] = [r for r in D["records"] if (r.get("candidate") or "").strip().lower() not in skip]
+    # Team names shown on this dashboard (Prashant, 10/19/2026): Harsh's Team -> HST, Tackle's Team -> TTT
+    TEAM_LABELS = {"harsh's team": "HST", "harsh team": "HST", "tackle's team": "TTT", "tackle team": "TTT"}
+    for r in D["records"]:
+        t = (r.get("team") or "").replace("’", "'").strip().lower()
+        if t in TEAM_LABELS: r["team"] = TEAM_LABELS[t]
     # Method-dependent notes from the source are recalculated here; data notes are kept.
     dq = [q for q in D.get("quality", []) if not re.search(r"Negative net profit|well above the group median|Excel shows", q.get("msg", ""))]
     for r in D["records"]:
