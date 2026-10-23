@@ -395,6 +395,62 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 :root[data-theme="dark"] .theme-sw{background:#111;border-color:#2A2A2A}
 :root[data-theme="dark"] .theme-sw button.on{background:#262626;box-shadow:0 0 0 1px #3A3A3A}
 :root[data-theme="dark"] .theme-sw button[data-t="dark"].on svg{color:var(--mint)}
+
+/* ================= Vibrant + interactive layer (sidebar and title banner stay black/white) ================= */
+:root{--v1:#FEC346;--v2:#F7883E;--v3:#EF4F6B;--v4:#D63384;--vgrad:linear-gradient(90deg,#FEC346,#F7883E,#EF4F6B);
+  --bg:#FFF4EA;--th:#FFF1E4;--hover:#FFEBDD;--grid:#F6E7DA}
+:root[data-theme="dark"]{--bg:#0E0B0A;--th:#1E1712;--hover:#2A1D15;--grid:#2A221D}
+#app{background:var(--bg)}
+main{background:radial-gradient(900px 520px at 100% 0%,rgba(254,195,70,.30),transparent 60%),radial-gradient(800px 560px at 0% 100%,rgba(239,79,107,.20),transparent 62%),radial-gradient(700px 420px at 55% 45%,rgba(247,136,62,.10),transparent 70%),linear-gradient(180deg,#FFF6EE,#FFF1EE)!important}
+:root[data-theme="dark"] main{background:radial-gradient(900px 520px at 100% 0%,rgba(254,195,70,.14),transparent 60%),radial-gradient(800px 560px at 0% 100%,rgba(239,79,107,.14),transparent 62%),#0E0B0A!important}
+/* animated brand line under the black title banner */
+.banner{position:relative;border-bottom:0!important;border-image:none!important}
+.banner::after{content:"";position:absolute;left:22px;right:22px;bottom:-4px;height:4px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#FEC346,#F7883E,#EF4F6B,#D63384,#EF4F6B,#F7883E,#FEC346);background-size:300% 100%;animation:vslide 8s linear infinite}
+@keyframes vslide{to{background-position:300% 0}}
+/* vibrant hero tiles */
+.htile{border:0;color:#fff;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;box-shadow:0 6px 18px rgba(239,79,107,.18)}
+.htile::before{background:rgba(255,255,255,.35)!important}
+.htile .hv,.htile .hl{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+.htile .hs{color:rgba(255,255,255,.88)}
+.htile:nth-child(1){background:linear-gradient(135deg,#F9A826,#F47B20)}
+.htile:nth-child(2){background:linear-gradient(135deg,#F7883E,#EF4F4F)}
+.htile:nth-child(3){background:linear-gradient(135deg,#EF4F6B,#C2297A)}
+.htile:nth-child(4){background:#111}
+.htile:nth-child(4) .hv{background:linear-gradient(90deg,#FEC346,#F7883E,#EF4F6B);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none}
+.htile:nth-child(4)::before{background:var(--vgrad)!important}
+.htile:nth-child(5){background:linear-gradient(135deg,#14B87A,#0E8A6A)}
+.htile.bad{background:linear-gradient(135deg,#E5383B,#A4161A)!important}
+.htile.bad::before{background:rgba(255,255,255,.35)!important}
+.htile::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);transition:left .6s ease;pointer-events:none}
+.htile:hover{transform:translateY(-4px) scale(1.015);box-shadow:0 14px 30px rgba(239,79,107,.32)}
+.htile:hover::after{left:130%}
+.htile.on{box-shadow:0 0 0 3px #111,0 10px 26px rgba(239,79,107,.3)}
+:root[data-theme="dark"] .htile.on{box-shadow:0 0 0 3px #FEC346,0 10px 26px rgba(239,79,107,.3)}
+/* cards: gradient top edge, lift on hover, rise in on load */
+.card,.filters{border-top:3px solid transparent!important;background:linear-gradient(var(--card),var(--card)) padding-box,var(--vgrad) border-box!important;transition:transform .18s ease,box-shadow .18s ease}
+.grid-charts .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(247,136,62,.20)}
+.hero .htile,.grid-charts .card{animation:vrise .5s ease both}
+.hero .htile:nth-child(2),.grid-charts .card:nth-child(2){animation-delay:.06s}.hero .htile:nth-child(3),.grid-charts .card:nth-child(3){animation-delay:.12s}
+.hero .htile:nth-child(4){animation-delay:.18s}.hero .htile:nth-child(5){animation-delay:.24s}
+@keyframes vrise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card-h h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--vgrad);margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(247,136,62,.18)}
+/* filters */
+.filters select{background-color:#F7883E!important;transition:background-color .15s,transform .15s,box-shadow .15s}
+.filters select:hover{background-color:#EF4F6B!important;transform:translateY(-1px);box-shadow:0 6px 14px rgba(239,79,107,.28)}
+/* table */
+th{background:var(--th)!important;color:#8A3B12!important}
+:root[data-theme="dark"] th{color:#F7B27A!important}
+tbody tr{transition:background-color .12s,box-shadow .12s}
+tbody tr:hover{background:var(--hover)!important;box-shadow:inset 4px 0 0 #F7883E;cursor:pointer}
+.t-above{background:rgba(20,184,122,.16);color:#0B7A52}
+.mbar i{background:linear-gradient(90deg,#FEC346,#F7883E)!important}.mbar i.below{background:#D7263D!important}
+/* sidebar stays black/white; add a warm hover + vivid count badges */
+.nav:hover{color:#FEC346}
+.nav .count{background:var(--vgrad);color:#111}
+.nav.active .count{background:var(--vgrad);color:#111}
+/* buttons */
+.theme-sw button.on{box-shadow:0 0 0 2px #F7883E}
+@media (prefers-reduced-motion:reduce){.banner::after,.hero .htile,.grid-charts .card{animation:none!important}.htile,.card{transition:none}}
 </style>
 </head>
 <body>
@@ -459,7 +515,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
         <div class="hero" id="hero"></div>
         <div class="grid-charts">
           <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
-          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Net profit</span></div></div>
+          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(180deg,#F7883E,#FEC346)"></i>Net revenue</span><span><i style="background:linear-gradient(180deg,#C2297A,#EF4F6B)"></i>Net profit</span></div></div>
           <div class="card"><div class="card-h"><h3>Net margin by candidate</h3><span class="hint">red = below 10% · click a bar</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
         <div class="card">
@@ -660,6 +716,7 @@ function renderKPIs(rs){
     {k:"belowT",v:nBelow,l:"Below 10% Target",s:nBelow?act.filter(r=>tStat(r.marginPct)==="below").map(r=>r.candidate).join(", "):"All offers meet the target",bad:nBelow>0},
   ];
   $("#hero").innerHTML = hero.map(h=>`<div class="htile${h.bad?" bad":""}${S.sort===({count:"candidate",belowT:"marginPct"}[h.k]||h.k)?" on":""}" data-k="${h.k}" role="button" tabindex="0" title="${esc(h.s)}"><div class="hv num">${h.v}</div><div class="hl">${h.l}</div><div class="hs">${esc(h.s)}</div></div>`).join("");
+  countUp($("#hero"));
   $("#hero").querySelectorAll(".htile").forEach(el=>{ const k=el.dataset.k;
     el.onclick=()=>{ const key={count:"candidate",belowT:"marginPct",payCost:"netRev"}[k]||k; setSort(key,["candidate"].includes(key)||k==="belowT"?1:-1); document.querySelector(".tbl-wrap").scrollIntoView({behavior:"smooth",block:"nearest"}); };
     el.onkeydown=ev=>{ if(ev.key==="Enter") el.click(); }; });
@@ -689,20 +746,26 @@ function mk(id, cfg){ if(charts[id]) charts[id].destroy(); const el=$("#"+id); i
 const valLabels = (fmt, horiz) => ({id:"vl",afterDatasetsDraw(ch){ const {ctx}=ch; ctx.save(); ctx.font="600 10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-2");
   ch.data.datasets.forEach((ds,di)=>{ const meta=ch.getDatasetMeta(di); if(meta.hidden) return; meta.data.forEach((el,i)=>{ const v=ds.data[i]; if(v==null||v===0) return; const t=fmt(v);
     if(horiz){ ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.fillText(t, Math.max(el.x,el.base)+4, el.y); } else { ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText(t, el.x, Math.min(el.y,el.base)-2); } }); }); ctx.restore(); }});
+function vgrad(ch,axis,stops){ const a=ch.chartArea; if(!a) return stops[stops.length-1]; const g=axis==="x"?ch.ctx.createLinearGradient(a.left,0,a.right,0):ch.ctx.createLinearGradient(0,a.bottom,0,a.top); stops.forEach((c,i)=>g.addColorStop(stops.length===1?0:i/(stops.length-1),c)); return g; }
+function countUp(root){ if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  root.querySelectorAll(".hv").forEach(el=>{ const m=el.textContent.match(/^([^0-9]*)([0-9][0-9,]*\.?[0-9]*)(.*)$/); if(!m) return; const end=parseFloat(m[2].replace(/,/g,"")); if(!isFinite(end)) return;
+    const dec=(m[2].split(".")[1]||"").length, comma=m[2].includes(","), t0=performance.now(), D=800;
+    const f=n=>{let s=n.toFixed(dec); if(comma){const [i,d]=s.split(".");s=i.replace(/\B(?=(\d{3})+(?!\d))/g,",")+(d!=null?"."+d:"");} return m[1]+s+m[3];};
+    const step=t=>{const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3); el.textContent=f(end*e); if(k<1) requestAnimationFrame(step); else el.textContent=m[1]+m[2]+m[3];}; requestAnimationFrame(step); }); }
 const tgtLine = {id:"tl",afterDatasetsDraw(ch){ const x=ch.scales.x; if(!x) return; const px=x.getPixelForValue(TGT()); const {top,bottom}=ch.chartArea; const ctx=ch.ctx; ctx.save(); ctx.strokeStyle="#C24A4A"; ctx.setLineDash([4,3]); ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(px,top); ctx.lineTo(px,bottom); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#C24A4A"; ctx.font="600 10px Inter, sans-serif"; ctx.textAlign="center"; ctx.fillText(pct(TGT(),0)+" target",px,top-3); ctx.restore(); }};
 function renderCharts(rs){
-  Chart.defaults.color = cssv("--tick"); grid.color = cssv("--grid");
+  Chart.defaults.color = cssv("--tick"); grid.color = cssv("--grid"); Chart.defaults.animation.duration=900; Chart.defaults.animation.easing="easeOutQuart";
   const act = rs;
   // 0. gauge: book net margin vs target
   const live = act.filter(LIVE), bm = bookM(live), gMax = Math.max(0.2, (bm||0)*1.25);
-  mk("chGauge",{type:"doughnut",data:{datasets:[{data:[Math.max(0,Math.min(bm||0,gMax)), gMax-Math.max(0,Math.min(bm||0,gMax))],backgroundColor:[bm!=null&&tStat(bm)==="below"?"#C24A4A":cssv("--accent"),cssv("--line-2")],borderWidth:0}]},
+  mk("chGauge",{type:"doughnut",data:{datasets:[{data:[Math.max(0,Math.min(bm||0,gMax)), gMax-Math.max(0,Math.min(bm||0,gMax))],backgroundColor:c=>c.dataIndex===1?cssv("--line-2"):(bm!=null&&tStat(bm)==="below"?"#D7263D":vgrad(c.chart,"x",["#FEC346","#F7883E","#EF4F6B"])),borderWidth:0}]},
     options:{rotation:-90,circumference:180,cutout:"72%",maintainAspectRatio:false,layout:{padding:{top:30,bottom:22,left:12,right:12}},plugins:{legend:{display:false},tooltip:{enabled:false}}},
     plugins:[{id:"gt",afterDatasetsDraw(ch){ const a=ch.getDatasetMeta(0).data[0]; if(!a) return; const {x,y,outerRadius:R,innerRadius:r}=a; const ang=Math.PI+(TGT()/gMax)*Math.PI; const ctx=ch.ctx; ctx.save(); ctx.strokeStyle=cssv("--ink"); ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x+Math.cos(ang)*(r-6),y+Math.sin(ang)*(r-6)); ctx.lineTo(x+Math.cos(ang)*(R+6),y+Math.sin(ang)*(R+6)); ctx.stroke(); ctx.fillStyle=cssv("--ink-2"); ctx.font="600 10.5px Inter, sans-serif"; ctx.textAlign="center"; ctx.fillText(pct(TGT(),0)+" target",x+Math.cos(ang)*(R+14),y+Math.sin(ang)*(R+14)-2); ctx.font="10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-3"); ctx.fillText("0%",x-(R+r)/2,y+14); ctx.fillText(pct(gMax,0),x+(R+r)/2,y+14); ctx.restore(); }}]});
   $("#gaugeTxt").className = "gauge-txt"+(bm!=null&&tStat(bm)==="below"?" bad":"");
   $("#gaugeTxt").innerHTML = `<b class="num">${pct(bm)}</b><span>${ppts(bm==null?null:bm-TGT())} vs ${pct(TGT(),0)} · ${live.filter(r=>tStat(r.marginPct)!=="below"&&r.marginPct!=null).length} of ${live.length} offers at or above</span>`;
   // 1. net margin by candidate
   const byP = [...act].filter(r=>r.marginPct!=null).sort((a,b)=>b.marginPct-a.marginPct);
-  mk("chProfit",{type:"bar",data:{labels:byP.map(r=>r.candidate),datasets:[{data:byP.map(r=>r.marginPct),backgroundColor:byP.map(r=>r.status==="Cancelled"?"#E3B4B4":tStat(r.marginPct)==="below"?"#C24A4A":cssv("--accent")),borderRadius:3,barThickness:"flex",maxBarThickness:13}]},
+  mk("chProfit",{type:"bar",data:{labels:byP.map(r=>r.candidate),datasets:[{data:byP.map(r=>r.marginPct),backgroundColor:c=>{const r=byP[c.dataIndex];return !r?null:r.status==="Cancelled"?"#E3B4B4":tStat(r.marginPct)==="below"?"#D7263D":vgrad(c.chart,"x",["#FEC346","#F7883E"]);},hoverBackgroundColor:c=>{const r=byP[c.dataIndex];return r&&tStat(r.marginPct)==="below"?"#A4161A":"#EF4F6B";},borderRadius:3,barThickness:"flex",maxBarThickness:13}]},
     options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:34,top:12}},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>{const r=byP[c.dataIndex];return [`${pct(r.marginPct)} net margin (${ppts(r.marginPct-TGT())} vs target)`,`${money(r.netProfit)} net profit · ${money(r.weeklyProfit)}/wk`,r.client+(r.status==="Cancelled"?" · cancelled":"")];}}}},
       scales:{x:{grid,border:{display:false},min:0,suggestedMax:0.2,ticks:{callback:v=>pct(v,0),maxTicksLimit:5}},y:{grid:{display:false},border:{display:false},ticks:{autoSkip:false,font:{size:10.5}}}},
       onClick:(e,els)=>{ if(els.length){const r=byP[els[0].index]; openDrawer(r.row,r.sheet);} }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"},
@@ -712,7 +775,7 @@ function renderCharts(rs){
   const g = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netRev)));
   const p = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netProfit)));
   const n = cl.map(c=>act.filter(r=>r.client===c&&LIVE(r)).length);
-  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cssv("--bar-muted"),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:cssv("--teal"),borderRadius:3,maxBarThickness:26}]},
+  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:c=>vgrad(c.chart,"y",["#FEC346","#F7883E"]),hoverBackgroundColor:"#F47B20",borderRadius:5,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:c=>vgrad(c.chart,"y",["#EF4F6B","#C2297A"]),hoverBackgroundColor:"#A4166B",borderRadius:3,maxBarThickness:26}]},
     plugins:[valLabels(kfmt,false)],
     options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
       scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}},
