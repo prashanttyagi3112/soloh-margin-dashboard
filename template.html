@@ -356,6 +356,45 @@ aside .side-logo{width:132px;height:auto;margin:4px auto 0;display:block}
 :root[data-theme="dark"] .banner{background:var(--sage-2)}
 @media (max-width:760px){.banner{margin:0;padding:6px 14px;gap:10px}.banner img{height:26px}}
 @media print{.banner{background:#3E6B5E!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ================= Soloh Partners brand colors (solohpartners.com: black nav, white/light-gray page, yellow→coral gradient) ================= */
+:root{--brand-y:#FEC346;--brand-o:#F28F45;--brand-r:#EF6451;--brand-grad:linear-gradient(90deg,#FEC346 0%,#F28F45 50%,#EF6451 100%);
+  --sage-d:#000000;--sage:#111111;--sage-2:#262626;--sage-l:#FDEBDB;--sage-xl:#FFF5EB;--mint:#F28F45;
+  --bg:#F7F7F7;--card:#FFFFFF;--line:#E5E5E5;--line-2:#F0F0F0;--ink:#111111;--ink-2:#4A4A4A;--ink-3:#858585;
+  --navy:#000000;--navy-2:#111111;--navy-3:#262626;--teal:#F28F45;--blue:#111111;--blue-50:#FDEBDB;
+  --th:#FAFAFA;--hover:#FFF5EB;--border-hi:#F5B98A;--bar-muted:#1F1F1F;--grid:#EEEEEE;--tick:#666666;--seg-muted:#CCCCCC;
+  --sh:0 1px 2px rgba(0,0,0,.06),0 3px 10px rgba(0,0,0,.05);--accent:#F28F45}
+:root[data-theme="dark"]{--sage-d:#000000;--sage:#000000;--sage-2:#1A1A1A;--sage-l:#3A2718;--sage-xl:#22180F;--mint:#F7A35A;
+  --bg:#0B0B0B;--card:#161616;--line:#2A2A2A;--line-2:#1F1F1F;--ink:#F2F2F2;--ink-2:#BDBDBD;--ink-3:#8C8C8C;
+  --navy:#000000;--navy-2:#111111;--navy-3:#1F1F1F;--teal:#F7A35A;--blue:#F7A35A;--blue-50:rgba(247,163,90,.15);
+  --th:#1C1C1C;--hover:#201A14;--border-hi:#8A5A33;--bar-muted:#6B6B6B;--grid:#242424;--tick:#9A9A9A;--seg-muted:#3D3D3D;--accent:#F7A35A}
+aside{background:#000!important;color:#F2F2F2}
+aside .brand small{color:#BDBDBD}
+.nav{color:#E6E6E6}
+.nav.active{background:var(--bg)!important;color:#000!important;box-shadow:inset 4px 0 0 var(--brand-o)!important}
+:root[data-theme="dark"] .nav.active{color:var(--mint)!important}
+.nav.active .count{background:var(--sage-l);color:#000}
+.banner,.topbar h2,.login-logo{background:#000!important}
+.banner{border-bottom:4px solid transparent;border-image:var(--brand-grad) 1}
+@media print{.banner{background:#000!important}}
+.htile::before{background:var(--brand-grad)}
+.htile.on,.kpi.on{border-color:var(--brand-o)}
+.kpi.on{box-shadow:0 0 0 2px var(--sage-l)}
+.kpi.accent{background:#000!important;border-color:#000;box-shadow:inset 0 -3px 0 var(--brand-o)}
+.kpi.accent .lbl,.kpi.accent .sub{color:#BDBDBD}
+.chip{background:var(--sage-l);color:#7A3D12}:root[data-theme="dark"] .chip{color:var(--mint)}
+.linkbtn{color:#C25E1F}:root[data-theme="dark"] .linkbtn{color:var(--mint)}
+th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(--mint)!important}
+.gauge-txt b{color:#000}:root[data-theme="dark"] .gauge-txt b{color:var(--mint)}
+.mbar i{background:var(--brand-o)!important}.mbar i.below{background:#B42318!important}
+.split button.on{background:#000;border-color:#000;color:#fff}
+#login{background:radial-gradient(900px 500px at 20% 0%,#2A2A2A 0%,#0D0D0D 55%,#000 100%)!important}
+#login .btn-primary{background:var(--brand-grad)!important;color:#fff!important;box-shadow:0 6px 20px rgba(239,100,81,.35)!important}
+.login-card .brand-mark{background:#000}
+.theme-sw button[data-t="light"].on{color:#C25E1F}
+:root[data-theme="dark"] .theme-sw{background:#111;border-color:#2A2A2A}
+:root[data-theme="dark"] .theme-sw button.on{background:#262626;box-shadow:0 0 0 1px #3A3A3A}
+:root[data-theme="dark"] .theme-sw button[data-t="dark"].on svg{color:var(--mint)}
 </style>
 </head>
 <body>
@@ -483,7 +522,7 @@ const LIVE = r => r.status!=="Cancelled";
 const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
-const COLORS = ["#3E6B5E","#5FBFA6","#C9A227","#8E7CC3","#D9822B","#7FA3C0","#B5544A","#9CB8AD","#5A6B8C"];
+const COLORS = ["#1F1F1F","#F28F45","#E0A82E","#6B6B6B","#C8642D","#9A9A9A","#B5544A","#F5C08A","#404040"];
 const PALETTE = {};
 function color(client){ if(!(client in PALETTE)){ PALETTE[client]=COLORS[Object.keys(PALETTE).length % COLORS.length]; } return PALETTE[client]; }
 
@@ -645,7 +684,7 @@ function rangeTxt(a,f){ return a.length>1 ? `Range ${f(Math.min(...a))} – ${f(
 /* ---------- charts ---------- */
 Chart.defaults.font.family = "Inter, system-ui, sans-serif"; Chart.defaults.font.size = 11;
 const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const grid = {color:"#EEF2F7",drawTicks:false}, tip = {backgroundColor:"#0B1B33",padding:8,cornerRadius:6,displayColors:false};
+const grid = {color:"#EEF2F7",drawTicks:false}, tip = {backgroundColor:"#111111",padding:8,cornerRadius:6,displayColors:false};
 function mk(id, cfg){ if(charts[id]) charts[id].destroy(); const el=$("#"+id); if(!el) return; charts[id] = new Chart(el, cfg); }
 const valLabels = (fmt, horiz) => ({id:"vl",afterDatasetsDraw(ch){ const {ctx}=ch; ctx.save(); ctx.font="600 10px Inter, sans-serif"; ctx.fillStyle=cssv("--ink-2");
   ch.data.datasets.forEach((ds,di)=>{ const meta=ch.getDatasetMeta(di); if(meta.hidden) return; meta.data.forEach((el,i)=>{ const v=ds.data[i]; if(v==null||v===0) return; const t=fmt(v);
@@ -775,9 +814,9 @@ function openDrawer(row, sheet){
   const r = D.records.find(x=>x.row===row && x.sheet===sheet); if(!r) return;
   S.sel = {row,sheet};
   const c = r.cfo||{}, load = c.burden ?? D.method.burden;
-  const parts = c.net!=null ? [["Regular pay (W2 × "+pct(1+load,0)+")",c.regular,"#2F6FED"],["OT pay (OT × "+pct(1+load,0)+")",c.ot,"#5B8DEF"],["Stipend",c.stipend,"#7FA6F2"],["NBO (hrs × W2 × "+pct(1+load,0)+")",c.nbo,"#E0A84A"]] : [];
+  const parts = c.net!=null ? [["Regular pay (W2 × "+pct(1+load,0)+")",c.regular,"#3A3A3A"],["OT pay (OT × "+pct(1+load,0)+")",c.ot,"#6B6B6B"],["Stipend",c.stipend,"#A3A3A3"],["NBO (hrs × W2 × "+pct(1+load,0)+")",c.nbo,"#FEC346"]] : [];
   if(c.net!=null && (c.clientFees||0)) parts.push([c.oneTime?"Client fees (onboarding + one-time costs)":"Client fees (onboarding)",c.clientFees,"#C2410C"]);
-  if(c.net!=null) parts.push(["Net profit",r.netProfit,"#0EA5A0"]);
+  if(c.net!=null) parts.push(["Net profit",r.netProfit,"#F28F45"]);
   const tot = r.netRev||1;
   const notes = D.quality.filter(q=>q.sheet===r.sheet && q.row===r.row);
   const list = sortRows(filtered()); const i = list.findIndex(x=>x.row===row&&x.sheet===sheet);
