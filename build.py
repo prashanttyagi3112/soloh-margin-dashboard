@@ -141,6 +141,12 @@ def main():
         skip = {(k or "").strip().lower() for k in st.get("skipSoloh", {})}
         if skip:
             D["records"] = [r for r in D["records"] if (r.get("candidate") or "").strip().lower() not in skip]
+    # Status moves Prashant made on this dashboard (10/28/2026): kept on every rebuild
+    STATUS_OVERRIDES = {"blessing madu": "Started", "suze etienne": "Started"}
+    for r in D["records"]:
+        k = (r.get("candidate") or "").strip().lower()
+        if k in STATUS_OVERRIDES and r.get("status") != "Cancelled":
+            r["status"] = STATUS_OVERRIDES[k]
     # Team names shown on this dashboard (Prashant, 10/19/2026): Harsh's Team -> HST, Tackle's Team -> TTT
     TEAM_LABELS = {"harsh's team": "HST", "harsh team": "HST", "tackle's team": "TTT", "tackle team": "TTT"}
     for r in D["records"]:
