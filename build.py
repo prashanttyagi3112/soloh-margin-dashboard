@@ -106,13 +106,14 @@ def cfo(r, dq):
     stp = stip * wk
     nbo_c = nbo * (W2 * (1 + BURDEN))
     onetime = (r.get("oneTime") or 0) if (ONE_TIME_IN_PROFIT or r.get("deductOneTime")) else 0
-    fees = ONBOARDING_COST + onetime
+    bonus = r.get("bonus") or 0          # candidate bonus Prashant chose to deduct (e.g. Graydon 2nd ext., $400)
+    fees = ONBOARDING_COST + onetime + bonus
     profit = net - (reg + ot + stp + nbo_c + fees)
     margin = profit / net if net else None
     # Peter's column Z (kept on his sheet for reference): NBO at bill rate net of MSP
-    z = net - wk * (min(G, 40) * W2 + max(G - 40, 0) * (OT or 0)) * (1 + BURDEN) - wk * stip - nbo * bill * (1 - msp) - ONBOARDING_COST - onetime
+    z = net - wk * (min(G, 40) * W2 + max(G - 40, 0) * (OT or 0)) * (1 + BURDEN) - wk * stip - nbo * bill * (1 - msp) - ONBOARDING_COST - onetime - bonus
     c.update({"gross": gross, "net": net, "mspFee": gross - net, "regular": reg, "ot": ot, "stipend": stp,
-              "nbo": nbo_c, "onboarding": ONBOARDING_COST, "oneTime": onetime, "clientFees": fees,
+              "nbo": nbo_c, "onboarding": ONBOARDING_COST, "oneTime": onetime, "bonus": bonus, "clientFees": fees,
               "targetProfit": TARGET * net, "gapToTarget": profit - TARGET * net,
               "variance": (margin - TARGET) if margin is not None else None,
               "colZ": z, "colZMargin": z / net if net else None})
@@ -150,7 +151,7 @@ EXTRA_RECORDS = [
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 2nd extension",
      "start": "2026-02-23", "end": "2026-04-04", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
      "w2": 70.00, "ot": 105.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
-     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 400, "deductOneTime": True, "reason": None, "extra": {},
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 400.0, "deductOneTime": True, "reason": None, "extra": {},
      "note": "2nd extension after a two-week break. All-W2, no stipend. $400 bonus on first paycheck (Priya, 2/3/2026), deducted from profit per Prashant 11/2/2026. Dates and pay per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
 ]
 
