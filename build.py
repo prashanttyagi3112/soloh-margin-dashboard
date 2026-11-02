@@ -125,6 +125,7 @@ def cfo(r, dq):
 # Placement / invoice fees are NOT deducted (Prashant's instruction).
 EXTRA_FEES = {
     "NYC H+H / RightSourcing": {"msp": 0.075, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
+    "NYC H+H / RightSourcing (Allied)": {"msp": 0.075, "nbo": 8.0, "source": "Provided by Prashant 11/2/2026: 8 NBO hours on the first contract for all Allied roles"},
 }
 EXTRA_RECORDS = [
     {"row": 1001, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
@@ -132,7 +133,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology", "facility": "Kings County Hospital",
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117",
      "start": "2025-09-08", "end": "2025-12-13", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
-     "w2": 70.50, "ot": 70.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.075, "nbo": 16.0,
+     "w2": 70.50, "ot": 70.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.075, "nbo": 8.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "reason": None, "extra": {},
      "note": "No-stipend contract. Pay from the signed assignment confirmation; dates confirmed by Prashant 11/2/2026."},
 ]
