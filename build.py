@@ -105,7 +105,7 @@ def cfo(r, dq):
     ot = wk * (max(G - 40, 0) * (OT or 0)) * (1 + BURDEN)
     stp = stip * wk
     nbo_c = nbo * (W2 * (1 + BURDEN))
-    onetime = (r.get("oneTime") or 0) if ONE_TIME_IN_PROFIT else 0
+    onetime = (r.get("oneTime") or 0) if (ONE_TIME_IN_PROFIT or r.get("deductOneTime")) else 0
     fees = ONBOARDING_COST + onetime
     profit = net - (reg + ot + stp + nbo_c + fees)
     margin = profit / net if net else None
@@ -150,8 +150,8 @@ EXTRA_RECORDS = [
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 2nd extension",
      "start": "2026-02-23", "end": "2026-04-04", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
      "w2": 70.00, "ot": 105.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
-     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 400, "reason": None, "extra": {},
-     "note": "2nd extension after a two-week break. All-W2, no stipend. $400 bonus on first paycheck (Priya, 2/3/2026). Dates and pay per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 400, "deductOneTime": True, "reason": None, "extra": {},
+     "note": "2nd extension after a two-week break. All-W2, no stipend. $400 bonus on first paycheck (Priya, 2/3/2026), deducted from profit per Prashant 11/2/2026. Dates and pay per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
 ]
 
 def add_extras(D):
@@ -213,7 +213,7 @@ def main():
             dq.append({"sev": "error", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"], "msg": "Negative net profit (CFO method)."})
         if r.get("oneTime"):
             dq.append({"sev": "info", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"],
-                       "msg": f"One-time costs of ${r['oneTime']:,.0f} " + ("deducted with Client fees (col W)." if ONE_TIME_IN_PROFIT else "not deducted (left out, as in Peter's sheet).")})
+                       "msg": f"One-time costs of ${r['oneTime']:,.0f} " + ("deducted with Client fees (col W)." if (ONE_TIME_IN_PROFIT or r.get("deductOneTime")) else "not deducted (left out, as in Peter's sheet).")})
     names = {}
     for r in D["records"]:
         k = (r.get("candidate") or "").strip().lower()

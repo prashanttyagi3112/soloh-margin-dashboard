@@ -864,7 +864,7 @@ function openDrawer(row, sheet){
         <div><span>W2 hourly</span><b class="num">${money2(r.w2)}</b></div><div><span>OT rate</span><b class="num">${money2(r.ot)}</b></div>
         <div><span>Weekly stipend</span><b class="num">${money(r.stipend)}</b></div><div><span>Taxable / wk</span><b class="num">${money2(r.weeklyTaxable)}</b></div>
         <div><span>Gross pay / wk</span><b class="num">${money2(r.weeklyGross)}</b></div><div><span>Contract gross pay</span><b class="num">${money(r.contractGrossPay)}</b></div>
-        ${r.oneTime?`<div><span>One-time costs${D.method.oneTimeIncluded?"":" (not in profit)"}</span><b class="num">${money(r.oneTime)}</b></div><div><span></span><b></b></div>`:""}</div></div>
+        ${r.oneTime?`<div><span>${r.deductOneTime?"Bonus / one-time (in profit)":"One-time costs"+(D.method.oneTimeIncluded?"":" (not in profit)")}</span><b class="num">${money(r.oneTime)}</b></div><div><span></span><b></b></div>`:""}</div></div>
       <div class="sec"><h5>Billing</h5><div class="kv">
         <div><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div><div><span>Weekly billing</span><b class="num">${money(r.weeklyBill)}</b></div>
         ${r.billAfter?`<div><span>Bill after increase</span><b class="num">${money2(r.billAfter)}</b></div><div><span></span><b></b></div>`:""}
