@@ -485,7 +485,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
       </section>
 
       <section data-page="completed" class="hidden">
-        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments that have finished, and extensions, each with its own pay package and margin. Not counted in the active KPIs.</p></div>
+        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Not counted in the active KPIs.</p></div>
         <div class="sumstrip" id="sumCompleted"></div>
         <h4 class="grp-h">Completed assignments</h4>
         <div class="ccards" id="ccCompleted"></div>
@@ -954,6 +954,9 @@ function render(){
   if(S.view==="cancelled") renderCancelled();
 }
 function init(){
+  // Any assignment or extension whose end date has passed moves to Completed Assg./Extensions automatically.
+  const today = new Date(); today.setHours(0,0,0,0);
+  D.records.forEach(r=>{ if(r.status!=="Cancelled" && r.end){ const e=new Date(String(r.end).slice(0,10)+"T00:00:00"); if(!isNaN(e) && e<today) r.status="Completed"; } });
   Object.keys(D.fees||{}).forEach(color); D.records.forEach(r=>color(r.client));
   $("#metaLine").textContent = `Built ${D.builtAt} · from Margin Dashboard data of ${D.source?D.source.builtAt:"—"} · Burden ${pct(D.method.burden,0)} · Target ${pct(D.method.target,0)}`;
   $("#cntOnb").textContent = D.records.filter(r=>r.status==="Onboarding").length;
