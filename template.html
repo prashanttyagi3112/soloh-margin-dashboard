@@ -793,7 +793,7 @@ function ccard(r){
     <div class="top"><div class="avatar" style="background:${color(r.client)}">${initials(r.candidate)}</div>
       <div style="min-width:0;flex:1"><h4>${esc(r.candidate)}</h4><div class="loc">${esc(r.client)} · ${esc(r.facility)}</div></div>
       <span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span></div>
-    <div class="loc">${esc(r.unit)} · ${r.hrsShift}h × ${r.guarHrs/r.hrsShift||"—"} · starts ${fdate(r.start)} (${r.weeks} wks)</div>
+    <div class="loc">${esc(r.unit)} · ${r.hrsShift?`${r.hrsShift}h × ${r.guarHrs/r.hrsShift}`:`${nfmt(r.guarHrs)} hrs/wk`} · ${r.status==="Completed"?`${fdate(r.start)} – ${fdate(r.end)}`:`starts ${fdate(r.start)}`} (${r.weeks} wks)</div>
     ${r.recruiter||r.team?`<div class="loc"><span class="pill p-team">${esc(r.team||"No team")}</span> Recruiter: <b style="color:var(--ink-2)">${esc(r.recruiter||"—")}</b></div>`:""}
     <div class="row3"><div class="mini"><span>W2 / hr</span><b class="num">${money2(r.w2)}</b></div><div class="mini"><span>Pay / wk</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div></div>
     <div class="row3"><div class="mini"><span>Stipend / wk</span><b class="num">${money(r.stipend)}</b></div><div class="mini"><span>Net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
@@ -845,7 +845,7 @@ function openDrawer(row, sheet){
   $("#drawer").innerHTML = `
     <div class="dh"><div class="avatar" style="background:${r.status==="Cancelled"?"#B5544A":color(r.client)};width:40px;height:40px;flex-basis:40px;font-size:14px">${initials(r.candidate)}</div>
       <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Started",Cancelled:"Cancelled",Completed:r.kind==="Extension"?"Extension":"Completed"}[r.status]}</span></h3>
-      <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)} · Excel row ${r.row} (${esc(r.sheet)})</div></div>
+      <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)}${r.row<1000?` · Excel row ${r.row} (${esc(r.sheet)})`:" · Added on this dashboard"}</div></div>
       <button class="iconbtn" id="dPrev" ${prev?"":"disabled"} title="Previous">‹</button><button class="iconbtn" id="dNext" ${next?"":"disabled"} title="Next">›</button><button class="iconbtn" id="dClose" title="Close">✕</button></div>
     <div class="db">
       ${r.reason?`<div class="note red">${esc(r.reason)}</div>`:""}
@@ -879,7 +879,7 @@ function openDrawer(row, sheet){
         <tr><td>− NBO (V)</td><td class="f">${nfmt(r.nbo)} hrs × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.nbo)}</td></tr>
         <tr><td>− Client fees (W)</td><td class="f">onboarding ${money(c.onboarding)}${c.oneTime?` + one-time ${money(c.oneTime)}`:""}</td><td class="r num">${money(c.clientFees)}</td></tr>
         <tr class="tot"><td>Net profit (X)</td><td class="f">÷ net revenue = ${pct(r.marginPct,2)} (Y)</td><td class="r num">${money(r.netProfit)}</td></tr></table>
-        <div class="foot">For reference, Peter's column Z (NBO at bill rate × (1 − MSP)) gives ${money(c.colZ)} · ${pct(c.colZMargin)}. The original Margin Dashboard showed ${money(r.orig&&r.orig.netProfit)} · ${pct(r.orig&&r.orig.marginPctGross)} of gross revenue (${pct(D.method.sourceLoad,0)} load).</div></div>`:""}
+        <div class="foot">For reference, Peter's column Z (NBO at bill rate × (1 − MSP)) gives ${money(c.colZ)} · ${pct(c.colZMargin)}.${r.orig&&r.orig.netProfit!=null?` The original Margin Dashboard showed ${money(r.orig.netProfit)} · ${pct(r.orig.marginPctGross)} of gross revenue (${pct(D.method.sourceLoad,0)} load).`:""}</div></div>`:""}
       <div class="sec"><h5>Where the net revenue goes</h5>
         <div class="stack">${parts.map(([l,v,c])=>`<i title="${esc(l)}: ${money(v)}" style="width:${Math.max(0,(v||0)/tot*100)}%;background:${c}"></i>`).join("")}</div>
         <div class="slegend">${parts.map(([l,v,c])=>`<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c};margin-right:6px"></i>${esc(l)}</span><b class="num" style="text-align:right">${money(v)}</b><em class="num">${pct((v||0)/tot)}</em>`).join("")}

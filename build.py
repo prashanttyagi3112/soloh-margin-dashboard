@@ -120,6 +120,41 @@ def cfo(r, dq):
               "weeklyProfit": profit / wk, "cfo": c, "targetStatus": target_status(margin)})
 
 
+# ---- Records that exist only on this dashboard (Prashant, 11/2/2026) ----
+# Completed assignments and extensions from the Timedot invoice SLHINV01, confirmed one by one.
+# Placement / invoice fees are NOT deducted (Prashant's instruction).
+EXTRA_FEES = {
+    "NYC H+H / RightSourcing": {"msp": 0.075, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
+}
+EXTRA_RECORDS = [
+    {"row": 1001, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Graydon Massiah", "client": "NYC H+H / RightSourcing",
+     "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology", "facility": "Kings County Hospital",
+     "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117",
+     "start": "2025-09-08", "end": "2025-12-13", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
+     "w2": 70.50, "ot": 70.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.075, "nbo": 16.0,
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "reason": None, "extra": {},
+     "note": "No-stipend contract. Pay from the signed assignment confirmation; dates confirmed by Prashant 11/2/2026."},
+]
+
+def add_extras(D):
+    """Append this dashboard's own records and client fees; skips any already present (same name + start)."""
+    D.setdefault("fees", {}).update(EXTRA_FEES)
+    have = {((r.get("candidate") or "").strip().lower(), r.get("start")) for r in D["records"]}
+    for x in EXTRA_RECORDS:
+        if ((x["candidate"]).strip().lower(), x["start"]) in have: continue
+        r = dict(x)
+        d0, d1 = dt.date.fromisoformat(r["start"]), dt.date.fromisoformat(r["end"])
+        r["weeks"] = float(round((d1 - d0).days / 7))
+        G, W2, OT = r["guarHrs"], r["w2"], r["ot"] or 0
+        r["weeklyTaxable"] = min(G, 40) * W2 + max(G - 40, 0) * OT
+        r["weeklyGross"] = r["weeklyTaxable"] + r["stipend"]
+        r["contractGrossPay"] = r["weeklyGross"] * r["weeks"]
+        r["weeklyBill"] = r["bill"] * G
+        r["orig"] = None
+        D["records"].append(r)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", default=os.path.join(HERE, "..", "prashanttyagi3112", "soloh-ob-dashboard", "index.html"))
@@ -141,6 +176,7 @@ def main():
         skip = {(k or "").strip().lower() for k in st.get("skipSoloh", {})}
         if skip:
             D["records"] = [r for r in D["records"] if (r.get("candidate") or "").strip().lower() not in skip]
+    add_extras(D)
     # Status moves Prashant made on this dashboard (10/28/2026): kept on every rebuild
     STATUS_OVERRIDES = {"blessing madu": "Started", "suze etienne": "Started"}
     for r in D["records"]:
