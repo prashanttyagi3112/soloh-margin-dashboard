@@ -124,8 +124,8 @@ def cfo(r, dq):
 # Completed assignments and extensions from the Timedot invoice SLHINV01, confirmed one by one.
 # Placement / invoice fees are NOT deducted (Prashant's instruction).
 EXTRA_FEES = {
-    "NYC H+H / RightSourcing": {"msp": 0.075, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
-    "NYC H+H / RightSourcing (Allied)": {"msp": 0.075, "nbo": 8.0, "source": "Provided by Prashant 11/2/2026: 8 NBO hours on the first contract for all Allied roles"},
+    "NYC H+H / RightSourcing": {"msp": 0.07, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
+    "NYC H+H / RightSourcing (Allied)": {"msp": 0.07, "nbo": 8.0, "source": "Provided by Prashant 11/2/2026: 8 NBO hours on the first contract for all Allied roles"},
 }
 EXTRA_RECORDS = [
     {"row": 1001, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
@@ -133,7 +133,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology", "facility": "Kings County Hospital",
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117",
      "start": "2025-09-08", "end": "2025-12-13", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
-     "w2": 70.50, "ot": 70.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.075, "nbo": 8.0,
+     "w2": 70.50, "ot": 70.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 8.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "reason": None, "extra": {},
      "note": "No-stipend contract. Pay from the signed assignment confirmation; dates confirmed by Prashant 11/2/2026."},
     {"row": 1002, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
@@ -141,7 +141,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology", "facility": "Kings County Hospital",
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 1st extension",
      "start": "2025-12-14", "end": "2026-02-07", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
-     "w2": 27.57, "ot": 75.00, "stipend": 1897.0, "bill": 98.00, "billAfter": None, "msp": 0.075, "nbo": 0.0,
+     "w2": 27.57, "ot": 75.00, "stipend": 1897.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "reason": None, "extra": {},
      "note": "1st extension. Pay from the signed extension confirmation; NBO 0 per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
 ]
