@@ -73,6 +73,8 @@ aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
 .nav .count{margin-left:auto;background:rgba(255,255,255,.1);border-radius:10px;padding:0 7px;font-size:11px}
 .collapsed .nav span,.collapsed .nav .count,.collapsed aside .brand div{display:none}
 aside .spacer{flex:1}
+.nav[data-view="completed"]{white-space:normal;line-height:1.25;padding-left:30px;padding-right:30px;text-align:center}
+.grp-h{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--ink-2)}
 main{display:flex;flex-direction:column;min-width:0;height:100vh}
 .topbar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line)}
 .topbar h2{margin:0;font-size:16px;font-weight:700;white-space:nowrap}
@@ -422,6 +424,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
     <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Started</span><em class="count" id="cntStarted"></em></button>
+    <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed Assg./Extensions</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
     <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
@@ -481,6 +484,15 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
         <div class="ccards" id="ccStarted"></div>
       </section>
 
+      <section data-page="completed" class="hidden">
+        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments that have finished, and extensions, each with its own pay package and margin. Not counted in the active KPIs.</p></div>
+        <div class="sumstrip" id="sumCompleted"></div>
+        <h4 class="grp-h">Completed assignments</h4>
+        <div class="ccards" id="ccCompleted"></div>
+        <h4 class="grp-h">Extensions</h4>
+        <div class="ccards" id="ccExtensions"></div>
+      </section>
+
       <!-- cancelled -->
       <section data-page="cancelled" class="hidden">
         <div class="page-h"><h3>Cancelled offers</h3><p>From the "Cancelled Offers" sheet. Not counted in the active KPIs.</p></div>
@@ -517,7 +529,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 <script>
 const ENC = /*__ENCRYPTED_DATA__*/null;
 let D = null;                        // decrypted dataset
-const LIVE = r => r.status!=="Cancelled";
+const LIVE = r => r.status!=="Cancelled" && r.status!=="Completed";
 const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
@@ -799,6 +811,15 @@ function renderCards(rs, status){
   $(box).innerHTML = rs.length ? sortRows(rs).map(ccard).join("") : none;
   $(box).querySelectorAll(".ccard").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.row,c.dataset.sheet));
 }
+function renderCompleted(){
+  const rs = filtered({status:"Completed"});
+  const ext = rs.filter(r=>r.kind==="Extension"), done = rs.filter(r=>r.kind!=="Extension");
+  $("#sumCompleted").innerHTML = [["Completed assignments",done.length],["Extensions",ext.length],["Net revenue",money(sum(rs.map(r=>r.netRev)))],["Net profit",money(sum(rs.map(r=>r.netProfit)))],["Net margin",pct(bookM(rs))]]
+    .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
+  $("#ccCompleted").innerHTML = done.length ? sortRows(done).map(ccard).join("") : `<div class="empty card">No completed assignments added yet.</div>`;
+  $("#ccExtensions").innerHTML = ext.length ? sortRows(ext).map(ccard).join("") : `<div class="empty card">No extensions added yet.</div>`;
+  document.querySelectorAll("#ccCompleted .ccard,#ccExtensions .ccard").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.row,c.dataset.sheet));
+}
 function renderCancelled(){
   const rs = filtered({status:"Cancelled"});
   $("#cancelList").innerHTML = rs.length ? rs.map(r=>`<div class="ccard" data-row="${r.row}" data-sheet="${esc(r.sheet)}">
@@ -823,7 +844,7 @@ function openDrawer(row, sheet){
   const extra = Object.entries(r.extra||{}).filter(([k,v])=>v!=null&&v!=="");
   $("#drawer").innerHTML = `
     <div class="dh"><div class="avatar" style="background:${r.status==="Cancelled"?"#B5544A":color(r.client)};width:40px;height:40px;flex-basis:40px;font-size:14px">${initials(r.candidate)}</div>
-      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled"}[r.status]}">${{Onboarding:"Onboarding",Started:"Started",Cancelled:"Cancelled"}[r.status]}</span></h3>
+      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Started",Cancelled:"Cancelled",Completed:r.kind==="Extension"?"Extension":"Completed"}[r.status]}</span></h3>
       <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)} · Excel row ${r.row} (${esc(r.sheet)})</div></div>
       <button class="iconbtn" id="dPrev" ${prev?"":"disabled"} title="Previous">‹</button><button class="iconbtn" id="dNext" ${next?"":"disabled"} title="Next">›</button><button class="iconbtn" id="dClose" title="Close">✕</button></div>
     <div class="db">
@@ -909,7 +930,7 @@ function renderQuality(){
 }
 
 /* ---------- views ---------- */
-const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",completed:"Completed Assg./Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
 document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
 
 $("#printBtn").onclick=()=>window.print();
@@ -923,12 +944,13 @@ function render(){
   document.querySelectorAll("section[data-page]").forEach(s=>s.classList.toggle("hidden",s.dataset.page!==S.view));
   $("#viewTitle").textContent = TITLES[S.view];
   $("#filters").classList.toggle("hidden", ["fees","quality"].includes(S.view));
-  $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started"].includes(S.view));
-  $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started"].includes(S.view));
+  $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
+  $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   const rs = filtered();
   if(S.view==="overview"){ renderKPIs(rs); renderCharts(rs); renderTable(rs); }
   if(S.view==="onboarding") renderCards(rs,"Onboarding");
   if(S.view==="started") renderCards(rs,"Started");
+  if(S.view==="completed") renderCompleted();
   if(S.view==="cancelled") renderCancelled();
 }
 function init(){
@@ -936,6 +958,7 @@ function init(){
   $("#metaLine").textContent = `Built ${D.builtAt} · from Margin Dashboard data of ${D.source?D.source.builtAt:"—"} · Burden ${pct(D.method.burden,0)} · Target ${pct(D.method.target,0)}`;
   $("#cntOnb").textContent = D.records.filter(r=>r.status==="Onboarding").length;
   $("#cntStarted").textContent = D.records.filter(r=>r.status==="Started").length;
+  $("#cntCompleted").textContent = D.records.filter(r=>r.status==="Completed").length;
   $("#cntCancelled").textContent = D.records.filter(r=>r.status==="Cancelled").length;
   $("#cntQuality").textContent = D.quality.filter(q=>q.sev!=="info").length || "";
   $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. KPI tags: TOTAL = sum of active offers, AVG = mean per offer, INDIVIDUAL = one candidate.`;
