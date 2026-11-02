@@ -144,6 +144,14 @@ EXTRA_RECORDS = [
      "w2": 27.57, "ot": 75.00, "stipend": 1897.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "reason": None, "extra": {},
      "note": "1st extension. Pay from the signed extension confirmation; NBO 0 per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
+    {"row": 1003, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
+     "candidate": "Graydon Massiah", "client": "NYC H+H / RightSourcing",
+     "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology", "facility": "Kings County Hospital",
+     "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 2nd extension",
+     "start": "2026-02-23", "end": "2026-04-04", "shift": "Days", "hrsShift": None, "guarHrs": 40.0,
+     "w2": 70.00, "ot": 105.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 400, "reason": None, "extra": {},
+     "note": "2nd extension after a two-week break. All-W2, no stipend. $400 bonus on first paycheck (Priya, 2/3/2026). Dates and pay per Prashant 11/2/2026. Bill rate assumed unchanged at $98."},
 ]
 
 def add_extras(D):
