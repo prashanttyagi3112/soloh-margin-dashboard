@@ -425,7 +425,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
     <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Started</span><em class="count" id="cntStarted"></em></button>
-    <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed Assg./Extensions</span><em class="count" id="cntCompleted"></em></button>
+    <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed Assignments/Extensions</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
     <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
@@ -486,7 +486,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
       </section>
 
       <section data-page="completed" class="hidden">
-        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Included in the Overview totals.</p></div>
+        <div class="page-h"><h3>Completed Assignments/Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Included in the Overview totals.</p></div>
         <div class="sumstrip" id="sumCompleted"></div>
         <h4 class="grp-h">Completed assignments</h4>
         <div class="ccards" id="ccCompleted"></div>
@@ -530,7 +530,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 <script>
 const ENC = /*__ENCRYPTED_DATA__*/null;
 let D = null;                        // decrypted dataset
-const LIVE = r => r.status!=="Cancelled";   // Overview covers Onboarding + Started + Completed Assg./Extensions
+const LIVE = r => r.status!=="Cancelled";   // Overview covers Onboarding + Started + Completed Assignments/Extensions
 const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
@@ -931,7 +931,7 @@ function renderQuality(){
 }
 
 /* ---------- views ---------- */
-const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",completed:"Completed Assg./Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
 document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
 
 $("#printBtn").onclick=()=>window.print();
@@ -955,7 +955,7 @@ function render(){
   if(S.view==="cancelled") renderCancelled();
 }
 function init(){
-  // Any assignment or extension whose end date has passed moves to Completed Assg./Extensions automatically.
+  // Any assignment or extension whose end date has passed moves to Completed Assignments/Extensions automatically.
   const today = new Date(); today.setHours(0,0,0,0);
   D.records.forEach(r=>{ if(r.status!=="Cancelled" && r.end){ const e=new Date(String(r.end).slice(0,10)+"T00:00:00"); if(!isNaN(e) && e<today) r.status="Completed"; } });
   Object.keys(D.fees||{}).forEach(color); D.records.forEach(r=>color(r.client));
@@ -965,7 +965,7 @@ function init(){
   $("#cntCompleted").textContent = D.records.filter(r=>r.status==="Completed").length;
   $("#cntCancelled").textContent = D.records.filter(r=>r.status==="Cancelled").length;
   $("#cntQuality").textContent = D.quality.filter(q=>q.sev!=="info").length || "";
-  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. Overview includes Onboarding, Started and Completed Assg./Extensions (cancelled offers only when "Show cancelled" is on). KPI tags: TOTAL = sum of assignments, AVG = mean per assignment, INDIVIDUAL = one candidate.`;
+  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. Overview includes Onboarding, Started and Completed Assignments/Extensions (cancelled offers only when "Show cancelled" is on). KPI tags: TOTAL = sum of assignments, AVG = mean per assignment, INDIVIDUAL = one candidate.`;
   renderFees(); renderQuality(); render();
 }
 </script>

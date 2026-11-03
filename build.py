@@ -177,7 +177,7 @@ EXTRA_RECORDS = [
      "start": "2026-09-27", "end": "2026-11-14", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
      "w2": 73.75, "ot": 90.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "Local assignment confirmation signed 10/1/2026 (version B): $2,950/wk all W2 ($73.75 x 40), OT $90. Running; shows in Started until 11/14/2026, then moves to Completed Assg./Extensions automatically. Off 5/31-7/24 and 9/20-9/26/2026."},
+     "note": "Local assignment confirmation signed 10/1/2026 (version B): $2,950/wk all W2 ($73.75 x 40), OT $90. Running; shows in Started until 11/14/2026, then moves to Completed Assignments/Extensions automatically. Off 5/31-7/24 and 9/20-9/26/2026."},
     {"row": 1007, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
      "candidate": "Jaime Goldberg", "client": "Atlantic Health (Allied and Nursing)",
      "facilityUnit": "Morristown Medical Center, Morristown NJ, Radiology", "facility": "Morristown Medical Center",
