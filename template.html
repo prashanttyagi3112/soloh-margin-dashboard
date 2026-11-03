@@ -73,7 +73,7 @@ aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
 .nav .count{margin-left:auto;background:rgba(255,255,255,.1);border-radius:10px;padding:0 7px;font-size:11px}
 .collapsed .nav span,.collapsed .nav .count,.collapsed aside .brand div{display:none}
 aside .spacer{flex:1}
-.nav[data-view="completed"]{white-space:normal;line-height:1.25;font-size:13px;padding-left:30px;padding-right:30px;text-align:center}
+
 .pill.p-done{background:#E7E5E4;color:#44403C}:root[data-theme="dark"] .pill.p-done{background:#3F3F46;color:#E4E4E7}
 .pill.p-init{background:#E0F2FE;color:#0369A1}.pill.p-ext{background:#FCE7F3;color:#BE185D}:root[data-theme="dark"] .pill.p-init{background:#0C4A6E;color:#BAE6FD}:root[data-theme="dark"] .pill.p-ext{background:#831843;color:#FBCFE8}
 .grp-h{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--ink-2)}
@@ -545,7 +545,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
     <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Active Clinicians</span><em class="count" id="cntStarted"></em></button>
-    <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed Assignments/Extensions</span><em class="count" id="cntCompleted"></em></button>
+    <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
     <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
