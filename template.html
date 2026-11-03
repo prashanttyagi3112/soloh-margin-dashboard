@@ -875,7 +875,7 @@ function openDrawer(row, sheet){
         <tr><td>Net revenue (Q)</td><td class="f">× (1 − ${pct(r.msp,1)} MSP)</td><td class="r num">${money(c.net)}</td></tr>
         <tr><td>− Regular (S)</td><td class="f">${r.weeks} × ${Math.min(r.guarHrs,40)} × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.regular)}</td></tr>
         <tr><td>− OT (T)</td><td class="f">${r.weeks} × ${Math.max(r.guarHrs-40,0)} × ${money2(r.ot)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.ot)}</td></tr>
-        <tr><td>− Stipend (U)</td><td class="f">${money(r.stipend)} × ${r.weeks}</td><td class="r num">${money(c.stipend)}</td></tr>
+        <tr><td>− Stipend (U)</td><td class="f">${r.stipendProrated?`${money(r.stipend)} × ${nfmt(Math.round(r.guarHrs*r.weeks*100)/100)} hrs ÷ 40 (prorated)`:`${money(r.stipend)} × ${r.weeks}`}</td><td class="r num">${money(c.stipend)}</td></tr>
         <tr><td>− NBO (V)</td><td class="f">${nfmt(r.nbo)} hrs × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.nbo)}</td></tr>
         <tr><td>− Client fees (W)</td><td class="f">onboarding ${money(c.onboarding)}${c.oneTime?` + one-time ${money(c.oneTime)}`:""}${c.bonus?` + bonus ${money(c.bonus)}`:""}</td><td class="r num">${money(c.clientFees)}</td></tr>
         <tr class="tot"><td>Net profit (X)</td><td class="f">÷ net revenue = ${pct(r.marginPct,2)} (Y)</td><td class="r num">${money(r.netProfit)}</td></tr></table>

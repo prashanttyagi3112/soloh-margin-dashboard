@@ -103,7 +103,8 @@ def cfo(r, dq):
     net = gross * (1 - msp)
     reg = wk * min(G, 40) * W2 * (1 + BURDEN)
     ot = wk * (max(G - 40, 0) * (OT or 0)) * (1 + BURDEN)
-    stp = stip * wk
+    # Stipend prorated to hours worked (stipend x hours / 40) where Prashant said so, e.g. Sara Khalil
+    stp = stip * (G * wk) / 40 if r.get("stipendProrated") else stip * wk
     nbo_c = nbo * (W2 * (1 + BURDEN))
     onetime = (r.get("oneTime") or 0) if (ONE_TIME_IN_PROFIT or r.get("deductOneTime")) else 0
     bonus = r.get("bonus") or 0          # candidate bonus Prashant chose to deduct (e.g. Graydon 2nd ext., $400)
@@ -111,7 +112,7 @@ def cfo(r, dq):
     profit = net - (reg + ot + stp + nbo_c + fees)
     margin = profit / net if net else None
     # Peter's column Z (kept on his sheet for reference): NBO at bill rate net of MSP
-    z = net - wk * (min(G, 40) * W2 + max(G - 40, 0) * (OT or 0)) * (1 + BURDEN) - wk * stip - nbo * bill * (1 - msp) - ONBOARDING_COST - onetime - bonus
+    z = net - wk * (min(G, 40) * W2 + max(G - 40, 0) * (OT or 0)) * (1 + BURDEN) - stp - nbo * bill * (1 - msp) - ONBOARDING_COST - onetime - bonus
     c.update({"gross": gross, "net": net, "mspFee": gross - net, "regular": reg, "ot": ot, "stipend": stp,
               "nbo": nbo_c, "onboarding": ONBOARDING_COST, "oneTime": onetime, "bonus": bonus, "clientFees": fees,
               "targetProfit": TARGET * net, "gapToTarget": profit - TARGET * net,
@@ -215,7 +216,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "NYC+ Community Care (home visits), New York NY", "facility": "NYC+ Community Care",
      "unit": "Registered Dietitian", "req": "Eng 36560035",
      "start": "2025-11-24", "end": "2026-02-21", "shift": "Days", "hrsShift": 8.0, "guarHrs": round(375.5 / 13, 4),
-     "w2": 16.50, "ot": 60.00, "stipend": 2017.0, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 16.0,
+     "w2": 16.50, "ot": 60.00, "stipend": 2017.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 16.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Updated travel assignment confirmation (11/4/2025): $16.50 W2 + $2,017/wk stipend ($2,677/wk at 40 hrs), OT $60. Form dates 11/17/2025-2/14/2026; first Magnit timecard w/e 11/29/2025, so start taken as 11/24/2025. Hours = 375.5 invoiced in Magnit, adjustments ignored; 16 NBO hours one time on this contract only, per Prashant. Bill rate $85 (Magnit $79.05/hr net of 7% MSP)."},
     {"row": 1012, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
@@ -223,7 +224,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "NYC+ Community Care (home visits), New York NY", "facility": "NYC+ Community Care",
      "unit": "Registered Dietitian", "req": "Eng 36560035 · 1st extension",
      "start": "2026-02-22", "end": "2026-04-18", "shift": "Days", "hrsShift": 8.0, "guarHrs": round(279.5 / 8, 4),
-     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed extension form: $17 W2 + $1,990/wk stipend ($2,670/wk at 40 hrs), OT $60. Hours = 279.5 invoiced in Magnit. Bill rate $85."},
     {"row": 1014, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
@@ -231,7 +232,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "NYC+ Community Care (home visits), New York NY", "facility": "NYC+ Community Care",
      "unit": "Registered Dietitian", "req": "Eng 36560035 · 2nd extension",
      "start": "2026-04-19", "end": "2026-06-13", "shift": "Days", "hrsShift": 8.0, "guarHrs": round(199.0 / 8, 4),
-     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Hours = 199 invoiced in Magnit (0 hrs w/e 5/2 and 5/9). Pay ASSUMED same as 1st and 3rd extensions ($17 W2 + $1,990/wk stipend) until the signed 2nd extension form is provided."},
     {"row": 1013, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
@@ -239,7 +240,7 @@ EXTRA_RECORDS = [
      "facilityUnit": "NYC+ Community Care (home visits), New York NY", "facility": "NYC+ Community Care",
      "unit": "Registered Dietitian", "req": "Eng 36560035 · 3rd extension",
      "start": "2026-06-14", "end": "2026-08-08", "shift": "Days", "hrsShift": 8.0, "guarHrs": round(282.0 / 8, 4),
-     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 500.0, "reason": None, "extra": {},
      "note": "Signed extension form: $17 W2 + $1,990/wk stipend, OT $60, $500 extension bonus with first paycheck (deducted). Hours = 282 invoiced in Magnit. Bill rate $85."},
 ]
