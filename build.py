@@ -169,6 +169,14 @@ EXTRA_RECORDS = [
      "w2": 71.00, "ot": 106.50, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Local assignment confirmation: $71/hr all W2, OT $106.50. 5x8 days. Bill rate $98 throughout per Prashant."},
+    {"row": 1006, "sheet": "Extensions", "status": "Started", "kind": "Extension",
+     "candidate": "Graydon Massiah", "client": "NYC H+H / RightSourcing",
+     "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology Diagnostic", "facility": "Kings County Hospital",
+     "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 5th extension",
+     "start": "2026-09-27", "end": "2026-11-14", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
+     "w2": 73.75, "ot": 90.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Local assignment confirmation signed 10/1/2026 (version B): $2,950/wk all W2 ($73.75 x 40), OT $90. Running; shows in Started until 11/14/2026, then moves to Completed Assg./Extensions automatically. Off 5/31-7/24 and 9/20-9/26/2026."},
 ]
 
 def add_extras(D):
