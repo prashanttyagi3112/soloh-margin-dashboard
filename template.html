@@ -73,7 +73,7 @@ aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
 .nav .count{margin-left:auto;background:rgba(255,255,255,.1);border-radius:10px;padding:0 7px;font-size:11px}
 .collapsed .nav span,.collapsed .nav .count,.collapsed aside .brand div{display:none}
 aside .spacer{flex:1}
-.nav[data-view="completed"]{white-space:normal;line-height:1.25;padding-left:30px;padding-right:30px;text-align:center}
+.nav[data-view="completed"]{white-space:normal;line-height:1.25;font-size:13px;padding-left:30px;padding-right:30px;text-align:center}
 .pill.p-done{background:#E7E5E4;color:#44403C}:root[data-theme="dark"] .pill.p-done{background:#3F3F46;color:#E4E4E7}
 .grp-h{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--ink-2)}
 main{display:flex;flex-direction:column;min-width:0;height:100vh}
@@ -424,7 +424,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
     <div class="brand"><img class="side-logo" src="assets/soloh-logo-white.png" alt="Soloh Partners"><div><small>Margin Dashboard</small></div></div>
     <button class="nav active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Overview</span></button>
     <button class="nav" data-view="onboarding"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg><span>Onboarding</span><em class="count" id="cntOnb"></em></button>
-    <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Started</span><em class="count" id="cntStarted"></em></button>
+    <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Active Clinicians</span><em class="count" id="cntStarted"></em></button>
     <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed Assignments/Extensions</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
@@ -463,7 +463,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
         <div class="grid-charts">
           <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
           <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:var(--bar-muted)"></i>Net revenue</span><span><i style="background:var(--teal)"></i>Net profit</span></div></div>
-          <div class="card"><div class="card-h"><h3>Net margin by candidate</h3><span class="hint">red = below 10% · click a bar</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
+          <div class="card"><div class="card-h"><h3>Net margin bands</h3><span class="hint" id="bandHint">candidates per margin range · click a bar to list them</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
         <div class="card">
           <div class="card-h" style="padding-bottom:8px"><h3 id="tblTitle">Candidates</h3><span class="hint" id="tblHint"></span></div>
@@ -480,7 +480,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
       </section>
 
       <section data-page="started" class="hidden">
-        <div class="page-h"><h3>Started</h3><p>Candidates marked started on the Soloh Compliance Board. Click a card for the full pay package.</p></div>
+        <div class="page-h"><h3>Active Clinicians</h3><p>Clinicians currently working (marked started on the Soloh Compliance Board), including running extensions. Click a card for the full pay package.</p></div>
         <div class="sumstrip" id="sumStarted"></div>
         <div class="ccards" id="ccStarted"></div>
       </section>
@@ -531,7 +531,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 const ENC = /*__ENCRYPTED_DATA__*/null;
 let D = null;                        // decrypted dataset
 const LIVE = r => r.status!=="Cancelled";   // Overview covers Onboarding + Started + Completed Assignments/Extensions
-const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
+const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null,band:""};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
 const COLORS = ["#1F1F1F","#F28F45","#E0A82E","#6B6B6B","#C8642D","#9A9A9A","#B5544A","#F5C08A","#404040"];
@@ -604,7 +604,7 @@ function opts(sel, label, values, cur, fmt=v=>v){
 function buildFilters(){
   const all = D.records;
   const uniq = k => [...new Set(all.map(r=>r[k]).filter(Boolean))].sort();
-  opts($("#fStatus"),"Candidate status",["Onboarding","Started","Completed"],S.status);
+  opts($("#fStatus"),"Candidate status",["Onboarding","Started","Completed"],S.status,v=>v==="Started"?"Active Clinicians":v);
   opts($("#fClient"),"Client",uniq("client"),S.client);
   opts($("#fShift"),"Shift",uniq("shift"),S.shift);
   opts($("#fUnit"),"Unit",uniq("unit"),S.unit);
@@ -646,7 +646,7 @@ function renderKPIs(rs){
   const in14 = upcoming.filter(r=>(pdate(r.start)-today)/864e5<=14).length;
   const next = upcoming[0];
   const cards = [
-    {id:"count",lbl:"Assignments",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${act.filter(r=>r.status==="Completed").length} completed · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
+    {id:"count",lbl:"Assignments",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} active · ${act.filter(r=>r.status==="Completed").length} completed · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
     {id:"clients",lbl:"Clients · Facilities",tag:"count",val:`${clients.size} <span style="font-weight:500;color:var(--ink-3);font-size:15px">/ ${facs.size}</span>`,sub:[...clients].map(c=>c.replace(/ \(.*\)/,"").replace(" Health","")).join(", ")+" · facilities",action:"Sort table by client"},
     {id:"grossRev",lbl:"Gross revenue",tag:"total",val:kfmt(gross),sub:`Net of MSP ${kfmt(sum(act.map(r=>r.netRev)))}`,action:"Sort table by gross revenue"},
     {id:"netProfit",lbl:"Net profit",tag:"total",val:kfmt(profit),sub:`${pct(bookM(act))} of net revenue · ${money(wkProfit)}/wk`,dot:"var(--teal)",action:"Sort table by net profit"},
@@ -665,7 +665,7 @@ function renderKPIs(rs){
   const payCost = sum(act.map(r=>r.cfo&&r.cfo.net!=null ? r.cfo.regular+r.cfo.ot+r.cfo.stipend+r.cfo.nbo : 0));
   const nBelow = act.filter(r=>tStat(r.marginPct)==="below").length;
   const hero = [
-    {k:"count",v:act.length,l:"Assignments",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${act.filter(r=>r.status==="Completed").length} completed`},
+    {k:"count",v:act.length,l:"Assignments",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} active · ${act.filter(r=>r.status==="Completed").length} completed`},
     {k:"netRev",v:kfmt(sum(act.map(r=>r.netRev))),l:"Net Revenue",s:`Gross ${kfmt(gross)} less MSP`},
     {k:"payCost",v:kfmt(payCost),l:"Total Pay Cost",s:"Pay + OT + NBO (13% burden) + stipend"},
     {k:"netProfit",v:kfmt(profit),l:"Net Profit",s:`${pct(bookM(act))} net margin · ${money(wkProfit)}/wk`},
@@ -713,12 +713,23 @@ function renderCharts(rs){
   $("#gaugeTxt").className = "gauge-txt"+(bm!=null&&tStat(bm)==="below"?" bad":"");
   $("#gaugeTxt").innerHTML = `<b class="num">${pct(bm)}</b><span>${ppts(bm==null?null:bm-TGT())} vs ${pct(TGT(),0)} · ${live.filter(r=>tStat(r.marginPct)!=="below"&&r.marginPct!=null).length} of ${live.length} offers at or above</span>`;
   // 1. net margin by candidate
-  const byP = [...act].filter(r=>r.marginPct!=null).sort((a,b)=>b.marginPct-a.marginPct);
-  mk("chProfit",{type:"bar",data:{labels:byP.map(r=>r.candidate),datasets:[{data:byP.map(r=>r.marginPct),backgroundColor:byP.map(r=>r.status==="Cancelled"?"#E3B4B4":tStat(r.marginPct)==="below"?"#C24A4A":cssv("--accent")),borderRadius:3,barThickness:"flex",maxBarThickness:13}]},
-    options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:34,top:12}},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>{const r=byP[c.dataIndex];return [`${pct(r.marginPct)} net margin (${ppts(r.marginPct-TGT())} vs target)`,`${money(r.netProfit)} net profit · ${money(r.weeklyProfit)}/wk`,r.client+(r.status==="Cancelled"?" · cancelled":"")];}}}},
-      scales:{x:{grid,border:{display:false},min:0,suggestedMax:0.2,ticks:{callback:v=>pct(v,0),maxTicksLimit:5}},y:{grid:{display:false},border:{display:false},ticks:{autoSkip:false,font:{size:10.5}}}},
-      onClick:(e,els)=>{ if(els.length){const r=byP[els[0].index]; openDrawer(r.row,r.sheet);} }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"},
-    plugins:[valLabels(v=>pct(v),true),tgtLine]});
+  // 1. Net margin bands: how many candidates fall in each margin range (Prashant, 11/2/2026)
+  const BANDS=[{k:"lt10",l:"Below 10%",lo:-Infinity,hi:0.10,c:"#C24A4A"},{k:"10to15",l:"10% – 15%",lo:0.10,hi:0.15,c:cssv("--accent")},
+               {k:"15to20",l:"15% – 20%",lo:0.15,hi:0.20,c:cssv("--accent")},{k:"20up",l:"20% and above",lo:0.20,hi:Infinity,c:cssv("--accent")}];
+  const withM = act.filter(r=>r.marginPct!=null);
+  const inB = (b,r)=>{ const m=Math.round(r.marginPct*1000)/1000; return m>=b.lo && m<b.hi; };
+  const groups = BANDS.map(b=>withM.filter(r=>inB(b,r)).sort((x,y)=>y.marginPct-x.marginPct));
+  mk("chProfit",{type:"bar",data:{labels:BANDS.map(b=>b.l),datasets:[{data:groups.map(g=>g.length),
+      backgroundColor:BANDS.map((b,i)=>S.band&&S.band!==b.k?"#D6D3D1":b.c),borderRadius:5,maxBarThickness:34}]},
+    options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:90,top:6}},plugins:{legend:{display:false},
+      tooltip:{...tip,callbacks:{title:c=>`${BANDS[c[0].dataIndex].l} net margin`,label:c=>{const g=groups[c.dataIndex]; return [`${g.length} candidate${g.length===1?"":"s"} · ${money(sum(g.map(r=>r.netProfit)))} net profit`, ...g.slice(0,12).map(r=>`  ${r.candidate}${r.kind==="Extension"?" (ext.)":""}: ${pct(r.marginPct)}`), ...(g.length>12?[`  + ${g.length-12} more`]:[])];}}}},
+      scales:{x:{grid,border:{display:false},beginAtZero:true,ticks:{precision:0,maxTicksLimit:6}},y:{grid:{display:false},border:{display:false},ticks:{font:{size:12,weight:"600"}}}},
+      onClick:(e,els)=>{ if(els.length){ const k=BANDS[els[0].index].k; S.band = S.band===k?"":k; setTimeout(render,0); } },
+      onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"},
+    plugins:[valLabels((v)=>`${v} candidate${v===1?"":"s"}`,true)]});
+  const bh=$("#bandHint"); if(bh) bh.innerHTML = S.band ? `table shows <b>${esc(BANDS.find(b=>b.k===S.band).l)}</b> only · <a href="#" id="bandClear">show all</a>` : "candidates per margin range · click a bar to list them";
+  const bc=$("#bandClear"); if(bc) bc.onclick=(e)=>{ e.preventDefault(); S.band=""; render(); };
+  window.__bandOf = r => { const b=BANDS.find(b=>r.marginPct!=null && inB(b,r)); return b?b.k:""; };
   // 2. by client
   const cl = [...new Set(act.map(r=>r.client))].sort((a,b)=>sum(act.filter(r=>r.client===b).map(r=>r.netRev))-sum(act.filter(r=>r.client===a).map(r=>r.netRev)));
   const g = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netRev)));
@@ -757,7 +768,7 @@ function renderCharts(rs){
 
 /* ---------- table ---------- */
 const COLS = [
-  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Started</span>':r.status==="Completed"?` <span class="pill p-done">${r.kind==="Extension"?"Extension":"Completed"}</span>`:""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
+  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Active</span>':r.status==="Completed"?` <span class="pill p-done">${r.kind==="Extension"?"Extension":"Completed"}</span>`:""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
   {k:"client",t:"Client / Facility",f:r=>`<span class="cdot" style="background:${color(r.client)}"></span>${esc(r.client)}<span class="s" title="${esc(r.facilityUnit)}">${esc(r.facilityUnit)}</span>`},
   //{k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
   {k:"start",t:"Start",f:r=>`${fdateS(r.start)}<span class="s">${r.weeks??"—"} wks · to ${fdateS(r.end)}</span>`},
@@ -807,7 +818,7 @@ function renderCards(rs, status){
   $(sumBox).innerHTML = [["Candidates",rs.length],["Net revenue",money(g)],["Net profit",money(p)],["Net margin",pct(bookM(rs))],["Below "+pct(TGT(),0)+" target",rs.filter(r=>tStat(r.marginPct)==="below").length]]
     .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
   const none = status==="Started"
-    ? `<div class="empty card">No candidates have started yet. When the Compliance Board marks a candidate as started, they move here with their full calculations.</div>`
+    ? `<div class="empty card">No active clinicians yet. When the Compliance Board marks a candidate as started, they move here with their full calculations.</div>`
     : `<div class="empty card">No onboarding candidates match these filters.</div>`;
   $(box).innerHTML = rs.length ? sortRows(rs).map(ccard).join("") : none;
   $(box).querySelectorAll(".ccard").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.row,c.dataset.sheet));
@@ -845,7 +856,7 @@ function openDrawer(row, sheet){
   const extra = Object.entries(r.extra||{}).filter(([k,v])=>v!=null&&v!=="");
   $("#drawer").innerHTML = `
     <div class="dh"><div class="avatar" style="background:${r.status==="Cancelled"?"#B5544A":color(r.client)};width:40px;height:40px;flex-basis:40px;font-size:14px">${initials(r.candidate)}</div>
-      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Started",Cancelled:"Cancelled",Completed:r.kind==="Extension"?"Extension":"Completed"}[r.status]}</span></h3>
+      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Active",Cancelled:"Cancelled",Completed:r.kind==="Extension"?"Extension":"Completed"}[r.status]}</span></h3>
       <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)}${r.row<1000?` · Excel row ${r.row} (${esc(r.sheet)})`:" · Added on this dashboard"}</div></div>
       <button class="iconbtn" id="dPrev" ${prev?"":"disabled"} title="Previous">‹</button><button class="iconbtn" id="dNext" ${next?"":"disabled"} title="Next">›</button><button class="iconbtn" id="dClose" title="Close">✕</button></div>
     <div class="db">
@@ -931,7 +942,7 @@ function renderQuality(){
 }
 
 /* ---------- views ---------- */
-const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Started",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Active Clinicians",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality"};
 document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
 
 $("#printBtn").onclick=()=>window.print();
@@ -948,7 +959,7 @@ function render(){
   $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   const rs = filtered();
-  if(S.view==="overview"){ renderKPIs(rs); renderCharts(rs); renderTable(rs); }
+  if(S.view==="overview"){ renderKPIs(rs); renderCharts(rs); renderTable(S.band && window.__bandOf ? rs.filter(r=>window.__bandOf(r)===S.band) : rs); }
   if(S.view==="onboarding") renderCards(rs,"Onboarding");
   if(S.view==="started") renderCards(rs,"Started");
   if(S.view==="completed") renderCompleted();
