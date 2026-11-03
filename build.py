@@ -193,6 +193,14 @@ EXTRA_RECORDS = [
      "w2": 24.00, "ot": 55.00, "stipend": 1561.0, "bill": 88.00, "billAfter": None, "msp": 0.05, "nbo": 0.0,
      "team": "TTT", "recruiter": "Shivani Bhatt", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed extension assignment form: same pay as contract. Bill rate $88 unchanged (Magnit extension offer). Billed and paid on 37.5 hrs/wk per Prashant 11/2/2026."},
+    {"row": 1009, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Nimatoulaye Barry", "client": "NYC H+H / RightSourcing",
+     "facilityUnit": "Elmhurst Hospital Center, Elmhurst NY, Radiology (MRI)", "facility": "Elmhurst Hospital Center",
+     "unit": "MRI Technologist", "req": "Eng 36559602",
+     "start": "2025-11-19", "end": "2026-02-21", "shift": "Days", "hrsShift": 7.0, "guarHrs": round(516.14 / 14, 4),
+     "w2": 17.80, "ot": 50.00, "stipend": 1897.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Ravi/Guddu", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed travel assignment confirmation: $17.80 W2 + $1,897/wk stipend ($2,520/wk at 35 hrs), OT $50. Revenue and pay use the actual 516.14 hrs billed and paid in Magnit (avg 36.87 hrs/wk over 14 wks), adjustment line ignored, per Prashant 11/2/2026."},
 ]
 
 def add_extras(D):
