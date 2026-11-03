@@ -177,6 +177,22 @@ EXTRA_RECORDS = [
      "w2": 73.75, "ot": 90.00, "stipend": 0.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Local assignment confirmation signed 10/1/2026 (version B): $2,950/wk all W2 ($73.75 x 40), OT $90. Running; shows in Started until 11/14/2026, then moves to Completed Assg./Extensions automatically. Off 5/31-7/24 and 9/20-9/26/2026."},
+    {"row": 1007, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Jaime Goldberg", "client": "Atlantic Health (Allied and Nursing)",
+     "facilityUnit": "Morristown Medical Center, Morristown NJ, Radiology", "facility": "Morristown Medical Center",
+     "unit": "X-Ray Technician", "req": "Eng 36351713",
+     "start": "2025-09-15", "end": "2025-12-13", "shift": "Nights", "hrsShift": 12.5, "guarHrs": 37.5,
+     "w2": 24.00, "ot": 55.00, "stipend": 1561.0, "bill": 88.00, "billAfter": None, "msp": 0.05, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Shivani Bhatt", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed travel assignment confirmation: $24 W2 + $1,561/wk stipend ($2,521/wk at 40 hrs), OT $55, 6p-7a. Billed and paid on 37.5 hrs/wk per Prashant 11/2/2026. 0 NBO for Allied."},
+    {"row": 1008, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
+     "candidate": "Jaime Goldberg", "client": "Atlantic Health (Allied and Nursing)",
+     "facilityUnit": "Morristown Medical Center, Morristown NJ, Radiology", "facility": "Morristown Medical Center",
+     "unit": "X-Ray Technician", "req": "Eng 36351713 · 1st extension",
+     "start": "2025-12-14", "end": "2026-03-15", "shift": "Nights", "hrsShift": 12.5, "guarHrs": 37.5,
+     "w2": 24.00, "ot": 55.00, "stipend": 1561.0, "bill": 88.00, "billAfter": None, "msp": 0.05, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Shivani Bhatt", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed extension assignment form: same pay as contract. Bill rate $88 unchanged (Magnit extension offer). Billed and paid on 37.5 hrs/wk per Prashant 11/2/2026."},
 ]
 
 def add_extras(D):
