@@ -75,6 +75,7 @@ aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
 aside .spacer{flex:1}
 .nav[data-view="completed"]{white-space:normal;line-height:1.25;font-size:13px;padding-left:30px;padding-right:30px;text-align:center}
 .pill.p-done{background:#E7E5E4;color:#44403C}:root[data-theme="dark"] .pill.p-done{background:#3F3F46;color:#E4E4E7}
+.pill.p-init{background:#E0F2FE;color:#0369A1}.pill.p-ext{background:#FCE7F3;color:#BE185D}:root[data-theme="dark"] .pill.p-init{background:#0C4A6E;color:#BAE6FD}:root[data-theme="dark"] .pill.p-ext{background:#831843;color:#FBCFE8}
 .grp-h{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--ink-2)}
 main{display:flex;flex-direction:column;min-width:0;height:100vh}
 .topbar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line)}
@@ -366,7 +367,7 @@ aside .side-logo{width:132px;height:auto;margin:4px auto 0;display:block}
   --bg:#F7F7F7;--card:#FFFFFF;--line:#E5E5E5;--line-2:#F0F0F0;--ink:#111111;--ink-2:#4A4A4A;--ink-3:#858585;
   --navy:#000000;--navy-2:#111111;--navy-3:#262626;--teal:#F28F45;--blue:#111111;--blue-50:#FDEBDB;
   --th:#FAFAFA;--hover:#FFF5EB;--border-hi:#F5B98A;--bar-muted:#1F1F1F;--grid:#EEEEEE;--tick:#666666;--seg-muted:#CCCCCC;
-  --sh:0 1px 2px rgba(0,0,0,.06),0 3px 10px rgba(0,0,0,.05);--accent:#F28F45}
+  --sh:0 1px 2px rgba(0,0,0,.06),0 3px 10px rgba(0,0,0,.05);--accent:#8B5CF6}
 :root[data-theme="dark"]{--sage-d:#000000;--sage:#000000;--sage-2:#1A1A1A;--sage-l:#3A2718;--sage-xl:#22180F;--mint:#F7A35A;
   --bg:#0B0B0B;--card:#161616;--line:#2A2A2A;--line-2:#1F1F1F;--ink:#F2F2F2;--ink-2:#BDBDBD;--ink-3:#8C8C8C;
   --navy:#000000;--navy-2:#111111;--navy-3:#1F1F1F;--teal:#F7A35A;--blue:#F7A35A;--blue-50:rgba(247,163,90,.15);
@@ -429,6 +430,39 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 :root[data-theme="dark"] .pill.p-done{background:#1E3A8A!important;color:#BFDBFE!important}
 :root[data-theme="dark"] .pill.p-active{background:#14532D!important;color:#BBF7D0!important}
 :root[data-theme="dark"] .pill.p-team{background:#3B2A6B!important;color:#DDD6FE!important}
+
+/* ---------- vivid theme (draft 2, 11/2/2026): colorful, not the black/white Soloh look ---------- */
+:root{--vg:linear-gradient(160deg,#4F46E5 0%,#7C3AED 45%,#DB2777 100%);--vg-h:linear-gradient(90deg,#4F46E5 0%,#7C3AED 35%,#DB2777 70%,#F59E0B 100%)}
+body,#app{background:linear-gradient(135deg,#EEF2FF 0%,#FDF2F8 50%,#ECFEFF 100%)!important}
+:root[data-theme="dark"] body,:root[data-theme="dark"] #app{background:linear-gradient(135deg,#0F0B24 0%,#1A0B1C 50%,#06181B 100%)!important}
+main{background:transparent!important}
+aside{background:var(--vg)!important;color:#fff;box-shadow:0 10px 30px rgba(124,58,237,.35)}
+aside .brand small{color:#EDE9FE!important}
+.nav{color:#F5F3FF!important}
+.nav:hover{background:rgba(255,255,255,.14)!important}
+.nav.active{background:#fff!important;color:#5B21B6!important;box-shadow:inset 4px 0 0 #F59E0B!important}
+:root[data-theme="dark"] .nav.active{background:#1E1B4B!important;color:#F0ABFC!important}
+.banner,.topbar h2{background:var(--vg-h)!important}
+.banner{border-image:linear-gradient(90deg,#22D3EE,#A3E635,#FACC15) 1!important}
+.login-logo{background:var(--vg)!important}
+#login{background:radial-gradient(900px 500px at 20% 0%,#7C3AED 0%,#4F46E5 45%,#1E1B4B 100%)!important}
+#login .btn-primary{background:var(--vg-h)!important}
+.filters{background:rgba(255,255,255,.7)!important;backdrop-filter:blur(6px)}
+#fStatus{background-color:#4F46E5!important}#fClient{background-color:#7C3AED!important}#fShift{background-color:#0EA5E9!important}
+#fUnit{background-color:#22A55B!important}#fMonth{background-color:#DB2777!important}#fTeam{background-color:#F59E0B!important}#fRecruiter{background-color:#0D9488!important}
+.card,.htile,.ccard,.sumstrip .mini{box-shadow:0 4px 18px rgba(79,70,229,.10)!important}
+.grid-charts .card:nth-child(1){border-top:4px solid #F59E0B}
+.grid-charts .card:nth-child(2){border-top:4px solid #14B8A6}
+.grid-charts .card:nth-child(3){border-top:4px solid #8B5CF6}
+.gauge-txt b{color:#7C3AED!important}
+th.sorted{color:#7C3AED!important}
+.ccard{border-top:4px solid #8B5CF6}
+#ccOnb .ccard{border-top-color:#F59E0B}#ccStarted .ccard{border-top-color:#22A55B}
+#ccCompleted .ccard{border-top-color:#3B82F6}#ccExtensions .ccard{border-top-color:#0EA5E9}#cancelList .ccard{border-top-color:#E5484D}
+.sumstrip .mini:nth-child(1){background:#EEF2FF}.sumstrip .mini:nth-child(2){background:#ECFDF5}.sumstrip .mini:nth-child(3){background:#F0FDF4}.sumstrip .mini:nth-child(4){background:#FDF4FF}.sumstrip .mini:nth-child(5){background:#FFF7ED}
+:root[data-theme="dark"] .sumstrip .mini{background:var(--card)!important}
+.page-h h3{background:var(--vg-h);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.theme-sw button[data-t="light"].on{color:#7C3AED!important}
 </style>
 </head>
 <body>
@@ -799,7 +833,7 @@ function renderCharts(rs){
 
 /* ---------- table ---------- */
 const COLS = [
-  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Active</span>':r.status==="Completed"?` <span class="pill p-done">${r.kind==="Extension"?"Extension":"Completed"}</span>`:""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
+  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b> ${typePill(r)}${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Active</span>':r.status==="Completed"?' <span class="pill p-done">Completed</span>':""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
   {k:"client",t:"Client / Facility",f:r=>`<span class="cdot" style="background:${color(r.client)}"></span>${esc(r.client)}<span class="s" title="${esc(r.facilityUnit)}">${esc(r.facilityUnit)}</span>`},
   //{k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
   {k:"start",t:"Start",f:r=>`${fdateS(r.start)}<span class="s">${r.weeks??"—"} wks · to ${fdateS(r.end)}</span>`},
@@ -831,12 +865,15 @@ function renderTable(rs){
 }
 
 /* ---------- candidate cards ---------- */
+// Contract type tag (Prashant, 11/2/2026): first contract = "Initial Contract", otherwise the extension number
+const extLabel = r => { const m=/(\d+)(st|nd|rd|th) extension/i.exec(r.req||""); return m?`Extension ${m[1]}`:"Extension"; };
+const typePill = r => r.status==="Cancelled" ? "" : (r.kind==="Extension" ? `<span class="pill p-ext">${extLabel(r)}</span>` : `<span class="pill p-init">Initial Contract</span>`);
 function ccard(r){
   return `<div class="ccard" data-row="${r.row}" data-sheet="${esc(r.sheet)}">
     <div class="top"><div class="avatar" style="background:${color(r.client)}">${initials(r.candidate)}</div>
-      <div style="min-width:0;flex:1"><h4>${esc(r.candidate)}</h4><div class="loc">${esc(r.client)} · ${esc(r.facility)}</div></div>
+      <div style="min-width:0;flex:1"><h4>${esc(r.candidate)} ${typePill(r)}</h4><div class="loc">${esc(r.client)} · ${esc(r.facility)}</div></div>
       <span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span></div>
-    <div class="loc">${esc(r.unit)} · ${r.hrsShift?`${r.hrsShift}h × ${r.guarHrs/r.hrsShift}`:`${nfmt(r.guarHrs)} hrs/wk`} · ${r.status==="Completed"?`${fdate(r.start)} – ${fdate(r.end)}`:`starts ${fdate(r.start)}`} (${r.weeks} wks)</div>
+    <div class="loc">${esc(r.unit)} · ${r.hrsShift&&Number.isInteger(Math.round(r.guarHrs/r.hrsShift*100)/100)?`${r.hrsShift}h × ${Math.round(r.guarHrs/r.hrsShift*100)/100}`:`${(Math.round(r.guarHrs*10)/10)} hrs/wk avg`} · ${r.status==="Completed"?`${fdate(r.start)} – ${fdate(r.end)}`:`starts ${fdate(r.start)}`} (${r.weeks} wks)</div>
     ${r.recruiter||r.team?`<div class="loc"><span class="pill p-team">${esc(r.team||"No team")}</span> Recruiter: <b style="color:var(--ink-2)">${esc(r.recruiter||"—")}</b></div>`:""}
     <div class="row3"><div class="mini"><span>W2 / hr</span><b class="num">${money2(r.w2)}</b></div><div class="mini"><span>Pay / wk</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div></div>
     <div class="row3"><div class="mini"><span>Stipend / wk</span><b class="num">${money(r.stipend)}</b></div><div class="mini"><span>Net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
@@ -887,7 +924,7 @@ function openDrawer(row, sheet){
   const extra = Object.entries(r.extra||{}).filter(([k,v])=>v!=null&&v!=="");
   $("#drawer").innerHTML = `
     <div class="dh"><div class="avatar" style="background:${r.status==="Cancelled"?"#B5544A":color(r.client)};width:40px;height:40px;flex-basis:40px;font-size:14px">${initials(r.candidate)}</div>
-      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Active",Cancelled:"Cancelled",Completed:r.kind==="Extension"?"Extension":"Completed"}[r.status]}</span></h3>
+      <div style="flex:1;min-width:0"><h3>${esc(r.candidate)} <span class="pill ${{Onboarding:"p-onb",Started:"p-active",Cancelled:"p-cancelled",Completed:"p-active"}[r.status]}">${{Onboarding:"Onboarding",Started:"Active",Cancelled:"Cancelled",Completed:"Completed"}[r.status]}</span> ${typePill(r)}<span style="display:none"></span></h3>
       <div class="loc">${esc(r.client)} · ${esc(r.facilityUnit)}</div><div class="loc muted">${esc(r.req)}${r.row<1000?` · Excel row ${r.row} (${esc(r.sheet)})`:" · Added on this dashboard"}</div></div>
       <button class="iconbtn" id="dPrev" ${prev?"":"disabled"} title="Previous">‹</button><button class="iconbtn" id="dNext" ${next?"":"disabled"} title="Next">›</button><button class="iconbtn" id="dClose" title="Close">✕</button></div>
     <div class="db">
