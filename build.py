@@ -201,6 +201,15 @@ EXTRA_RECORDS = [
      "w2": 17.80, "ot": 50.00, "stipend": 1897.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Ravi/Guddu", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed travel assignment confirmation: $17.80 W2 + $1,897/wk stipend ($2,520/wk at 35 hrs), OT $50. Revenue and pay use the actual 516.14 hrs billed and paid in Magnit (avg 39.70 hrs/wk over 13 wks), adjustment line ignored, per Prashant 11/2/2026."},
+    {"row": 1010, "sheet": "Cancelled Offers", "status": "Cancelled", "kind": "Contract",
+     "candidate": "Levene Cameron", "client": "Wellstar",
+     "facilityUnit": "Wellstar Kennestone Regional Medical Center, Marietta GA, Acute Care (via Stability / BudE)", "facility": "Wellstar Kennestone Regional Medical Center",
+     "unit": "RN - Acute Care", "req": "BudE Job 14410 · Placement 5377",
+     "start": "2025-11-24", "end": "2026-02-21", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 17.00, "ot": 60.00, "stipend": 1246.0, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
+     "team": "TTT", "recruiter": "Rashika Varshney", "oneTime": 0, "bonus": 0.0, "extra": {},
+     "reason": "Started 12/1/2025 but did not complete 30 days. Contract terminated by client 1/2/2026. Profit shown is the estimate for the planned 13-week contract.",
+     "note": "Signed travel assignment confirmation: $17 W2 + $1,246/wk stipend ($1,858/wk at 36 hrs), OT $60. Bill rate $70 (Stability/BudE). Planned 11/24/2025-2/21/2026; RTO 2/5/2026."},
 ]
 
 def add_extras(D):
