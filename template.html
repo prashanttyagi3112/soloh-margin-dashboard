@@ -74,6 +74,7 @@ aside .brand small{display:block;color:#8FA2C0;font-size:11px;font-weight:500}
 .collapsed .nav span,.collapsed .nav .count,.collapsed aside .brand div{display:none}
 aside .spacer{flex:1}
 .nav[data-view="completed"]{white-space:normal;line-height:1.25;padding-left:30px;padding-right:30px;text-align:center}
+.pill.p-done{background:#E7E5E4;color:#44403C}:root[data-theme="dark"] .pill.p-done{background:#3F3F46;color:#E4E4E7}
 .grp-h{margin:18px 0 8px;font-size:13px;font-weight:700;color:var(--ink-2)}
 main{display:flex;flex-direction:column;min-width:0;height:100vh}
 .topbar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line)}
@@ -485,7 +486,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
       </section>
 
       <section data-page="completed" class="hidden">
-        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Not counted in the active KPIs.</p></div>
+        <div class="page-h"><h3>Completed Assg./Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Included in the Overview totals.</p></div>
         <div class="sumstrip" id="sumCompleted"></div>
         <h4 class="grp-h">Completed assignments</h4>
         <div class="ccards" id="ccCompleted"></div>
@@ -529,7 +530,7 @@ th.sorted{color:#C25E1F!important}:root[data-theme="dark"] th.sorted{color:var(-
 <script>
 const ENC = /*__ENCRYPTED_DATA__*/null;
 let D = null;                        // decrypted dataset
-const LIVE = r => r.status!=="Cancelled" && r.status!=="Completed";
+const LIVE = r => r.status!=="Cancelled";   // Overview covers Onboarding + Started + Completed Assg./Extensions
 const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
@@ -603,7 +604,7 @@ function opts(sel, label, values, cur, fmt=v=>v){
 function buildFilters(){
   const all = D.records;
   const uniq = k => [...new Set(all.map(r=>r[k]).filter(Boolean))].sort();
-  opts($("#fStatus"),"Candidate status",["Onboarding","Started"],S.status);
+  opts($("#fStatus"),"Candidate status",["Onboarding","Started","Completed"],S.status);
   opts($("#fClient"),"Client",uniq("client"),S.client);
   opts($("#fShift"),"Shift",uniq("shift"),S.shift);
   opts($("#fUnit"),"Unit",uniq("unit"),S.unit);
@@ -645,7 +646,7 @@ function renderKPIs(rs){
   const in14 = upcoming.filter(r=>(pdate(r.start)-today)/864e5<=14).length;
   const next = upcoming[0];
   const cards = [
-    {id:"count",lbl:"Active offers",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
+    {id:"count",lbl:"Assignments",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${act.filter(r=>r.status==="Completed").length} completed · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
     {id:"clients",lbl:"Clients · Facilities",tag:"count",val:`${clients.size} <span style="font-weight:500;color:var(--ink-3);font-size:15px">/ ${facs.size}</span>`,sub:[...clients].map(c=>c.replace(/ \(.*\)/,"").replace(" Health","")).join(", ")+" · facilities",action:"Sort table by client"},
     {id:"grossRev",lbl:"Gross revenue",tag:"total",val:kfmt(gross),sub:`Net of MSP ${kfmt(sum(act.map(r=>r.netRev)))}`,action:"Sort table by gross revenue"},
     {id:"netProfit",lbl:"Net profit",tag:"total",val:kfmt(profit),sub:`${pct(bookM(act))} of net revenue · ${money(wkProfit)}/wk`,dot:"var(--teal)",action:"Sort table by net profit"},
@@ -664,7 +665,7 @@ function renderKPIs(rs){
   const payCost = sum(act.map(r=>r.cfo&&r.cfo.net!=null ? r.cfo.regular+r.cfo.ot+r.cfo.stipend+r.cfo.nbo : 0));
   const nBelow = act.filter(r=>tStat(r.marginPct)==="below").length;
   const hero = [
-    {k:"count",v:act.length,l:"Active Offers",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started`},
+    {k:"count",v:act.length,l:"Assignments",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} started · ${act.filter(r=>r.status==="Completed").length} completed`},
     {k:"netRev",v:kfmt(sum(act.map(r=>r.netRev))),l:"Net Revenue",s:`Gross ${kfmt(gross)} less MSP`},
     {k:"payCost",v:kfmt(payCost),l:"Total Pay Cost",s:"Pay + OT + NBO (13% burden) + stipend"},
     {k:"netProfit",v:kfmt(profit),l:"Net Profit",s:`${pct(bookM(act))} net margin · ${money(wkProfit)}/wk`},
@@ -756,7 +757,7 @@ function renderCharts(rs){
 
 /* ---------- table ---------- */
 const COLS = [
-  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Started</span>':""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
+  {k:"candidate",t:"Candidate",f:r=>`<b>${esc(r.candidate)}</b>${r.status==="Cancelled"?' <span class="pill p-cancelled">Cancelled</span>':r.status==="Started"?' <span class="pill p-active">Started</span>':r.status==="Completed"?` <span class="pill p-done">${r.kind==="Extension"?"Extension":"Completed"}</span>`:""}<span class="s" title="${esc(r.req)}">${r.recruiter?esc(r.recruiter)+" · "+esc((r.team||"").replace("'s Team","")):esc(r.req)}</span>`},
   {k:"client",t:"Client / Facility",f:r=>`<span class="cdot" style="background:${color(r.client)}"></span>${esc(r.client)}<span class="s" title="${esc(r.facilityUnit)}">${esc(r.facilityUnit)}</span>`},
   //{k:"unit",t:"Unit · Shift",f:r=>`${esc(r.unit)}<span class="s"><span class="pill ${r.shift==="Days"?"p-days":"p-nights"}">${esc(r.shift)}</span> ${r.hrsShift??""}h · ${nfmt(r.guarHrs)}/wk</span>`,cls:"hide-m"},
   {k:"start",t:"Start",f:r=>`${fdateS(r.start)}<span class="s">${r.weeks??"—"} wks · to ${fdateS(r.end)}</span>`},
@@ -784,7 +785,7 @@ function renderTable(rs){
   $("#tbl").innerHTML = head + `<tbody>${body}</tbody>` + foot;
   $("#tbl").querySelectorAll("th").forEach(th=>th.onclick=()=>setSort(th.dataset.k));
   $("#tbl").querySelectorAll("tbody tr[data-row]").forEach(tr=>tr.onclick=()=>openDrawer(+tr.dataset.row,tr.dataset.sheet));
-  $("#tblHint").textContent = `${rows.length} row${rows.length===1?"":"s"} · totals are for active offers · click a row for details`;
+  $("#tblHint").textContent = `${rows.length} row${rows.length===1?"":"s"} · totals cover all assignments · click a row for details`;
 }
 
 /* ---------- candidate cards ---------- */
@@ -900,7 +901,7 @@ document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeDrawer(); if
 /* ---------- static pages ---------- */
 function renderFees(){
   const used = new Set(D.records.map(r=>r.client));
-  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Active offers</th><th>Source</th></tr></thead><tbody>` +
+  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Assignments</th><th>Source</th></tr></thead><tbody>` +
     Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
   const m = D.method;
   $("#settingsBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">CFO calculation method</h3>
@@ -964,7 +965,7 @@ function init(){
   $("#cntCompleted").textContent = D.records.filter(r=>r.status==="Completed").length;
   $("#cntCancelled").textContent = D.records.filter(r=>r.status==="Cancelled").length;
   $("#cntQuality").textContent = D.quality.filter(q=>q.sev!=="info").length || "";
-  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. KPI tags: TOTAL = sum of active offers, AVG = mean per offer, INDIVIDUAL = one candidate.`;
+  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. Overview includes Onboarding, Started and Completed Assg./Extensions (cancelled offers only when "Show cancelled" is on). KPI tags: TOTAL = sum of assignments, AVG = mean per assignment, INDIVIDUAL = one candidate.`;
   renderFees(); renderQuality(); render();
 }
 </script>
