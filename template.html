@@ -476,6 +476,48 @@ th.sorted{color:#F0ABFC!important}
 .nav.active{box-shadow:inset 4px 0 0 #0B0B0F!important}
 .sumstrip .mini b{color:#0B0B0F}:root[data-theme="dark"] .sumstrip .mini b{color:var(--ink)}
 aside{border-right:4px solid #0B0B0F}
+
+/* ================= Interactive theme (draft, 11/2/2026) ================= */
+:root{--i-ink:#0F172A;--i-indigo:#6366F1;--i-violet:#8B5CF6;--i-teal:#14B8A6;--i-coral:#F97316;--i-rose:#F43F5E;--i-emerald:#10B981;--i-sky:#0EA5E9;--i-amber:#F59E0B;
+  --i-grad:linear-gradient(120deg,#6366F1 0%,#8B5CF6 35%,#14B8A6 100%)}
+body,#app{background:radial-gradient(1200px 600px at 100% -10%,#E0E7FF 0%,transparent 60%),radial-gradient(900px 500px at -10% 110%,#CCFBF1 0%,transparent 55%),#F8FAFC!important}
+:root[data-theme="dark"] body,:root[data-theme="dark"] #app{background:radial-gradient(1200px 600px at 100% -10%,#1E1B4B 0%,transparent 60%),radial-gradient(900px 500px at -10% 110%,#042F2E 0%,transparent 55%),#0B1120!important}
+aside{background:linear-gradient(180deg,#0F172A 0%,#1E1B4B 60%,#312E81 100%)!important;border-right:0!important;box-shadow:0 12px 40px rgba(15,23,42,.35)!important}
+.nav{transition:background .2s,color .2s,transform .15s}
+.nav:hover{background:rgba(99,102,241,.22)!important;transform:translateX(3px)}
+.nav.active{background:#fff!important;color:#312E81!important;box-shadow:inset 4px 0 0 #14B8A6!important}
+:root[data-theme="dark"] .nav.active{background:#312E81!important;color:#fff!important}
+.banner,.topbar h2{background:linear-gradient(120deg,#0F172A 0%,#1E1B4B 55%,#312E81 100%)!important}
+.banner{border-image:linear-gradient(90deg,#6366F1,#8B5CF6,#14B8A6,#F97316) 1!important;box-shadow:0 10px 30px rgba(49,46,129,.25)}
+#fStatus{background-color:#0F172A!important}#fClient{background-color:#6366F1!important}#fShift{background-color:#0EA5E9!important}
+#fUnit{background-color:#10B981!important}#fMonth{background-color:#8B5CF6!important}#fTeam{background-color:#F59E0B!important}#fRecruiter{background-color:#14B8A6!important}
+.filters select{transition:transform .15s,box-shadow .15s}.filters select:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(15,23,42,.18)}
+th{background:#0F172A!important;color:#E2E8F0!important}th.sorted{color:#5EEAD4!important}
+.gauge-txt b{color:#6366F1!important}
+.page-h h3{background:var(--i-grad);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+/* motion */
+@keyframes iRise{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes iShine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.htile,.grid-charts .card,.ccard,.sumstrip .mini{animation:iRise .45s cubic-bezier(.2,.7,.2,1) both}
+.hero .htile:nth-child(2){animation-delay:.05s}.hero .htile:nth-child(3){animation-delay:.1s}.hero .htile:nth-child(4){animation-delay:.15s}.hero .htile:nth-child(5){animation-delay:.2s}
+.grid-charts .card:nth-child(2){animation-delay:.12s}.grid-charts .card:nth-child(3){animation-delay:.2s}
+.ccards .ccard:nth-child(2){animation-delay:.04s}.ccards .ccard:nth-child(3){animation-delay:.08s}.ccards .ccard:nth-child(4){animation-delay:.12s}.ccards .ccard:nth-child(n+5){animation-delay:.16s}
+.htile,.ccard,.grid-charts .card{transition:transform .18s,box-shadow .18s,border-color .18s}
+.htile:hover{transform:translateY(-4px)!important;box-shadow:0 14px 30px rgba(99,102,241,.22)!important}
+.ccard:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(15,23,42,.16)!important}
+.grid-charts .card:hover{box-shadow:0 14px 34px rgba(99,102,241,.16)!important}
+tbody tr{transition:background .15s,box-shadow .15s}
+tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184,166,.05))!important;box-shadow:inset 3px 0 0 #6366F1}
+.htile .hv{background:linear-gradient(90deg,currentColor 0%,currentColor 40%,rgba(255,255,255,.9) 50%,currentColor 60%,currentColor 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text}
+.htile:hover .hv{color:transparent;-webkit-text-fill-color:transparent;animation:iShine 1s linear}
+.mbar i{transition:width .8s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--hover:#EEF2FF!important}:root[data-theme="dark"]{--accent:#818CF8!important;--hover:#1E1B4B!important}
+:root[data-theme="dark"] .filters{background:rgba(15,23,42,.75)!important}
+:root[data-theme="dark"] .gauge-txt b{color:#A5B4FC!important}
+.mbar i{background:linear-gradient(90deg,#6366F1,#14B8A6)!important}.mbar i.below{background:#F43F5E!important}
+.htile.on{border-color:#6366F1!important}
 </style>
 </head>
 <body>
@@ -540,7 +582,7 @@ aside{border-right:4px solid #0B0B0F}
         <div class="hero" id="hero"></div>
         <div class="grid-charts">
           <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
-          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#F28F45,#3B82F6,#14B8A6,#8B5CF6)"></i>Net revenue (client color)</span><span><i style="background:#22A55B"></i>Net profit</span></div></div>
+          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#6366F1,#14B8A6,#F97316,#8B5CF6)"></i>Net revenue (client color)</span><span><i style="background:#10B981"></i>Net profit</span></div></div>
           <div class="card"><div class="card-h"><h3>Net margin bands</h3><span class="hint" id="bandHint">candidates per margin range · click a bar to list them</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
         <div class="card">
@@ -612,7 +654,7 @@ const LIVE = r => r.status!=="Cancelled";   // Overview covers Onboarding + Star
 const S = {status:"",client:"",shift:"",unit:"",month:"",team:"",recruiter:"",cancelled:false,q:"",sort:"netProfit",dir:-1,view:"overview",sel:null,band:""};
 const charts = {};
 // Colors are assigned to clients in Client Fees sheet order (no client names in the page source).
-const COLORS = ["#F28F45","#3B82F6","#14B8A6","#8B5CF6","#22A55B","#EC4899","#F59E0B","#0EA5E9","#E5484D"];
+const COLORS = ["#6366F1","#14B8A6","#F97316","#8B5CF6","#0EA5E9","#F43F5E","#10B981","#F59E0B","#64748B"];
 const PALETTE = {};
 function color(client){ if(!(client in PALETTE)){ PALETTE[client]=COLORS[Object.keys(PALETTE).length % COLORS.length]; } return PALETTE[client]; }
 
@@ -710,6 +752,16 @@ function kpiCard({id,lbl,val,sub,tag,dot,accent,action,extra=""}){
     <div class="lbl">${dot?`<span class="dot" style="background:${dot}"></span>`:""}${esc(lbl)}${tag?`<span class="tag">${tag}</span>`:""}</div>
     <div class="val num">${val}</div><div class="sub">${sub||"&nbsp;"}</div>${extra}</div>`;
 }
+// Animated count-up for KPI numbers ($1.14M, 29, 13.0%, ...)
+function countUp(root){
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  root.querySelectorAll(".hv").forEach(el=>{ const t=el.textContent.trim(); const m=/^([^\d-]*)(-?[\d,]*\.?\d+)(.*)$/.exec(t); if(!m) return;
+    const pre=m[1], numS=m[2].replace(/,/g,""), suf=m[3], target=parseFloat(numS), dec=(numS.split(".")[1]||"").length, comma=m[2].includes(",");
+    const t0=performance.now(), dur=750;
+    const fmtN=v=>{ let s=v.toFixed(dec); if(comma){ const [a,b]=s.split("."); s=a.replace(/\B(?=(\d{3})+(?!\d))/g,",")+(b?"."+b:""); } return pre+s+suf; };
+    const step=now=>{ const p=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-p,3); el.textContent=fmtN(target*e); if(p<1) requestAnimationFrame(step); else el.textContent=t; };
+    requestAnimationFrame(step); });
+}
 function renderKPIs(rs){
   const act = rs.filter(LIVE);
   const uniqueNames = new Set(rs.map(r=>(r.candidate||"").toLowerCase().trim()).filter(Boolean));
@@ -750,6 +802,7 @@ function renderKPIs(rs){
     {k:"belowT",v:nBelow,l:"Below 10% Target",s:nBelow?act.filter(r=>tStat(r.marginPct)==="below").map(r=>r.candidate).join(", "):"All offers meet the target",bad:nBelow>0},
   ];
   $("#hero").innerHTML = hero.map(h=>`<div class="htile${h.bad?" bad":""}${S.sort===({count:"candidate",belowT:"marginPct"}[h.k]||h.k)?" on":""}" data-k="${h.k}" role="button" tabindex="0" title="${esc(h.s)}"><div class="hv num">${h.v}</div><div class="hl">${h.l}</div><div class="hs">${esc(h.s)}</div></div>`).join("");
+  countUp($("#hero"));
   $("#hero").querySelectorAll(".htile").forEach(el=>{ const k=el.dataset.k;
     el.onclick=()=>{ const key={count:"candidate",belowT:"marginPct",payCost:"netRev"}[k]||k; setSort(key,["candidate"].includes(key)||k==="belowT"?1:-1); document.querySelector(".tbl-wrap").scrollIntoView({behavior:"smooth",block:"nearest"}); };
     el.onkeydown=ev=>{ if(ev.key==="Enter") el.click(); }; });
@@ -781,6 +834,7 @@ const valLabels = (fmt, horiz) => ({id:"vl",afterDatasetsDraw(ch){ const {ctx}=c
     if(horiz){ ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.fillText(t, Math.max(el.x,el.base)+4, el.y); } else { ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText(t, el.x, Math.min(el.y,el.base)-2); } }); }); ctx.restore(); }});
 const tgtLine = {id:"tl",afterDatasetsDraw(ch){ const x=ch.scales.x; if(!x) return; const px=x.getPixelForValue(TGT()); const {top,bottom}=ch.chartArea; const ctx=ch.ctx; ctx.save(); ctx.strokeStyle="#C24A4A"; ctx.setLineDash([4,3]); ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(px,top); ctx.lineTo(px,bottom); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#C24A4A"; ctx.font="600 10px Inter, sans-serif"; ctx.textAlign="center"; ctx.fillText(pct(TGT(),0)+" target",px,top-3); ctx.restore(); }};
 function renderCharts(rs){
+  Chart.defaults.animation = {duration:900, easing:"easeOutQuart"};
   Chart.defaults.color = cssv("--tick"); grid.color = cssv("--grid");
   const act = rs;
   // 0. gauge: book net margin vs target
@@ -792,8 +846,8 @@ function renderCharts(rs){
   $("#gaugeTxt").innerHTML = `<b class="num">${pct(bm)}</b><span>${ppts(bm==null?null:bm-TGT())} vs ${pct(TGT(),0)} · ${live.filter(r=>tStat(r.marginPct)!=="below"&&r.marginPct!=null).length} of ${live.length} offers at or above</span>`;
   // 1. net margin by candidate
   // 1. Net margin bands: how many candidates fall in each margin range (Prashant, 11/2/2026)
-  const BANDS=[{k:"lt10",l:"Below 10%",lo:-Infinity,hi:0.10,c:"#E5484D"},{k:"10to15",l:"10% – 15%",lo:0.10,hi:0.15,c:"#F59E0B"},
-               {k:"15to20",l:"15% – 20%",lo:0.15,hi:0.20,c:"#22A55B"},{k:"20up",l:"20% and above",lo:0.20,hi:Infinity,c:"#14B8A6"}];
+  const BANDS=[{k:"lt10",l:"Below 10%",lo:-Infinity,hi:0.10,c:"#F43F5E"},{k:"10to15",l:"10% – 15%",lo:0.10,hi:0.15,c:"#6366F1"},
+               {k:"15to20",l:"15% – 20%",lo:0.15,hi:0.20,c:"#14B8A6"},{k:"20up",l:"20% and above",lo:0.20,hi:Infinity,c:"#10B981"}];
   const withM = act.filter(r=>r.marginPct!=null);
   const inB = (b,r)=>{ const m=Math.round(r.marginPct*1000)/1000; return m>=b.lo && m<b.hi; };
   const groups = BANDS.map(b=>withM.filter(r=>inB(b,r)).sort((x,y)=>y.marginPct-x.marginPct));
@@ -813,7 +867,7 @@ function renderCharts(rs){
   const g = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netRev)));
   const p = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netProfit)));
   const n = cl.map(c=>act.filter(r=>r.client===c&&LIVE(r)).length);
-  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cl.map(c=>color(c)),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:"#22A55B",borderRadius:3,maxBarThickness:26}]},
+  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cl.map(c=>color(c)),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:"#10B981",borderRadius:3,maxBarThickness:26}]},
     plugins:[valLabels(kfmt,false)],
     options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
       scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}},
