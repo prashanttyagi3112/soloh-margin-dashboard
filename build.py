@@ -235,7 +235,7 @@ EXTRA_RECORDS = [
      "start": "2026-04-19", "end": "2026-06-13", "shift": "Days", "hrsShift": 8.0, "guarHrs": round(199.0 / 8, 4),
      "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "Hours = 199 invoiced in Magnit (0 hrs w/e 5/2 and 5/9). Pay ASSUMED same as 1st and 3rd extensions ($17 W2 + $1,990/wk stipend) until the signed 2nd extension form is provided."},
+     "note": "Hours = 199 invoiced in Magnit (0 hrs w/e 5/2 and 5/9). Pay same as 1st and 3rd extensions ($17 W2 + $1,990/wk stipend), confirmed by Prashant 11/4/2026."},
     {"row": 1013, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
      "candidate": "Sara Khalil", "client": "NYC H+H / RightSourcing",
      "facilityUnit": "NYC+ Community Care (home visits), New York NY", "facility": "NYC+ Community Care",
