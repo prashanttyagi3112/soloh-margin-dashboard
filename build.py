@@ -243,6 +243,14 @@ EXTRA_RECORDS = [
      "w2": 17.00, "ot": 60.00, "stipend": 1990.0, "stipendProrated": True, "bill": 85.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 500.0, "reason": None, "extra": {},
      "note": "Signed extension form: $17 W2 + $1,990/wk stipend, OT $60, $500 extension bonus with first paycheck (deducted). Hours = 282 invoiced in Magnit. Bill rate $85."},
+    {"row": 1015, "sheet": "Onboarding Candidates", "status": "Onboarding", "kind": "Contract",
+     "candidate": "Benjamin Niyi Israel", "client": "Baptist Winter Reduced MSP",
+     "facilityUnit": "Baptist Health Lexington, Lexington KY, Progressive Care Unit", "facility": "Baptist Health Lexington",
+     "unit": "RN - Progressive Care Unit", "req": "Req 37805476",
+     "start": "2026-11-30", "end": "2027-02-27", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 30.77, "ot": 85.00, "stipend": 1435.0, "bill": 93.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
+     "team": "HST", "recruiter": "Momin Ginai", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Baptist MSP official offer 11/3/2026 (bill $93, 3x12 nights, no RTO). Pay per signed OL as summarized by Anand 11/3: $30.77 W2 x 36 + $1,435/wk stipend = $2,542.72/wk, OT $85. MSP 6.5% (net new offer 11/3/2026). Added per Prashant 11/4/2026."},
 ]
 
 def add_extras(D):
