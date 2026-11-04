@@ -256,9 +256,9 @@ EXTRA_RECORDS = [
      "facilityUnit": "Wellstar Douglas Hospital, Douglasville GA, GI/Pulmonary Lab (via BUDe)", "facility": "Wellstar Douglas Hospital",
      "unit": "RN - GI/Pulmonary Lab", "req": "BUDe Job 43367",
      "start": "2026-07-20", "end": "2026-10-17", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
-     "w2": 25.25, "ot": 55.00, "stipend": 1246.0, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
+     "w2": 25.25, "ot": 55.00, "stipend": 1246.0, "bill": 70.00, "billAfter": None, "msp": 0.06, "nbo": 0.0,
      "team": "TTT", "recruiter": "Amit Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "Signed travel assignment confirmation: $25.25 W2 + up to $1,246/wk stipend ($2,256/wk at 40 hrs), OT $55 (form's '$890 taxable base' is a typo). 40 hrs guaranteed per Prashant. Bill $70 per Prashant 11/4/2026. 24 NBO hrs (Wellstar). RTO 8/10, 9/21, 9/22."},
+     "note": "Signed travel assignment confirmation: $25.25 W2 + up to $1,246/wk stipend ($2,256/wk at 40 hrs), OT $55 (form's '$890 taxable base' is a typo). 40 hrs guaranteed per Prashant. Bill $70, MSP 6%, no NBO per Prashant 11/4/2026. RTO 8/10, 9/21, 9/22."},
 ]
 
 def add_extras(D):
