@@ -251,6 +251,14 @@ EXTRA_RECORDS = [
      "w2": 30.77, "ot": 85.00, "stipend": 1435.0, "bill": 93.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
      "team": "HST", "recruiter": "Momin Ginai", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Baptist MSP official offer 11/3/2026 (bill $93, 3x12 nights, no RTO). Pay per signed OL as summarized by Anand 11/3: $30.77 W2 x 36 + $1,435/wk stipend = $2,542.72/wk, OT $85. MSP 6.5% (net new offer 11/3/2026). Added per Prashant 11/4/2026."},
+    {"row": 1016, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Pier Smith", "client": "Wellstar",
+     "facilityUnit": "Wellstar Douglas Hospital, Douglasville GA, GI/Pulmonary Lab (via BUDe)", "facility": "Wellstar Douglas Hospital",
+     "unit": "RN - GI/Pulmonary Lab", "req": "BUDe Job 43367",
+     "start": "2026-07-20", "end": "2026-10-17", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
+     "w2": 25.25, "ot": 55.00, "stipend": 1246.0, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
+     "team": "TTT", "recruiter": "Amit Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed travel assignment confirmation: $25.25 W2 + up to $1,246/wk stipend ($2,256/wk at 40 hrs), OT $55 (form's '$890 taxable base' is a typo). 40 hrs guaranteed per Prashant. Bill $70 per Prashant 11/4/2026. 24 NBO hrs (Wellstar). RTO 8/10, 9/21, 9/22."},
 ]
 
 def add_extras(D):
