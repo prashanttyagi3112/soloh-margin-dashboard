@@ -64,6 +64,10 @@ button,input,select{font:inherit;color:inherit}
 .pill.p-yes{background:#DCFCE7;color:#15803D}.pill.p-no{background:#FEF3C7;color:#B45309}
 :root[data-theme="dark"] .pill.p-yes{background:#14532D;color:#BBF7D0}:root[data-theme="dark"] .pill.p-no{background:#78350F;color:#FDE68A}
 #invTbl td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}#invTbl th{cursor:default}
+.prj-m{cursor:pointer}.prj-m td{font-weight:600}.prj-m .chev{display:inline-block;width:14px;color:var(--ink-3);transition:transform .15s}.prj-m.open .chev{transform:rotate(90deg)}
+.prj-sub td{background:var(--line-2);font-size:11.5px;padding:5px 8px 5px 30px!important;font-weight:400}
+#prjTbl td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}#prjTbl th{cursor:default}#prjTbl tfoot td{font-weight:700;border-top:2px solid var(--ink-3)}
+.pill.p-paid{background:#DCFCE7;color:#15803D}.pill.p-unpaid{background:#FEE2E2;color:#B91C1C}:root[data-theme="dark"] .pill.p-unpaid{background:#7F1D1D;color:#FECACA}
 .nav[data-view="invoice"] .count{background:#0EA5E9!important;color:#fff!important}
 
 /* ---------- shell ---------- */
@@ -554,6 +558,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Active Clinicians</span><em class="count" id="cntStarted"></em></button>
     <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="invoice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5V3z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Invoice Eligibility</span><em class="count" id="cntInv"></em></button>
+    <button class="nav" data-view="projected"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M8 14h3M8 17h6"/></svg><span>Projected Invoice</span></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
     <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
@@ -635,6 +640,22 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
         <div id="invBody" class="hidden">
           <div class="sumstrip" id="sumInv"></div>
           <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="invTbl"></table></div></div>
+        </div>
+      </section>
+
+      <!-- projected invoice (same password as Invoice Eligibility) -->
+      <section data-page="projected" class="hidden">
+        <div class="page-h"><h3>Projected Invoice</h3><p>Month-wise projection for every contract on the dashboard, including Onboarding. Each contract is counted in the month it becomes eligible to invoice (the day after it ends). Initial contract $2,000 · Extension $1,500. Click a month to see its candidates.</p></div>
+        <form class="card inv-lock" id="prjLock" autocomplete="off">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+          <h3>This tab is locked</h3><p>Projected Invoice uses the Invoice Eligibility password.</p>
+          <div class="field"><label for="prjPw">Invoice password</label><input class="input" id="prjPw" type="password" required></div>
+          <button class="btn btn-primary" id="prjBtn" type="submit">Unlock Projected Invoice</button>
+          <div class="err" id="prjErr"></div>
+        </form>
+        <div id="prjBody" class="hidden">
+          <div class="sumstrip" id="sumPrj"></div>
+          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="prjTbl"></table></div></div>
         </div>
       </section>
 
@@ -721,7 +742,7 @@ async function decryptBlob(blob,pw){
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(blob.iv)}, key, b64(blob.ct))));
 }
 async function unlockInv(pw, remember){
-  try{ IV = await decryptBlob(INV,pw); if(remember){ try{ sessionStorage.setItem("soloh_inv_pw",pw);}catch(e){} } renderInvoice(); return true; }catch(e){ return false; }
+  try{ IV = await decryptBlob(INV,pw); if(remember){ try{ sessionStorage.setItem("soloh_inv_pw",pw);}catch(e){} } renderInvoice(); renderProjected(); return true; }catch(e){ return false; }
 }
 async function unlock(pw, remember){
   try{
@@ -1018,6 +1039,27 @@ function renderInvoice(){
     rs.map((r,i)=>{ const ok=invEligible(r); return `<tr><td class="muted">${i+1}</td><td><b>${esc(r.candidate)}</b></td><td>${esc(r.unit||"—")}</td><td style="white-space:nowrap">${fdate(r.start)} – ${fdate(r.end)}</td><td>${typePill(r)}</td><td>${esc(r.facility||r.client)}</td><td>${esc(r.recruiter||"—")}<div class="muted" style="font-size:10.5px">${esc(r.team||"")}</div></td>
       <td>${ok?`<span class="pill p-yes">Invoice Eligible on ${fD(invDate(r))}</span>`:(()=>{ const n=invDays(r); return n==null?'<span class="pill p-no">No end date</span>':`<span class="pill p-no">Eligible in ${n} day${n===1?"":"s"}</span><div class="muted" style="font-size:10.5px">on ${fD(invDate(r))}</div>`; })()}</td><td class="r num">${ok?money(fee(r)):"—"}</td></tr>`; }).join("")+`</tbody>`;
 }
+const PRJ_OPEN = new Set();
+function renderProjected(){
+  if(!IV){ $("#prjLock").classList.remove("hidden"); $("#prjBody").classList.add("hidden"); return; }
+  $("#prjLock").classList.add("hidden"); $("#prjBody").classList.remove("hidden");
+  const fee=r=>r.kind==="Extension"?INV_FEE.ext:INV_FEE.init, paid=IV.paid||{};
+  const mk=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  const M={}; IV.rows.forEach(r=>{ const d=invDate(r); if(!d) return; (M[mk(d)] ||= []).push(r); });
+  const keys=Object.keys(M).sort(), now=mk(new Date());
+  const tot=sum(keys.map(k=>sum(M[k].map(fee)))), rec=sum(keys.filter(k=>paid[k]).map(k=>sum(M[k].map(fee))));
+  const due=sum(IV.rows.filter(r=>invDate(r)&&invEligible(r)).map(fee));
+  $("#sumPrj").innerHTML=[["Months",keys.length],["Contracts",sum(keys.map(k=>M[k].length))],["Projected invoice (all)",money(tot)],["Eligible to date",money(due)],["Payment received",money(rec)]]
+    .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
+  const label=k=>new Date(k+"-15T12:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
+  $("#prjTbl").innerHTML=`<thead><tr><th>Month</th><th class="r">Projected invoice</th><th class="r">No. of candidates</th><th>Initial · Extensions</th><th>Status</th><th>Payment received</th></tr></thead><tbody>`+
+    keys.map(k=>{ const rs=M[k].sort((a,b)=>invDate(a)-invDate(b)), ni=rs.filter(r=>r.kind!=="Extension").length, ne=rs.length-ni, open=PRJ_OPEN.has(k);
+      const st=k<now?'<span class="pill p-yes">Eligible</span>':k===now?'<span class="pill p-no">This month</span>':'<span class="pill p-init">Projected</span>';
+      return `<tr class="prj-m${open?" open":""}" data-k="${k}"><td><span class="chev">›</span> ${label(k)}</td><td class="r num">${money(sum(rs.map(fee)))}</td><td class="r num">${new Set(rs.map(r=>r.candidate)).size}</td><td class="muted">${ni} × $2,000 · ${ne} × $1,500</td><td>${st}</td><td>${paid[k]?'<span class="pill p-paid">Yes</span>':'<span class="pill p-unpaid">No</span>'}</td></tr>`+
+        (open?rs.map(r=>`<tr class="prj-sub"><td><b>${esc(r.candidate)}</b> ${typePill(r)}</td><td class="r num">${money(fee(r))}</td><td colspan="2">${esc(r.facility||r.client)} · ${esc(r.recruiter||"—")} <span class="muted">${esc(r.team||"")}</span></td><td colspan="2">Ends ${fdate(r.end)} · eligible ${fD(invDate(r))}${r.status==="Onboarding"?' · <span class="muted">Onboarding</span>':""}</td></tr>`).join(""):""); }).join("")+
+    `</tbody><tfoot><tr><td>Total</td><td class="r num">${money(tot)}</td><td class="r num">${new Set(IV.rows.filter(invDate).map(r=>r.candidate)).size}</td><td colspan="3" class="muted">${IV.rows.filter(invDate).length} contracts</td></tr></tfoot>`;
+  $("#prjTbl").querySelectorAll(".prj-m").forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.k; PRJ_OPEN.has(k)?PRJ_OPEN.delete(k):PRJ_OPEN.add(k); renderProjected(); });
+}
 function renderCancelled(){
   const rs = filtered({status:"Cancelled"});
   $("#cancelList").innerHTML = rs.length ? rs.map(r=>`<div class="ccard" data-row="${r.row}" data-sheet="${esc(r.sheet)}">
@@ -1128,7 +1170,7 @@ function renderQuality(){
 }
 
 /* ---------- views ---------- */
-const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Active Clinicians",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality",invoice:"Invoice Eligibility"};
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Active Clinicians",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality",invoice:"Invoice Eligibility",projected:"Projected Invoice"};
 document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
 
 $("#printBtn").onclick=()=>window.print();
@@ -1141,7 +1183,7 @@ function render(){
   document.querySelectorAll(".nav[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===S.view));
   document.querySelectorAll("section[data-page]").forEach(s=>s.classList.toggle("hidden",s.dataset.page!==S.view));
   $("#viewTitle").textContent = TITLES[S.view];
-  $("#filters").classList.toggle("hidden", ["fees","quality","invoice"].includes(S.view));
+  $("#filters").classList.toggle("hidden", ["fees","quality","invoice","projected"].includes(S.view));
   $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   const rs = filtered();
@@ -1151,6 +1193,7 @@ function render(){
   if(S.view==="completed") renderCompleted();
   if(S.view==="cancelled") renderCancelled();
   if(S.view==="invoice") renderInvoice();
+  if(S.view==="projected") renderProjected();
 }
 function init(){
   // Any assignment or extension whose end date has passed moves to Completed Assignments/Extensions automatically.
@@ -1167,6 +1210,8 @@ function init(){
   $("#cntInv").textContent = INV ? "" : "";
   $("#invLock").onsubmit = async e=>{ e.preventDefault(); const b=$("#invBtn"); b.disabled=true; b.textContent="Unlocking…"; $("#invErr").textContent="";
     const ok=await unlockInv($("#invPw").value,true); b.disabled=false; b.textContent="Unlock Invoice Eligibility"; if(!ok) $("#invErr").textContent="Wrong password."; };
+  $("#prjLock").onsubmit = async e=>{ e.preventDefault(); const b=$("#prjBtn"); b.disabled=true; b.textContent="Unlocking…"; $("#prjErr").textContent="";
+    const ok=await unlockInv($("#prjPw").value,true); b.disabled=false; b.textContent="Unlock Projected Invoice"; if(!ok) $("#prjErr").textContent="Wrong password."; };
   try{ const sp=sessionStorage.getItem("soloh_inv_pw"); if(sp && INV) unlockInv(sp,false); }catch(e){}
   renderFees(); renderQuality(); render();
 }

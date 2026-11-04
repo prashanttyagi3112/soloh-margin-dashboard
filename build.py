@@ -343,6 +343,9 @@ EXTRA_RECORDS = [
      "note": "Signed extension form: $18 W2 + up to $1,600/wk stipend ($2,248/wk at 36 hrs), OT $50, $300 extension bonus (deducted). Bill $82 per Stability/BudE agency confirmation (2/5/2026), 13 weeks. MSP 6.5%, NBO 0."},
 ]
 
+# Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
+PAID_MONTHS = {}
+
 def add_extras(D):
     """Append this dashboard's own records and client fees; skips any already present (same name + start)."""
     D.setdefault("fees", {}).update(EXTRA_FEES)
