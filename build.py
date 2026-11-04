@@ -259,6 +259,15 @@ EXTRA_RECORDS = [
      "w2": 25.25, "ot": 55.00, "stipend": 1246.0, "bill": 70.00, "billAfter": None, "msp": 0.06, "nbo": 0.0,
      "team": "TTT", "recruiter": "Amit Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed travel assignment confirmation: $25.25 W2 + up to $1,246/wk stipend ($2,256/wk at 40 hrs), OT $55 (form's '$890 taxable base' is a typo). 40 hrs guaranteed per Prashant. Bill $70, MSP 6%, no NBO per Prashant 11/4/2026. RTO 8/10, 9/21, 9/22."},
+    {"row": 1017, "sheet": "Cancelled Offers", "status": "Cancelled", "kind": "Contract",
+     "candidate": "Jaide Fields", "client": "Wellstar",
+     "facilityUnit": "Wellstar Kennestone Regional Medical Center, Marietta GA, Acute Care Float (via BUDe)", "facility": "Wellstar Kennestone Regional Medical Center",
+     "unit": "RN - Acute Care Float", "req": "BUDe Job 43430",
+     "start": "2026-06-22", "end": "2026-09-19", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": None, "ot": None, "stipend": None, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
+     "team": "TTT", "recruiter": "Bhanu Singh", "oneTime": 0, "bonus": 0.0, "extra": {},
+     "reason": "Offer accepted 6/1/2026 (signed confirmation, revised 6/4/2026) but the candidate did not start. Pay terms not on file, so profit lost is not calculated.",
+     "note": "BUDe offer 6/1/2026: RN Acute Care Float, nights 3x12 (36 hrs), 6/22-9/19/2026, bill $70. Did not start per Prashant 11/4/2026."},
 ]
 
 def add_extras(D):
@@ -271,9 +280,12 @@ def add_extras(D):
         d0, d1 = dt.date.fromisoformat(r["start"]), dt.date.fromisoformat(r["end"])
         r["weeks"] = float(round((d1 - d0).days / 7))
         G, W2, OT = r["guarHrs"], r["w2"], r["ot"] or 0
-        r["weeklyTaxable"] = min(G, 40) * W2 + max(G - 40, 0) * OT
-        r["weeklyGross"] = r["weeklyTaxable"] + r["stipend"]
-        r["contractGrossPay"] = r["weeklyGross"] * r["weeks"]
+        if W2 is None or r["stipend"] is None:   # pay terms not on file (e.g. a cancelled offer)
+            r["weeklyTaxable"] = r["weeklyGross"] = r["contractGrossPay"] = None
+        else:
+            r["weeklyTaxable"] = min(G, 40) * W2 + max(G - 40, 0) * OT
+            r["weeklyGross"] = r["weeklyTaxable"] + r["stipend"]
+            r["contractGrossPay"] = r["weeklyGross"] * r["weeks"]
         r["weeklyBill"] = r["bill"] * G
         r["orig"] = None
         D["records"].append(r)
