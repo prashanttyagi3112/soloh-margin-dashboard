@@ -274,7 +274,7 @@ EXTRA_RECORDS = [
      "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1590",
      "start": "2026-06-22", "end": "2026-09-12", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
      "w2": 33.50, "ot": 85.00, "stipend": 1246.0, "bill": 78.54, "billAfter": None, "msp": 0.0, "nbo": 0.0,
-     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "team": "TTT", "recruiter": "Rashika Varshney", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed assignment confirmation: $33.50 W2 + up to $1,246/wk stipend ($2,452/wk at 36 hrs), OT $85. Form end 9/19/2026; Extension 1 began 9/13, so contract taken as ending 9/12. Bill $78.54 (HWL). HWL clients: 0% MSP, 0 NBO per Prashant 11/4/2026."},
     {"row": 1019, "sheet": "Extensions", "status": "Started", "kind": "Extension",
      "candidate": "Debra Poweless", "client": "MVHS (via HWL)",
@@ -282,7 +282,7 @@ EXTRA_RECORDS = [
      "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1590-EXT1 · 1st extension",
      "start": "2026-09-13", "end": "2026-12-12", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
      "w2": 35.50, "ot": 85.00, "stipend": 1246.0, "bill": 78.54, "billAfter": None, "msp": 0.0, "nbo": 0.0,
-     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "team": "TTT", "recruiter": "Rashika Varshney", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed extension confirmation: $35.50 W2 + up to $1,246/wk stipend ($2,524/wk at 36 hrs), OT $85. Bill $78.54 (HWL renewal). Currently active per Prashant 11/4/2026; only this extension was signed."},
 ]
 
