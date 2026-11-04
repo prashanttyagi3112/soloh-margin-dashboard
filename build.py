@@ -372,12 +372,16 @@ def main():
     ap.add_argument("--source", default=os.path.join(HERE, "..", "prashanttyagi3112", "soloh-ob-dashboard", "index.html"))
     ap.add_argument("--source-password", default=os.environ.get("SOURCE_PASSWORD"))
     ap.add_argument("--password", default=os.environ.get("DASHBOARD_PASSWORD"))
+    ap.add_argument("--invoice-password", default=os.environ.get("INVOICE_PASSWORD"),
+                    help="password for the Invoice Eligibility / Invoice Projection tabs")
     ap.add_argument("--out", default=os.path.join(HERE, "index.html"))
     ap.add_argument("--state", help="automation state file (default: <source repo>/vault/state.json.enc)")
     ap.add_argument("--dump-json", help="also write the decrypted dataset here (never commit it)")
     a = ap.parse_args()
     if not a.password or not a.source_password:
         sys.exit("Both --password and --source-password are required.")
+    if not a.invoice_password:
+        sys.exit("--invoice-password (or INVOICE_PASSWORD) is required so the Invoice Eligibility and Invoice Projection tabs are rebuilt with the new candidates.")
 
     D = read_source(a.source, a.source_password)
     # Candidates Prashant chose to keep off this dashboard (automation state, locked with the source password)
@@ -406,6 +410,9 @@ def main():
         cfo(r, dq)
         if r["status"] != "Cancelled" and r.get("netProfit") is not None and r["netProfit"] < 0:
             dq.append({"sev": "error", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"], "msg": "Negative net profit (CFO method)."})
+        if r.get("bonus"):
+            dq.append({"sev": "info", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"],
+                       "msg": f"${r['bonus']:,.0f} bonus deducted with Client fees (col W), per Prashant 11/2/2026."})
         if r.get("oneTime"):
             dq.append({"sev": "info", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"],
                        "msg": f"One-time costs of ${r['oneTime']:,.0f} " + ("deducted with Client fees (col W)." if (ONE_TIME_IN_PROFIT or r.get("deductOneTime")) else "not deducted (left out, as in Peter's sheet).")})
@@ -426,8 +433,14 @@ def main():
     blob = encrypt(json.dumps(D, default=str).encode(), a.password)
     html = open(os.path.join(HERE, "template.html"), encoding="utf-8").read()
     if "/*__ENCRYPTED_DATA__*/null" not in html: sys.exit("Placeholder missing from template.html")
+    html = html.replace("/*__ENCRYPTED_DATA__*/null", json.dumps(blob))
+    # Invoice Eligibility + Invoice Projection tabs: every non-cancelled contract, locked with their own password.
+    keys = ['row','sheet','candidate','unit','start','end','kind','req','facility','client','team','recruiter','status']
+    inv = {'paid': PAID_MONTHS, 'rows': [{k: r.get(k) for k in keys} for r in D["records"] if r["status"] != "Cancelled"]}
+    if "/*__INVOICE_DATA__*/null" not in html: sys.exit("Invoice placeholder missing from template.html")
+    html = html.replace("/*__INVOICE_DATA__*/null", json.dumps(encrypt(json.dumps(inv, default=str).encode(), a.invoice_password)))
     with open(a.out, "w", encoding="utf-8") as fh:
-        fh.write(html.replace("/*__ENCRYPTED_DATA__*/null", json.dumps(blob)))
+        fh.write(html)
     act = [r for r in D["records"] if r["status"] != "Cancelled"]
     below = [r["candidate"] for r in act if r.get("targetStatus") == "below"]
     print(f"Built {a.out}: {len(act)} active, {len(D['records'])-len(act)} cancelled; below 10% target: {', '.join(below) or 'none'}")
