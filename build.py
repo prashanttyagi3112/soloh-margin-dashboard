@@ -264,10 +264,10 @@ EXTRA_RECORDS = [
      "facilityUnit": "Wellstar Kennestone Regional Medical Center, Marietta GA, Acute Care Float (via BUDe)", "facility": "Wellstar Kennestone Regional Medical Center",
      "unit": "RN - Acute Care Float", "req": "BUDe Job 43430",
      "start": "2026-06-22", "end": "2026-09-19", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
-     "w2": None, "ot": None, "stipend": None, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
+     "w2": 18.00, "ot": 50.00, "stipend": 1120.0, "bill": 70.00, "billAfter": None, "msp": 0.065, "nbo": 24.0,
      "team": "TTT", "recruiter": "Bhanu Singh", "oneTime": 0, "bonus": 0.0, "extra": {},
-     "reason": "Offer accepted 6/1/2026 (signed confirmation, revised 6/4/2026) but the candidate did not start. Pay terms not on file, so profit lost is not calculated.",
-     "note": "BUDe offer 6/1/2026: RN Acute Care Float, nights 3x12 (36 hrs), 6/22-9/19/2026, bill $70. Did not start per Prashant 11/4/2026."},
+     "reason": "Offer accepted 6/1/2026 (signed confirmation, revised 6/4/2026) but the candidate did not start. Profit shown is the estimate for the planned 13-week contract.",
+     "note": "BUDe offer 6/1/2026: RN Acute Care Float, nights 3x12 (36 hrs), 6/22-9/19/2026, bill $70. Signed confirmation: $18 W2 + up to $1,120/wk stipend ($1,768/wk at 36 hrs), OT $50. Did not start per Prashant 11/4/2026."},
 ]
 
 def add_extras(D):
