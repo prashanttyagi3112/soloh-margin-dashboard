@@ -300,6 +300,22 @@ EXTRA_RECORDS = [
      "w2": 45.47, "ot": 70.00, "stipend": 1246.0, "bill": 90.69, "billAfter": None, "msp": 0.0, "nbo": 0.0,
      "team": "TTT", "recruiter": "Vibhanshu Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed IMCU extension: $45.47 W2 (40 hrs) + 8 OT hrs at $70 + up to $1,246/wk stipend ($3,625/wk at 48 hrs). Bill $90.69 per HWL (OT bill only after 48 hrs). End 12/7/2026 per HWL, chosen by Prashant 11/4/2026 (signed form says 1/7/2027)."},
+    {"row": 1022, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Jeff Pradere", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Med Surg 7th Floor", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1449",
+     "start": "2026-03-02", "end": "2026-06-06", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 35.00, "ot": 52.50, "stipend": 1246.0, "bill": 87.89, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Bhawna Kumari", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed assignment confirmation: $35 W2 + $1,246/wk stipend ($2,506/wk at 36 hrs), OT $52.50 after 48 hrs. Bill $87.89 per HWL work order and Prashant 11/4/2026. Dates 3/2-6/6/2026 per signed form and HWL work order (HWL agency note mentions 2/16)."},
+    {"row": 1023, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
+     "candidate": "Jeff Pradere", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Med Surg 7th Floor", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1449-EXT2 · 1st extension",
+     "start": "2026-06-07", "end": "2026-09-05", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 35.00, "ot": 52.50, "stipend": 1246.0, "bill": 87.89, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Bhawna Kumari", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "HWL work order AN-1449-EXT2: 6/7-9/5/2026, 36 hrs, bill $87.89. No signed extension pay form on file: pay assumed same as initial ($35 W2 + $1,246 stipend)."},
 ]
 
 def add_extras(D):
