@@ -438,12 +438,19 @@ def main():
     keys = ['row','sheet','candidate','unit','start','end','kind','req','facility','client','team','recruiter','status']
     inv = {'paid': PAID_MONTHS, 'rows': [{k: r.get(k) for k in keys} for r in D["records"] if r["status"] != "Cancelled"]}
     if "/*__INVOICE_DATA__*/null" not in html: sys.exit("Invoice placeholder missing from template.html")
+    # Reconcile: the invoice tabs must hold exactly the Overview's contracts (added AND removed candidates follow automatically).
+    ov = {(r.get("candidate"), r.get("start"), r.get("row")) for r in D["records"] if r["status"] != "Cancelled"}
+    iv = {(r["candidate"], r["start"], r["row"]) for r in inv["rows"]}
+    if ov != iv: sys.exit(f"Invoice tabs out of step with Overview: missing {sorted(ov - iv)}, extra {sorted(iv - ov)}")
+    fee = lambda r: 1500 if r.get("kind") == "Extension" else 2000
+    proj = sum(fee(r) for r in inv["rows"] if r.get("end"))
     html = html.replace("/*__INVOICE_DATA__*/null", json.dumps(encrypt(json.dumps(inv, default=str).encode(), a.invoice_password)))
     with open(a.out, "w", encoding="utf-8") as fh:
         fh.write(html)
     act = [r for r in D["records"] if r["status"] != "Cancelled"]
     below = [r["candidate"] for r in act if r.get("targetStatus") == "below"]
     print(f"Built {a.out}: {len(act)} active, {len(D['records'])-len(act)} cancelled; below 10% target: {', '.join(below) or 'none'}")
+    print(f"Invoice tabs reconciled with Overview: {len(inv['rows'])} contracts, Invoice Projection total ${proj:,.0f}")
 
 if __name__ == "__main__":
     main()
