@@ -590,7 +590,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
         <div class="hero" id="hero"></div>
         <div class="grid-charts">
           <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
-          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#6366F1,#14B8A6,#F97316,#8B5CF6)"></i>Net revenue (client color)</span><span><i style="background:#10B981"></i>Net profit</span></div></div>
+          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">hover for amounts · click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#6366F1,#14B8A6,#F97316,#8B5CF6)"></i>Net revenue (client color)</span><span><i style="background:#10B981"></i>Net profit</span></div></div>
           <div class="card"><div class="card-h"><h3>Net margin bands</h3><span class="hint" id="bandHint">candidates per margin range · click a bar to list them</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
         <div class="card">
@@ -902,8 +902,7 @@ function renderCharts(rs){
   const p = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netProfit)));
   const n = cl.map(c=>act.filter(r=>r.client===c&&LIVE(r)).length);
   mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cl.map(c=>color(c)),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:"#10B981",borderRadius:3,maxBarThickness:26}]},
-    plugins:[valLabels(kfmt,false)],
-    options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
+    options:{maintainAspectRatio:false,layout:{padding:{top:4}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`,footer:c=>{ const i=c[0].dataIndex; return g[i]?`Net margin: ${pct(p[i]/g[i])}`:""; }}}},
       scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}},
       onClick:(e,els)=>{ if(els.length){ const c=cl[els[0].index]; setTimeout(()=>{ S.client = S.client===c?"":c; render(); },0); } }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"}});
   // 2b. net revenue vs pay cost by start month
