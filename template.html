@@ -624,7 +624,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 
       <!-- invoice eligibility (own password) -->
       <section data-page="invoice" class="hidden">
-        <div class="page-h"><h3>Invoice Eligibility</h3><p>Every Overview contract (Onboarding, Active and Completed) in start-date order. A contract or extension is eligible to invoice once it is complete (the day after its end date). Initial contract fee $2,000 · Extension fee $1,500.</p></div>
+        <div class="page-h"><h3>Invoice Eligibility</h3><p>Active Clinicians and Completed contracts in start-date order (Onboarding candidates join once they move to Active Clinicians). A contract or extension is eligible to invoice once it is complete (the day after its end date). Initial contract fee $2,000 · Extension fee $1,500.</p></div>
         <form class="card inv-lock" id="invLock" autocomplete="off">
           <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
           <h3>This tab is locked</h3><p>Invoice Eligibility has its own password.</p>
@@ -1010,14 +1010,14 @@ const fD = d => d ? d.toLocaleDateString("en-US",{month:"short",day:"numeric",ye
 function renderInvoice(){
   if(!IV){ $("#invLock").classList.remove("hidden"); $("#invBody").classList.add("hidden"); return; }
   $("#invLock").classList.add("hidden"); $("#invBody").classList.remove("hidden");
-  const rs=[...IV.rows].sort((a,b)=>(a.start||"").localeCompare(b.start||"")||a.candidate.localeCompare(b.candidate));
+  const rs=IV.rows.filter(r=>r.status!=="Onboarding").sort((a,b)=>(a.start||"").localeCompare(b.start||"")||a.candidate.localeCompare(b.candidate));
   const el=rs.filter(invEligible), fee=r=>r.kind==="Extension"?INV_FEE.ext:INV_FEE.init;
   const ei=el.filter(r=>r.kind!=="Extension").length, ee=el.length-ei;
-  $("#sumInv").innerHTML=[["Overview contracts",rs.length],["Eligible to invoice",el.length],["Initial contracts",ei+" × "+money(INV_FEE.init)],["Extensions",ee+" × "+money(INV_FEE.ext)],["Eligible fees",money(sum(el.map(fee)))]]
+  $("#sumInv").innerHTML=[["Active + completed contracts",rs.length],["Eligible to invoice",el.length],["Initial contracts",ei+" × "+money(INV_FEE.init)],["Extensions",ee+" × "+money(INV_FEE.ext)],["Eligible fees",money(sum(el.map(fee)))]]
     .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
   $("#invTbl").innerHTML=`<thead><tr><th>#</th><th>Candidate</th><th>Job title</th><th>Assignment dates</th><th>Contract</th><th>Facility</th><th>Recruiter</th><th>Eligible to invoice</th><th class="r">Fee</th></tr></thead><tbody>`+
     rs.map((r,i)=>{ const ok=invEligible(r); return `<tr><td class="muted">${i+1}</td><td><b>${esc(r.candidate)}</b></td><td>${esc(r.unit||"—")}</td><td style="white-space:nowrap">${fdate(r.start)} – ${fdate(r.end)}</td><td>${typePill(r)}</td><td>${esc(r.facility||r.client)}</td><td>${esc(r.recruiter||"—")}<div class="muted" style="font-size:10.5px">${esc(r.team||"")}</div></td>
-      <td>${ok?`<span class="pill p-yes">Invoice Eligible on ${fD(invDate(r))}</span>`:(()=>{ const n=invDays(r); return n==null?'<span class="pill p-no">No end date</span>':`<span class="pill p-no">Eligible in ${n} day${n===1?"":"s"}</span><div class="muted" style="font-size:10.5px">on ${fD(invDate(r))}${r.status==="Onboarding"?" · not started yet":""}</div>`; })()}</td><td class="r num">${ok?money(fee(r)):"—"}</td></tr>`; }).join("")+`</tbody>`;
+      <td>${ok?`<span class="pill p-yes">Invoice Eligible on ${fD(invDate(r))}</span>`:(()=>{ const n=invDays(r); return n==null?'<span class="pill p-no">No end date</span>':`<span class="pill p-no">Eligible in ${n} day${n===1?"":"s"}</span><div class="muted" style="font-size:10.5px">on ${fD(invDate(r))}</div>`; })()}</td><td class="r num">${ok?money(fee(r)):"—"}</td></tr>`; }).join("")+`</tbody>`;
 }
 function renderCancelled(){
   const rs = filtered({status:"Cancelled"});
