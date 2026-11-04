@@ -284,6 +284,22 @@ EXTRA_RECORDS = [
      "w2": 35.50, "ot": 85.00, "stipend": 1246.0, "bill": 87.54, "billAfter": None, "msp": 0.0, "nbo": 0.0,
      "team": "TTT", "recruiter": "Rashika Varshney", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed extension confirmation: $35.50 W2 + up to $1,246/wk stipend ($2,524/wk at 36 hrs), OT $85. Bill $87.54 per Prashant 11/4/2026. Currently active per Prashant 11/4/2026; only this extension was signed."},
+    {"row": 1020, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Andrzej D Kurtyko", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Med Surg 7th Floor", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1578",
+     "start": "2026-06-01", "end": "2026-08-29", "shift": "Days", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 37.62, "ot": 70.00, "stipend": 1246.0, "bill": 87.89, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Vibhanshu Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed assignment confirmation: $37.62 W2 + up to $1,246/wk stipend ($2,600/wk at 36 hrs), OT $70. Bill $87.89 per HWL confirmation. Start 6/1/2026 per Prashant 11/4/2026."},
+    {"row": 1021, "sheet": "Extensions", "status": "Started", "kind": "Extension",
+     "candidate": "Andrzej D Kurtyko", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Intermediate Care (IMCU)", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Intermediate Care", "req": "HWL MVHS Inc.-AN-1757 · 1st extension",
+     "start": "2026-09-07", "end": "2026-12-07", "shift": "Days", "hrsShift": 12.0, "guarHrs": 48.0,
+     "w2": 45.47, "ot": 70.00, "stipend": 1246.0, "bill": 90.69, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Vibhanshu Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed IMCU extension: $45.47 W2 (40 hrs) + 8 OT hrs at $70 + up to $1,246/wk stipend ($3,625/wk at 48 hrs). Bill $90.69 per HWL (OT bill only after 48 hrs). End 12/7/2026 per HWL, chosen by Prashant 11/4/2026 (signed form says 1/7/2027)."},
 ]
 
 def add_extras(D):
