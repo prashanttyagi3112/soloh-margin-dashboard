@@ -642,7 +642,6 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
           <div class="err" id="invErr"></div>
         </form>
         <div id="invBody" class="hidden">
-          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Invoice Projection and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
           <div class="sumstrip" id="sumInv"></div>
           <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="invTbl"></table></div></div>
         </div>
@@ -659,7 +658,6 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
           <div class="err" id="prjErr"></div>
         </form>
         <div id="prjBody" class="hidden">
-          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Invoice Projection and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
           <div class="sumstrip" id="sumPrj"></div>
           <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="prjTbl"></table></div></div>
         </div>
@@ -769,7 +767,8 @@ $("#loginForm").addEventListener("submit", async e => {
 (async()=>{ let pw=null; try{ pw=sessionStorage.getItem("soloh_cfo_pw"); }catch(e){} if(pw && !(await unlock(pw,false))){ try{sessionStorage.removeItem("soloh_cfo_pw");}catch(e){} } })();
 function lockInv(){ IV=null; try{sessionStorage.removeItem("soloh_inv_pw");}catch(e){} ["#invPw","#prjPw"].forEach(x=>{ if($(x)) $(x).value=""; }); S.view="overview"; render(); $("#content").scrollTop=0; }
 document.querySelectorAll("[data-lockinv]").forEach(b=>b.onclick=lockInv);
-$("#logoutTop").onclick = () => $("#logoutBtn").click();
+// On the two invoice tabs the top button only locks those tabs and returns to the Overview; elsewhere it logs out of the whole dashboard.
+$("#logoutTop").onclick = () => { if(["invoice","projected"].includes(S.view)) lockInv(); else $("#logoutBtn").click(); };
 $("#logoutBtn").onclick = () => { try{sessionStorage.removeItem("soloh_cfo_pw");sessionStorage.removeItem("soloh_inv_pw");}catch(e){} location.reload(); };
 
 /* ---------- filtering ---------- */
@@ -1203,6 +1202,7 @@ function render(){
   document.querySelectorAll(".nav[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===S.view));
   document.querySelectorAll("section[data-page]").forEach(s=>s.classList.toggle("hidden",s.dataset.page!==S.view));
   $("#viewTitle").textContent = TITLES[S.view];
+  { const inv=["invoice","projected"].includes(S.view), b=$("#logoutTop"); b.lastChild.textContent = inv ? "Log out of invoice tabs" : "Log out"; b.title = inv ? "Lock Invoice Eligibility and Invoice Projection and return to the Overview" : "Log out of the whole dashboard"; b.classList.toggle("btn-lockinv",inv); b.classList.toggle("btn-out",!inv); }
   $("#filters").classList.toggle("hidden", ["fees","quality","invoice","projected"].includes(S.view));
   $("#fCancelled").parentElement.classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
   $("#fStatus").classList.toggle("hidden", ["cancelled","onboarding","started","completed"].includes(S.view));
