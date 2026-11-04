@@ -321,10 +321,18 @@ EXTRA_RECORDS = [
      "candidate": "Areriye F. Ayala", "client": "SGHS - Brunswick (BudE)",
      "facilityUnit": "Southeast Georgia Health System - Brunswick, PCU", "facility": "SGHS - Brunswick",
      "unit": "RN - PCU", "req": "BudE / Stability Managed Services",
-     "start": "2026-03-09", "end": "2026-05-02", "shift": "Days", "hrsShift": 12.0, "guarHrs": 36.0,
+     "start": "2026-03-02", "end": "2026-03-29", "shift": "Days", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 16.00, "ot": 40.00, "stipend": 1224.0, "bill": 78.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Priti Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Initial contract, rates before the 3/30 rate change. First signed agreement: $16 W2 + $1,224/wk stipend ($1,800/wk at 36 hrs), OT $40. Started 3/2 per Prashant 11/4/2026. Bill $78 per Stability/BudE agency confirmation, unchanged all contract. MSP 6.5%, NBO 0."},
+    {"row": 1025, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Areriye F. Ayala", "client": "SGHS - Brunswick (BudE)",
+     "facilityUnit": "Southeast Georgia Health System - Brunswick, PCU", "facility": "SGHS - Brunswick",
+     "unit": "RN - PCU", "req": "BudE / Stability Managed Services · rate change 3/30",
+     "start": "2026-03-30", "end": "2026-05-02", "shift": "Days", "hrsShift": 12.0, "guarHrs": 36.0,
      "w2": 16.00, "ot": 60.00, "stipend": 1324.0, "bill": 78.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
      "team": "TTT", "recruiter": "Priti Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "Signed assignment confirmation: $16 W2 + $1,324/wk stipend ($1,900/wk at 36 hrs), OT $60. Bill $78 per Stability/BudE agency confirmation (2/19/2026); bill unchanged after the 3/30 rate-change date per Prashant 11/4/2026. MSP 6.5%, NBO 0 per Prashant. Did not extend past 5/2."},
+     "note": "Same initial contract after the 3/30 rate change. Second signed agreement: $16 W2 + $1,324/wk stipend ($1,900/wk at 36 hrs), OT $60. Bill $78 unchanged. Did not extend past 5/2 per Prashant 11/4/2026."},
 ]
 
 def add_extras(D):
