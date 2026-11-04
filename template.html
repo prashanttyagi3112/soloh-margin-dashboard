@@ -532,6 +532,19 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 :root[data-theme="dark"] .gauge-txt b{color:#A5B4FC!important}
 .mbar i{background:linear-gradient(90deg,#6366F1,#14B8A6)!important}.mbar i.below{background:#F43F5E!important}
 .htile.on{border-color:#6366F1!important}
+
+/* Softer dark theme (Prashant 11/4/2026: dark mode was too dark) */
+:root[data-theme="dark"]{--bg:#1F2637!important;--card:#2A3247!important;--line:#3E4860!important;--line-2:#323B52!important;--th:#323C55!important;
+  --ink:#F1F4FA!important;--ink-2:#C9D2E3!important;--ink-3:#A3AEC4!important;--grid:#3A4459!important;--tick:#B4BED1!important;--hover:#364062!important;
+  --navy:#3B4566!important;--navy-2:#2E3752!important;--navy-3:#4A5680!important;--space-base:#1F2637}
+:root[data-theme="dark"] body,:root[data-theme="dark"] #app{background:radial-gradient(1200px 600px at 100% -10%,#3A3770 0%,transparent 60%),radial-gradient(900px 500px at -10% 110%,#1D4A4A 0%,transparent 55%),#1F2637!important}
+:root[data-theme="dark"] .kpi:not(.accent),:root[data-theme="dark"] .card,:root[data-theme="dark"] .ccard{background:#2A3247!important}
+:root[data-theme="dark"] .inv-lock,:root[data-theme="dark"] .prj-in{background:#2A3247!important}
+:root[data-theme="dark"] .input{background:#232A3D!important;border-color:#4A5570!important;color:var(--ink)}
+:root[data-theme="dark"] .btn{background:#323B52;border-color:#4A5570;color:var(--ink)}
+:root[data-theme="dark"] .btn-primary{background:#4F46E5!important;border-color:#4F46E5!important;color:#fff!important}
+:root[data-theme="dark"] .btn-out{background:#E5484D!important;border-color:#E5484D!important;color:#fff!important}
+:root[data-theme="dark"] .btn-lockinv{background:#4F46E5!important;border-color:#4F46E5!important;color:#fff!important}
 </style>
 </head>
 <body>
