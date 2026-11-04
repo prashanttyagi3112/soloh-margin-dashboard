@@ -68,7 +68,7 @@ button,input,select{font:inherit;color:inherit}
 .prj-sub>td{background:var(--line-2);padding:8px 10px 12px 26px!important}
 .prj-in{background:var(--card);border-radius:8px;overflow:hidden;font-size:11.8px}.prj-in th{background:var(--th);color:var(--ink-2);position:static;cursor:default}.prj-in td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-weight:400}
 #prjTbl td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}#prjTbl th{cursor:default}#prjTbl tfoot td{font-weight:700;border-top:2px solid var(--ink-3)}
-.pill.p-paid{background:#DCFCE7;color:#15803D}.pill.p-unpaid{background:#FEE2E2;color:#B91C1C}:root[data-theme="dark"] .pill.p-unpaid{background:#7F1D1D;color:#FECACA}
+.pill.p-cmp{background:#E5E7EB;color:#374151}:root[data-theme="dark"] .pill.p-cmp{background:#3F3F46;color:#E4E4E7}.pill.p-onb2{}.pill.p-paid{background:#DCFCE7;color:#15803D}.pill.p-unpaid{background:#FEE2E2;color:#B91C1C}:root[data-theme="dark"] .pill.p-unpaid{background:#7F1D1D;color:#FECACA}
 .nav[data-view="invoice"] .count{background:#0EA5E9!important;color:#fff!important}
 
 /* ---------- shell ---------- */
@@ -1040,7 +1040,7 @@ function renderInvoice(){
 }
 function curStatus(r){
   if(r.status==="Onboarding") return '<span class="pill p-onb">Onboarding</span>';
-  if(r.status==="Completed" || invEligible(r)) return '<span class="pill p-done">Completed</span>';
+  if(r.status==="Completed" || invEligible(r)) return '<span class="pill p-cmp">Completed</span>';
   return '<span class="pill p-active">Active Clinician</span>';
 }
 const INV_HEAD=`<thead><tr><th>#</th><th>Candidate</th><th>Job title</th><th>Assignment dates</th><th>Contract</th><th>Current status</th><th>Facility</th><th>Recruiter</th><th>Eligible to invoice</th><th class="r">Fee</th></tr></thead>`;
@@ -1056,17 +1056,19 @@ function renderProjected(){
   const fee=r=>r.kind==="Extension"?INV_FEE.ext:INV_FEE.init, paid=IV.paid||{};
   const mk=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
   const M={}; IV.rows.forEach(r=>{ const d=invDate(r); if(!d) return; (M[mk(d)] ||= []).push(r); });
-  const keys=Object.keys(M).sort(), now=mk(new Date());
+  const have=Object.keys(M).sort(), now=mk(new Date()), keys=[];
+  if(have.length){ const d=new Date(have[0]+"-01T12:00:00"), last=have[have.length-1]; while(mk(d)<=last){ keys.push(mk(d)); d.setMonth(d.getMonth()+1); } }
+  keys.forEach(k=>{ M[k] ||= []; });
   const tot=sum(keys.map(k=>sum(M[k].map(fee)))), rec=sum(keys.filter(k=>paid[k]).map(k=>sum(M[k].map(fee))));
   const due=sum(IV.rows.filter(r=>invDate(r)&&invEligible(r)).map(fee));
-  $("#sumPrj").innerHTML=[["Months",keys.length],["Contracts",sum(keys.map(k=>M[k].length))],["Projected invoice (all)",money(tot)],["Eligible to date",money(due)],["Payment received",money(rec)]]
+  $("#sumPrj").innerHTML=[["Months",keys.length+" ("+keys.filter(k=>M[k].length).length+" with invoices)"],["Contracts",sum(keys.map(k=>M[k].length))],["Projected invoice (all)",money(tot)],["Eligible to date",money(due)],["Payment received",money(rec)]]
     .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
   const label=k=>new Date(k+"-15T12:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
   $("#prjTbl").innerHTML=`<thead><tr><th>Month</th><th class="r">Projected invoice</th><th class="r">No. of candidates</th><th>Initial · Extensions</th><th>Status</th><th>Payment received</th></tr></thead><tbody>`+
     keys.map(k=>{ const rs=M[k].sort((a,b)=>invDate(a)-invDate(b)), ni=rs.filter(r=>r.kind!=="Extension").length, ne=rs.length-ni, open=PRJ_OPEN.has(k);
-      const st=k<now?'<span class="pill p-yes">Eligible</span>':k===now?'<span class="pill p-no">This month</span>':'<span class="pill p-init">Projected</span>';
-      return `<tr class="prj-m${open?" open":""}" data-k="${k}"><td><span class="chev">›</span> ${label(k)}</td><td class="r num">${money(sum(rs.map(fee)))}</td><td class="r num">${new Set(rs.map(r=>r.candidate)).size}</td><td class="muted">${ni} × $2,000 · ${ne} × $1,500</td><td>${st}</td><td>${paid[k]?'<span class="pill p-paid">Yes</span>':'<span class="pill p-unpaid">No</span>'}</td></tr>`+
-        (open?`<tr class="prj-sub"><td colspan="6"><table class="prj-in">${INV_HEAD.replace('<th class="r">Fee</th>','<th class="r">Invoice amount</th>')}<tbody>${rs.map((r,i)=>invRow(r,i).replace(/<td class="r num">—<\/td><\/tr>$/,`<td class="r num">${money(fee(r))}</td></tr>`)).join("")}</tbody></table></td></tr>`:""); }).join("")+
+      const st=!rs.length?'<span class="muted">No invoices</span>':k<now?'<span class="pill p-yes">Eligible</span>':k===now?'<span class="pill p-no">This month</span>':'<span class="pill p-init">Projected</span>';
+      return `<tr class="prj-m${open?" open":""}" data-k="${k}"><td><span class="chev">›</span> ${label(k)}</td><td class="r num">${money(sum(rs.map(fee)))}</td><td class="r num">${new Set(rs.map(r=>r.candidate)).size}</td><td class="muted">${rs.length?`${ni} × $2,000 · ${ne} × $1,500`:"—"}</td><td>${st}</td><td>${!rs.length?'<span class="muted">—</span>':paid[k]?'<span class="pill p-paid">Yes</span>':'<span class="pill p-unpaid">No</span>'}</td></tr>`+
+        (open && !rs.length?`<tr class="prj-sub"><td colspan="6"><div class="empty" style="padding:14px">No candidates are eligible to invoice in ${label(k)}. Amount: $0.</div></td></tr>`:"")+(open && rs.length?`<tr class="prj-sub"><td colspan="6"><table class="prj-in">${INV_HEAD.replace('<th class="r">Fee</th>','<th class="r">Invoice amount</th>')}<tbody>${rs.map((r,i)=>invRow(r,i).replace(/<td class="r num">—<\/td><\/tr>$/,`<td class="r num">${money(fee(r))}</td></tr>`)).join("")}</tbody></table></td></tr>`:""); }).join("")+
     `</tbody><tfoot><tr><td>Total</td><td class="r num">${money(tot)}</td><td class="r num">${new Set(IV.rows.filter(invDate).map(r=>r.candidate)).size}</td><td colspan="3" class="muted">${IV.rows.filter(invDate).length} contracts</td></tr></tfoot>`;
   $("#prjTbl").querySelectorAll(".prj-m").forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.k; PRJ_OPEN.has(k)?PRJ_OPEN.delete(k):PRJ_OPEN.add(k); renderProjected(); });
 }
