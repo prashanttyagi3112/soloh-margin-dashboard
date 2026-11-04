@@ -315,7 +315,7 @@ EXTRA_RECORDS = [
      "start": "2026-06-07", "end": "2026-09-05", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
      "w2": 35.00, "ot": 52.50, "stipend": 1246.0, "bill": 87.89, "billAfter": None, "msp": 0.0, "nbo": 0.0,
      "team": "TTT", "recruiter": "Bhawna Kumari", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "HWL work order AN-1449-EXT2: 6/7-9/5/2026, 36 hrs, bill $87.89. No signed extension pay form on file: pay assumed same as initial ($35 W2 + $1,246 stipend)."},
+     "note": "HWL work order AN-1449-EXT2: 6/7-9/5/2026, 36 hrs, bill $87.89. Pay same as initial contract ($35 W2 + $1,246 stipend), confirmed by Prashant 11/4/2026."},
 ]
 
 def add_extras(D):
