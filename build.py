@@ -325,6 +325,22 @@ EXTRA_RECORDS = [
      "w2": 16.00, "ot": 40.00, "stipend": 1224.0, "bill": 78.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
      "team": "TTT", "recruiter": "Priti Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "First signed agreement: $16 W2 + $1,224/wk stipend ($1,800/wk at 36 hrs), OT $40, kept for the whole contract per Prashant 11/4/2026. Started 3/2, did not extend past 5/2. Bill $78 per Stability/BudE agency confirmation, unchanged all contract. MSP 6.5%, NBO 0."},
+    {"row": 1026, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Hilary Chambers", "client": "SGHS - Brunswick (BudE)",
+     "facilityUnit": "Southeast Georgia Health System - Brunswick, L&D", "facility": "SGHS - Brunswick",
+     "unit": "RN - Labor & Delivery", "req": "BudE / Stability Managed Services",
+     "start": "2025-11-10", "end": "2026-02-14", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 18.00, "ot": 50.00, "stipend": 1600.0, "bill": 83.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed clinical agreement (as Hilary Engle): $18 W2 + $1,600/wk stipend ($2,248/wk at 36 hrs), OT $50. Bill $83 per Stability/BudE agency confirmation (10/16/2025), 14 weeks. MSP 6.5%, NBO 0 (SGHS Brunswick)."},
+    {"row": 1027, "sheet": "Extensions", "status": "Completed", "kind": "Extension",
+     "candidate": "Hilary Chambers", "client": "SGHS - Brunswick (BudE)",
+     "facilityUnit": "Southeast Georgia Health System - Brunswick, L&D", "facility": "SGHS - Brunswick",
+     "unit": "RN - Labor & Delivery", "req": "BudE / Stability Managed Services · 1st extension",
+     "start": "2026-02-15", "end": "2026-05-16", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 18.00, "ot": 50.00, "stipend": 1600.0, "bill": 82.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 300.0, "reason": None, "extra": {},
+     "note": "Signed extension form: $18 W2 + up to $1,600/wk stipend ($2,248/wk at 36 hrs), OT $50, $300 extension bonus (deducted). Bill $82 per Stability/BudE agency confirmation (2/5/2026), 13 weeks. MSP 6.5%, NBO 0."},
 ]
 
 def add_extras(D):
