@@ -268,6 +268,22 @@ EXTRA_RECORDS = [
      "team": "TTT", "recruiter": "Bhanu Singh", "oneTime": 0, "bonus": 0.0, "extra": {},
      "reason": "Offer accepted 6/1/2026 (signed confirmation, revised 6/4/2026) but the candidate did not start. Profit shown is the estimate for the planned 13-week contract.",
      "note": "BUDe offer 6/1/2026: RN Acute Care Float, nights 3x12 (36 hrs), 6/22-9/19/2026, bill $70. Signed confirmation: $18 W2 + up to $1,120/wk stipend ($1,768/wk at 36 hrs), OT $50. Did not start per Prashant 11/4/2026."},
+    {"row": 1018, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Debra Poweless", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Med Surg 7th Floor", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1590",
+     "start": "2026-06-22", "end": "2026-09-12", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 33.50, "ot": 85.00, "stipend": 1246.0, "bill": 78.54, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed assignment confirmation: $33.50 W2 + up to $1,246/wk stipend ($2,452/wk at 36 hrs), OT $85. Form end 9/19/2026; Extension 1 began 9/13, so contract taken as ending 9/12. Bill $78.54 (HWL). HWL clients: 0% MSP, 0 NBO per Prashant 11/4/2026."},
+    {"row": 1019, "sheet": "Extensions", "status": "Started", "kind": "Extension",
+     "candidate": "Debra Poweless", "client": "MVHS (via HWL)",
+     "facilityUnit": "MVHS Wynn Hospital, Utica NY, Med Surg 7th Floor", "facility": "MVHS Wynn Hospital",
+     "unit": "RN - Medical / Surgical", "req": "HWL MVHS Inc.-AN-1590-EXT1 · 1st extension",
+     "start": "2026-09-13", "end": "2026-12-12", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 35.50, "ot": 85.00, "stipend": 1246.0, "bill": 78.54, "billAfter": None, "msp": 0.0, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed extension confirmation: $35.50 W2 + up to $1,246/wk stipend ($2,524/wk at 36 hrs), OT $85. Bill $78.54 (HWL renewal). Currently active per Prashant 11/4/2026; only this extension was signed."},
 ]
 
 def add_extras(D):
