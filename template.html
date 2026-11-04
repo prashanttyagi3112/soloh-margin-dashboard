@@ -561,7 +561,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
     <button class="nav" data-view="started"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15c-1.5 1.5-2 4-2 6 2 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-4 4.5-8 12-9-1 7.5-5 10.5-9 12z"/><circle cx="15" cy="9" r="1.6"/></svg><span>Active Clinicians</span><em class="count" id="cntStarted"></em></button>
     <button class="nav" data-view="completed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg><span>Completed</span><em class="count" id="cntCompleted"></em></button>
     <button class="nav" data-view="invoice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5V3z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Invoice Eligibility</span><em class="count" id="cntInv"></em></button>
-    <button class="nav" data-view="projected"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M8 14h3M8 17h6"/></svg><span>Projected Invoice</span></button>
+    <button class="nav" data-view="projected"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M8 14h3M8 17h6"/></svg><span>Invoice Projection</span></button>
     <button class="nav" data-view="cancelled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg><span>Cancelled offers</span><em class="count" id="cntCancelled"></em></button>
     <button class="nav" data-view="fees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Method &amp; fees</span></button>
     <button class="nav" data-view="quality"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Data quality</span><em class="count" id="cntQuality"></em></button>
@@ -642,7 +642,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
           <div class="err" id="invErr"></div>
         </form>
         <div id="invBody" class="hidden">
-          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Projected Invoice and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
+          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Invoice Projection and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
           <div class="sumstrip" id="sumInv"></div>
           <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="invTbl"></table></div></div>
         </div>
@@ -650,16 +650,16 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 
       <!-- projected invoice (same password as Invoice Eligibility) -->
       <section data-page="projected" class="hidden">
-        <div class="page-h"><h3>Projected Invoice</h3><p>Month-wise projection for every contract on the dashboard, including Onboarding. Each contract is counted in the month it becomes eligible to invoice (the day after it ends). Initial contract $2,000 · Extension $1,500. Click a month to see its candidates.</p></div>
+        <div class="page-h"><h3>Invoice Projection</h3><p>Month-wise projection for every contract on the dashboard, including Onboarding. Each contract is counted in the month it becomes eligible to invoice (the day after it ends). Initial contract $2,000 · Extension $1,500. Click a month to see its candidates.</p></div>
         <form class="card inv-lock" id="prjLock" autocomplete="off">
           <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
-          <h3>This tab is locked</h3><p>Projected Invoice uses the Invoice Eligibility password.</p>
+          <h3>This tab is locked</h3><p>Invoice Projection uses the Invoice Eligibility password.</p>
           <div class="field"><label for="prjPw">Invoice password</label><input class="input" id="prjPw" type="password" required></div>
-          <button class="btn btn-primary" id="prjBtn" type="submit">Unlock Projected Invoice</button>
+          <button class="btn btn-primary" id="prjBtn" type="submit">Unlock Invoice Projection</button>
           <div class="err" id="prjErr"></div>
         </form>
         <div id="prjBody" class="hidden">
-          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Projected Invoice and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
+          <div class="inv-bar"><button class="btn btn-lockinv" type="button" data-lockinv title="Lock Invoice Eligibility and Invoice Projection and return to the Overview"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Log out of invoice tabs</button></div>
           <div class="sumstrip" id="sumPrj"></div>
           <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="prjTbl"></table></div></div>
         </div>
@@ -1190,7 +1190,7 @@ function renderQuality(){
 }
 
 /* ---------- views ---------- */
-const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Active Clinicians",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality",invoice:"Invoice Eligibility",projected:"Projected Invoice"};
+const TITLES={overview:"Soloh Margin Dashboard",onboarding:"Onboarding",started:"Active Clinicians",completed:"Completed Assignments/Extensions",cancelled:"Cancelled offers",fees:"Method & client fees",quality:"Data quality",invoice:"Invoice Eligibility",projected:"Invoice Projection"};
 document.querySelectorAll(".nav[data-view]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; render(); $("#content").scrollTop=0; });
 
 $("#printBtn").onclick=()=>window.print();
@@ -1231,7 +1231,7 @@ function init(){
   $("#invLock").onsubmit = async e=>{ e.preventDefault(); const b=$("#invBtn"); b.disabled=true; b.textContent="Unlocking…"; $("#invErr").textContent="";
     const ok=await unlockInv($("#invPw").value,true); b.disabled=false; b.textContent="Unlock Invoice Eligibility"; if(!ok) $("#invErr").textContent="Wrong password."; };
   $("#prjLock").onsubmit = async e=>{ e.preventDefault(); const b=$("#prjBtn"); b.disabled=true; b.textContent="Unlocking…"; $("#prjErr").textContent="";
-    const ok=await unlockInv($("#prjPw").value,true); b.disabled=false; b.textContent="Unlock Projected Invoice"; if(!ok) $("#prjErr").textContent="Wrong password."; };
+    const ok=await unlockInv($("#prjPw").value,true); b.disabled=false; b.textContent="Unlock Invoice Projection"; if(!ok) $("#prjErr").textContent="Wrong password."; };
   try{ const sp=sessionStorage.getItem("soloh_inv_pw"); if(sp && INV) unlockInv(sp,false); }catch(e){}
   renderFees(); renderQuality(); render();
 }
