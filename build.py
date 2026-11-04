@@ -128,6 +128,7 @@ def cfo(r, dq):
 EXTRA_FEES = {
     "NYC H+H / RightSourcing": {"msp": 0.07, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
     "NYC H+H / RightSourcing (Allied)": {"msp": 0.07, "nbo": 8.0, "source": "Provided by Prashant 11/2/2026: 8 NBO hours on the first contract for all Allied roles"},
+    "SGHS - Brunswick (BudE)": {"msp": 0.065, "nbo": 0.0, "source": "Provided by Prashant 11/4/2026"},
 }
 EXTRA_RECORDS = [
     {"row": 1001, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
@@ -316,6 +317,14 @@ EXTRA_RECORDS = [
      "w2": 35.00, "ot": 52.50, "stipend": 1246.0, "bill": 87.89, "billAfter": None, "msp": 0.0, "nbo": 0.0,
      "team": "TTT", "recruiter": "Bhawna Kumari", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "HWL work order AN-1449-EXT2: 6/7-9/5/2026, 36 hrs, bill $87.89. Pay same as initial contract ($35 W2 + $1,246 stipend), confirmed by Prashant 11/4/2026."},
+    {"row": 1024, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
+     "candidate": "Areriye F. Ayala", "client": "SGHS - Brunswick (BudE)",
+     "facilityUnit": "Southeast Georgia Health System - Brunswick, PCU", "facility": "SGHS - Brunswick",
+     "unit": "RN - PCU", "req": "BudE / Stability Managed Services",
+     "start": "2026-03-09", "end": "2026-05-02", "shift": "Days", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 16.00, "ot": 60.00, "stipend": 1324.0, "bill": 78.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Priti Negi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed assignment confirmation: $16 W2 + $1,324/wk stipend ($1,900/wk at 36 hrs), OT $60. Bill $78 per Stability/BudE agency confirmation (2/19/2026); bill unchanged after the 3/30 rate-change date per Prashant 11/4/2026. MSP 6.5%, NBO 0 per Prashant. Did not extend past 5/2."},
 ]
 
 def add_extras(D):
