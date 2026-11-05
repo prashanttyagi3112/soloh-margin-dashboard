@@ -341,6 +341,14 @@ EXTRA_RECORDS = [
      "w2": 18.00, "ot": 50.00, "stipend": 1600.0, "bill": 82.00, "billAfter": None, "msp": 0.065, "nbo": 0.0,
      "team": "TTT", "recruiter": "Ruby Bisht", "oneTime": 0, "bonus": 300.0, "reason": None, "extra": {},
      "note": "Signed extension form: $18 W2 + up to $1,600/wk stipend ($2,248/wk at 36 hrs), OT $50, $300 extension bonus (deducted). Bill $82 per Stability/BudE agency confirmation (2/5/2026), 13 weeks. MSP 6.5%, NBO 0."},
+    {"row": 1028, "sheet": "Onboarding", "status": "Onboarding", "kind": "Contract",
+     "candidate": "Monica Sentman", "client": "Baptist Winter Reduced MSP",
+     "facilityUnit": "Baptist Health Richmond, Richmond KY, Emergency Department", "facility": "Baptist Health Richmond",
+     "unit": "RN - Emergency Department", "req": "Request #37812483",
+     "start": "2026-11-30", "end": "2027-02-27", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 30.00, "ot": 60.00, "stipend": 1267.0, "bill": 91.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
+     "team": "TTT", "recruiter": "Guddu Kumar", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed offer letter & clinical agreement (SignNow 11/5/2026): $30 W2 + $1,267/wk stipend ($2,347/wk at 36 hrs), OT $60, nights. Bill $91 per Baptist MSP offer notification 11/5/2026. Offer after 10/21/2026, so Baptist winter reduced MSP 6.5%, NBO 12. Offer accepted 11/5/2026."},
 ]
 
 # Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
