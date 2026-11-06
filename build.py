@@ -349,6 +349,14 @@ EXTRA_RECORDS = [
      "w2": 30.00, "ot": 60.00, "stipend": 1267.0, "bill": 91.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
      "team": "TTT", "recruiter": "Guddu Kumar", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed offer letter & clinical agreement (SignNow 11/5/2026): $30 W2 + $1,267/wk stipend ($2,347/wk at 36 hrs), OT $60, nights. Bill $91 per Baptist MSP offer notification 11/5/2026. Offer after 10/21/2026, so Baptist winter reduced MSP 6.5%, NBO 12. Offer accepted 11/5/2026."},
+    {"row": 1029, "sheet": "Onboarding", "status": "Onboarding", "kind": "Contract",
+     "candidate": "Edward Fleming", "client": "Baptist Winter Reduced MSP",
+     "facilityUnit": "Baptist Health Hardin, Elizabethtown KY, ICU Float Pool", "facility": "Baptist Health Hardin",
+     "unit": "RN - ICU Float Pool", "req": "Request #37817513",
+     "start": "2026-11-30", "end": "2027-02-27", "shift": "Nights", "hrsShift": 12.0, "guarHrs": 36.0,
+     "w2": 56.49, "ot": 80.00, "stipend": 1267.0, "bill": 130.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
+     "team": "TTT", "recruiter": "Momin Ginai", "oneTime": 0, "bonus": 500.0, "reason": None, "extra": {},
+     "note": "Signed Soloh offer letter (SignNow 11/6/2026): $56.49 W2 + up to $1,267/wk stipend ($3,300/wk at 36 hrs), OT $80, 3x12 nights, $500 joining bonus (deducted). Bill $130 per Baptist MSP offer notification. Agency switch from Flexcare; offer after 10/21/2026, so Baptist winter reduced MSP 6.5%, NBO 12. Accepted 11/6/2026."},
 ]
 
 # Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
