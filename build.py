@@ -361,6 +361,8 @@ def add_extras(D):
     for x in EXTRA_RECORDS:
         if ((x["candidate"]).strip().lower(), x["start"]) in have: continue
         r = dict(x)
+        if r.get("kind") == "Extension":
+            r["nbo"] = 0.0   # Prashant 11/5/2026: NBO is charged on initial contracts only, never on extensions
         d0, d1 = dt.date.fromisoformat(r["start"]), dt.date.fromisoformat(r["end"])
         r["weeks"] = float(round((d1 - d0).days / 7))
         G, W2, OT = r["guarHrs"], r["w2"], r["ot"] or 0
