@@ -547,6 +547,7 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 :root[data-theme="dark"] .btn-lockinv{background:#4F46E5!important;border-color:#4F46E5!important;color:#fff!important}
 .nav .nav-2l{white-space:normal!important;line-height:1.25;text-align:center;overflow:visible!important;text-overflow:clip!important}
 .hpill{display:inline-block;border-radius:20px;padding:2px 9px;font-size:11.5px;font-weight:700;cursor:help}
+#healthTbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}#healthTbl th{cursor:default}
 .h-good{background:#DCFCE7;color:#15803D}.h-mid{background:#FEF3C7;color:#B45309}.h-bad{background:#FEE2E2;color:#B91C1C}
 :root[data-theme="dark"] .h-good{background:#14532D;color:#BBF7D0}:root[data-theme="dark"] .h-mid{background:#78350F;color:#FDE68A}:root[data-theme="dark"] .h-bad{background:#7F1D1D;color:#FECACA}
 </style>
@@ -688,10 +689,12 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 
       <!-- fees -->
       <section data-page="fees" class="hidden">
-        <div class="page-h"><h3>Client Health, Methods and Fees</h3><p>The CFO's method, and the MSP fee and NBO hours used for each client.</p></div>
+        <div class="page-h"><h3>Client Health, Methods and Fees</h3><p>Client health KPIs, the CFO's method, and the MSP fee and NBO hours used for each client.</p></div>
+        <div class="card" style="margin-bottom:12px"><div class="card-h"><h3>Client Health</h3><span class="hint">hover a figure for the counts behind it</span></div>
+          <div class="tbl-wrap" style="max-height:none"><table id="healthTbl"></table></div>
+          <div class="foot" style="padding:8px 12px 12px" id="healthFoot"></div></div>
         <div class="two">
-          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="feeTbl"></table></div>
-            <div class="foot" style="padding:8px 12px 12px">Client Health = 70% start rate + 30% extension rate. Start rate = (started + ¾ × onboarding) ÷ (started + onboarding + cancelled offers), counted per candidate's first contract. Extension rate = share of finished first contracts that extended (left out until one has finished). <span class="hpill h-good">75%+</span> healthy · <span class="hpill h-mid">50–74%</span> watch · <span class="hpill h-bad">under 50%</span> at risk. Baptist and Baptist Winter Reduced MSP count as one client; so do both NYC H+H rows.</div></div>
+          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="feeTbl"></table></div></div>
           <div class="card pad" id="settingsBox"></div>
         </div>
       </section>
@@ -1184,27 +1187,39 @@ function clientHealth(){
   Object.entries(G).forEach(([g,rs])=>{
     const init=rs.filter(r=>r.kind!=="Extension"), names=f=>new Set(init.filter(f).map(r=>r.candidate));
     const S=names(r=>r.status==="Started"||r.status==="Completed"), O=names(r=>r.status==="Onboarding"), C=names(r=>r.status==="Cancelled");
-    const ended=names(r=>r.status==="Completed"), extd=new Set(rs.filter(r=>r.kind==="Extension").map(r=>r.candidate));
-    const nExt=rs.filter(r=>r.kind==="Extension").length, retained=[...ended].filter(n=>extd.has(n)).length;
-    const tot=S.size+O.size+C.size;
-    const startRate = tot ? (S.size + 0.75*O.size)/tot : null;          // onboarding counts as 3/4 of a start (accepted, not yet started)
-    const retention = ended.size ? retained/ended.size : null;          // finished first contracts that extended
-    const score = startRate==null ? null : retention==null ? startRate : 0.7*startRate + 0.3*retention;
-    out[g]={score,S:S.size,O:O.size,C:C.size,ext:nExt,ended:ended.size,retained,startRate,retention};
+    const ended=names(r=>r.status==="Completed"), ext=rs.filter(r=>r.kind==="Extension"), extd=new Set(ext.map(r=>r.candidate));
+    const retained=[...ended].filter(n=>extd.has(n)).length, offers=S.size+O.size+C.size;
+    const live=rs.filter(r=>r.status!=="Cancelled"&&r.netProfit!=null), nr=sum(live.map(r=>r.netRev));
+    out[g]={offers,S:S.size,O:O.size,C:C.size,ext:ext.length,ended:ended.size,retained,
+      startRate:(S.size+C.size)?S.size/(S.size+C.size):null, cancelRate:offers?C.size/offers:null,
+      extRate:ended.size?retained/ended.size:null, margin:nr?sum(live.map(r=>r.netProfit))/nr:null};
   });
   return out;
 }
-function healthCell(h){
-  if(!h || h.score==null) return '<span class="muted">—</span>';
-  const p=Math.round(h.score*100), cls=p>=75?"h-good":p>=50?"h-mid":"h-bad";
-  const tip=`Start rate ${pct(h.startRate,0)} (70% weight)${h.retention!=null?` · Extension rate ${pct(h.retention,0)} (30% weight): ${h.retained} of ${h.ended} finished first contracts extended`:" · No first contract finished yet"}`;
-  return `<span class="hpill ${cls}" title="${esc(tip)}">${p}%</span><div class="muted" style="font-size:10.5px;margin-top:3px;white-space:nowrap">${h.S} started · ${h.ext} ext · ${h.O} onb · ${h.C} canc</div>`;
+// Suggested thresholds (not industry-fixed): green / orange / red
+const KPI_T={startRate:[0.9,0.75,true],cancelRate:[0.10,0.25,false],extRate:[0.6,0.4,true],margin:[0.15,0.10,true]};
+function kpi(v,k,tip){
+  if(v==null) return `<span class="muted" title="${esc(tip)}">—</span>`;
+  const [g,o,hi]=KPI_T[k], cls = hi ? (v>=g?"h-good":v>=o?"h-mid":"h-bad") : (v<=g?"h-good":v<=o?"h-mid":"h-bad");
+  return `<span class="hpill ${cls}" title="${esc(tip)}">${pct(v,k==="margin"?1:0)}</span>`;
+}
+function renderHealth(){
+  const H=clientHealth(), rows=Object.entries(H).sort((a,b)=>b[1].offers-a[1].offers);
+  $("#healthTbl").innerHTML=`<thead><tr><th>Client</th><th class="r">Offers</th><th class="r">Started</th><th class="r">Onboarding</th><th class="r">Cancelled</th><th class="r">Extensions</th><th>Start rate</th><th>Cancellation rate</th><th>Extension rate</th><th>Net margin</th></tr></thead><tbody>`+
+    rows.map(([g,h])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(Object.keys(D.fees).find(c=>healthGroup(c)===g)||g)}"></span><b>${esc(g)}</b>${g==="Baptist"?'<div class="muted" style="font-size:10.5px">incl. Winter Reduced MSP</div>':g==="NYC H+H"?'<div class="muted" style="font-size:10.5px">incl. Allied</div>':""}</td>
+      <td class="r num">${h.offers}</td><td class="r num">${h.S}</td><td class="r num">${h.O}</td><td class="r num">${h.C}</td><td class="r num">${h.ext}</td>
+      <td>${kpi(h.startRate,"startRate",`${h.S} started of ${h.S+h.C} offers that have resolved (started or cancelled); ${h.O} still onboarding`)}</td>
+      <td>${kpi(h.cancelRate,"cancelRate",`${h.C} cancelled of ${h.offers} accepted offers`)}</td>
+      <td>${kpi(h.extRate,"extRate",h.ended?`${h.retained} of ${h.ended} finished first contracts extended`:"No first contract has finished yet")}</td>
+      <td>${kpi(h.margin,"margin","Net profit ÷ net revenue across active, onboarding and completed contracts (CFO method)")}</td></tr>`).join("")+`</tbody>`;
+  $("#healthFoot").innerHTML=`<b>Start rate</b> = started ÷ (started + cancelled), counted once per candidate's first contract; onboarding offers are left out until they start or cancel. <b>Cancellation rate</b> = cancelled ÷ all accepted offers. <b>Extension rate</b> = finished first contracts that extended ÷ finished first contracts (— until one finishes). <b>Net margin</b> = CFO method, target 10%.
+    Colors (suggested thresholds): start rate <span class="hpill h-good">90%+</span> <span class="hpill h-mid">75–89%</span> <span class="hpill h-bad">&lt;75%</span> · cancellation <span class="hpill h-good">≤10%</span> <span class="hpill h-mid">11–25%</span> <span class="hpill h-bad">&gt;25%</span> · extension <span class="hpill h-good">60%+</span> <span class="hpill h-mid">40–59%</span> <span class="hpill h-bad">&lt;40%</span> · margin <span class="hpill h-good">15%+</span> <span class="hpill h-mid">10–14.9%</span> <span class="hpill h-bad">&lt;10%</span>. Baptist and Baptist Winter Reduced MSP count as one client; so do both NYC H+H rows.`;
 }
 function renderFees(){
   const used = new Set(D.records.map(r=>r.client));
-  const H = clientHealth();
-  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Assignments</th><th>Client Health</th><th>Source</th></tr></thead><tbody>` +
-    Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td>${healthCell(H[healthGroup(c)])}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
+  renderHealth();
+  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Assignments</th><th>Source</th></tr></thead><tbody>` +
+    Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
   const m = D.method;
   $("#settingsBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">CFO calculation method</h3>
     <div class="kv one" style="margin-bottom:10px"><div><span>Burden (load)</span><b>${pct(m.burden,0)}</b></div><div><span>Target net margin</span><b>${pct(m.target,0)} minimum</b></div>
