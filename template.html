@@ -546,6 +546,9 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 :root[data-theme="dark"] .btn-out{background:#E5484D!important;border-color:#E5484D!important;color:#fff!important}
 :root[data-theme="dark"] .btn-lockinv{background:#4F46E5!important;border-color:#4F46E5!important;color:#fff!important}
 .nav .nav-2l{white-space:normal!important;line-height:1.25;text-align:center;overflow:visible!important;text-overflow:clip!important}
+.hpill{display:inline-block;border-radius:20px;padding:2px 9px;font-size:11.5px;font-weight:700;cursor:help}
+.h-good{background:#DCFCE7;color:#15803D}.h-mid{background:#FEF3C7;color:#B45309}.h-bad{background:#FEE2E2;color:#B91C1C}
+:root[data-theme="dark"] .h-good{background:#14532D;color:#BBF7D0}:root[data-theme="dark"] .h-mid{background:#78350F;color:#FDE68A}:root[data-theme="dark"] .h-bad{background:#7F1D1D;color:#FECACA}
 </style>
 </head>
 <body>
@@ -687,7 +690,8 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
       <section data-page="fees" class="hidden">
         <div class="page-h"><h3>Client Health, Methods and Fees</h3><p>The CFO's method, and the MSP fee and NBO hours used for each client.</p></div>
         <div class="two">
-          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="feeTbl"></table></div></div>
+          <div class="card"><div class="tbl-wrap" style="max-height:none"><table id="feeTbl"></table></div>
+            <div class="foot" style="padding:8px 12px 12px">Client Health = 70% start rate + 30% extension rate. Start rate = (started + ¾ × onboarding) ÷ (started + onboarding + cancelled offers), counted per candidate's first contract. Extension rate = share of finished first contracts that extended (left out until one has finished). <span class="hpill h-good">75%+</span> healthy · <span class="hpill h-mid">50–74%</span> watch · <span class="hpill h-bad">under 50%</span> at risk. Baptist and Baptist Winter Reduced MSP count as one client; so do both NYC H+H rows.</div></div>
           <div class="card pad" id="settingsBox"></div>
         </div>
       </section>
@@ -1171,10 +1175,36 @@ $("#scrim").onclick = closeDrawer;
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeDrawer(); if(e.key==="/" && document.activeElement.tagName!=="INPUT"){ e.preventDefault(); $("#q").focus(); } });
 
 /* ---------- static pages ---------- */
+// Client Health (Prashant 11/9/2026): Baptist + Baptist Winter Reduced MSP count as one client, and so do both NYC H+H rows.
+const healthGroup = c => /^Baptist/i.test(c) ? "Baptist" : /^NYC/i.test(c) ? "NYC H+H" : c;
+function clientHealth(){
+  const G={};
+  D.records.forEach(r=>{ const g=healthGroup(r.client); (G[g] ||= []).push(r); });
+  const out={};
+  Object.entries(G).forEach(([g,rs])=>{
+    const init=rs.filter(r=>r.kind!=="Extension"), names=f=>new Set(init.filter(f).map(r=>r.candidate));
+    const S=names(r=>r.status==="Started"||r.status==="Completed"), O=names(r=>r.status==="Onboarding"), C=names(r=>r.status==="Cancelled");
+    const ended=names(r=>r.status==="Completed"), extd=new Set(rs.filter(r=>r.kind==="Extension").map(r=>r.candidate));
+    const nExt=rs.filter(r=>r.kind==="Extension").length, retained=[...ended].filter(n=>extd.has(n)).length;
+    const tot=S.size+O.size+C.size;
+    const startRate = tot ? (S.size + 0.75*O.size)/tot : null;          // onboarding counts as 3/4 of a start (accepted, not yet started)
+    const retention = ended.size ? retained/ended.size : null;          // finished first contracts that extended
+    const score = startRate==null ? null : retention==null ? startRate : 0.7*startRate + 0.3*retention;
+    out[g]={score,S:S.size,O:O.size,C:C.size,ext:nExt,ended:ended.size,retained,startRate,retention};
+  });
+  return out;
+}
+function healthCell(h){
+  if(!h || h.score==null) return '<span class="muted">—</span>';
+  const p=Math.round(h.score*100), cls=p>=75?"h-good":p>=50?"h-mid":"h-bad";
+  const tip=`Start rate ${pct(h.startRate,0)} (70% weight)${h.retention!=null?` · Extension rate ${pct(h.retention,0)} (30% weight): ${h.retained} of ${h.ended} finished first contracts extended`:" · No first contract finished yet"}`;
+  return `<span class="hpill ${cls}" title="${esc(tip)}">${p}%</span><div class="muted" style="font-size:10.5px;margin-top:3px;white-space:nowrap">${h.S} started · ${h.ext} ext · ${h.O} onb · ${h.C} canc</div>`;
+}
 function renderFees(){
   const used = new Set(D.records.map(r=>r.client));
-  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Assignments</th><th>Source</th></tr></thead><tbody>` +
-    Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
+  const H = clientHealth();
+  $("#feeTbl").innerHTML = `<thead><tr><th>Client</th><th class="r">MSP fee</th><th class="r">NBO hrs</th><th class="r">Assignments</th><th>Client Health</th><th>Source</th></tr></thead><tbody>` +
+    Object.entries(D.fees).map(([c,f])=>`<tr style="cursor:default"><td><span class="cdot" style="background:${color(c)}"></span>${esc(c)}</td><td class="r num">${pct(f.msp,1)}</td><td class="r num">${nfmt(f.nbo)}</td><td class="r num">${D.records.filter(r=>r.client===c&&LIVE(r)).length||"—"}</td><td>${healthCell(H[healthGroup(c)])}</td><td class="muted">${esc(f.source)}</td></tr>`).join("") + `</tbody>`;
   const m = D.method;
   $("#settingsBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">CFO calculation method</h3>
     <div class="kv one" style="margin-bottom:10px"><div><span>Burden (load)</span><b>${pct(m.burden,0)}</b></div><div><span>Target net margin</span><b>${pct(m.target,0)} minimum</b></div>
