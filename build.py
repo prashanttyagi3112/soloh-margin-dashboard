@@ -419,6 +419,15 @@ def main():
         k = (r.get("candidate") or "").strip().lower()
         if k in STATUS_OVERRIDES and r.get("status") != "Cancelled":
             r["status"] = STATUS_OVERRIDES[k]
+    # Offers the Soloh Compliance Board shows as declined/closed: moved to Cancelled offers on every rebuild
+    CANCELLED_OVERRIDES = {
+        "nicole brooks": "Declined after acceptance on 11/4/2026 for personal reasons; Norton cancelled Req 37782350 (Eng 37795817 withdrawn). Per Soloh Compliance Board, synced 11/17/2026.",
+    }
+    for r in D["records"]:
+        k = (r.get("candidate") or "").strip().lower()
+        if k in CANCELLED_OVERRIDES:
+            r["status"] = "Cancelled"
+            r["reason"] = r.get("reason") or CANCELLED_OVERRIDES[k]
     # Team names shown on this dashboard (Prashant, 10/19/2026): Harsh's Team -> HST, Tackle's Team -> TTT
     TEAM_LABELS = {"harsh's team": "HST", "harsh team": "HST", "tackle's team": "TTT", "tackle team": "TTT"}
     for r in D["records"]:
