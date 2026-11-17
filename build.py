@@ -413,7 +413,8 @@ def main():
     add_extras(D)
     # Status moves Prashant made on this dashboard (10/28/2026): kept on every rebuild
     STATUS_OVERRIDES = {"blessing madu": "Started", "suze etienne": "Started",
-                        "shannen amy charles": "Started"}   # started 11/9/2026 per Prashant
+                        "shannen amy charles": "Started",   # started 11/9/2026 per Prashant
+                        "matthew conia": "Started", "tiana mccullom": "Started"}   # started per Prashant 11/17/2026
     for r in D["records"]:
         k = (r.get("candidate") or "").strip().lower()
         if k in STATUS_OVERRIDES and r.get("status") != "Cancelled":
