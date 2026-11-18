@@ -435,6 +435,20 @@ def main():
         if t in TEAM_LABELS: r["team"] = TEAM_LABELS[t]
     # Method-dependent notes from the source are recalculated here; data notes are kept.
     dq = [q for q in D.get("quality", []) if not re.search(r"Negative net profit|well above the group median|Excel shows", q.get("msg", ""))]
+    # Pay changes Prashant gave for this dashboard only (applied before the CFO calculation)
+    PAY_OVERRIDES = {
+        "ana arias": {"w2": 36.00, "ot": 100.00, "note": "Pay changed per Prashant 11/18/2026: W2 $36.00, OT $100.00."},
+    }
+    for r in D["records"]:
+        po = PAY_OVERRIDES.get((r.get("candidate") or "").strip().lower())
+        if po and r.get("kind") != "Extension":
+            r["w2"], r["ot"] = po["w2"], po["ot"]
+            G = r.get("guarHrs") or 0
+            r["weeklyTaxable"] = min(G, 40) * r["w2"] + max(G - 40, 0) * r["ot"]
+            if r.get("stipend") is not None:
+                r["weeklyGross"] = r["weeklyTaxable"] + r["stipend"]
+                r["contractGrossPay"] = r["weeklyGross"] * (r.get("weeks") or 0)
+            dq.append({"sev": "info", "sheet": r["sheet"], "row": r["row"], "who": r["candidate"], "msg": po["note"]})
     for r in D["records"]:
         cfo(r, dq)
         if r["status"] != "Cancelled" and r.get("netProfit") is not None and r["netProfit"] < 0:
