@@ -550,6 +550,8 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 #healthTbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}#healthTbl th{cursor:default}
 .h-good{background:#DCFCE7;color:#15803D}.h-mid{background:#FEF3C7;color:#B45309}.h-bad{background:#FEE2E2;color:#B91C1C}
 :root[data-theme="dark"] .h-good{background:#14532D;color:#BBF7D0}:root[data-theme="dark"] .h-mid{background:#78350F;color:#FDE68A}:root[data-theme="dark"] .h-bad{background:#7F1D1D;color:#FECACA}
+.est-note{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:9px 14px;border-radius:10px;background:#FFF7E6;border:1px solid #F5C36B;color:#7A4B00;font-size:12.5px;font-weight:500}.est-note svg{flex:none}
+[data-theme="dark"] .est-note,.dark .est-note{background:#3A3220;border-color:#8A6A2A;color:#F4D9A0}
 </style>
 </head>
 <body>
@@ -614,10 +616,11 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
 
       <!-- overview -->
       <section data-page="overview" class="overview">
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div class="hero" id="hero"></div>
         <div class="grid-charts">
-          <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">profit ÷ net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
-          <div class="card"><div class="card-h"><h3>Net revenue &amp; profit by client</h3><span class="hint">hover for amounts · click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#6366F1,#14B8A6,#F97316,#8B5CF6)"></i>Net revenue (client color)</span><span><i style="background:#10B981"></i>Net profit</span></div></div>
+          <div class="card"><div class="card-h"><h3>Net margin vs 10% target</h3><span class="hint">estimated net profit ÷ estimated net revenue</span></div><div class="gauge-box"><canvas id="chGauge"></canvas><div class="gauge-txt" id="gaugeTxt"></div></div></div>
+          <div class="card"><div class="card-h"><h3>Estimated net revenue &amp; net profit by client</h3><span class="hint">hover for amounts · click to filter</span></div><div class="chart-box" style="height:214px"><canvas id="chClient"></canvas></div><div class="legend"><span><i style="background:linear-gradient(90deg,#6366F1,#14B8A6,#F97316,#8B5CF6)"></i>Estimated net revenue (client color)</span><span><i style="background:#10B981"></i>Estimated net profit</span></div></div>
           <div class="card"><div class="card-h"><h3>Net margin bands</h3><span class="hint" id="bandHint">candidates per margin range · click a bar to list them</span></div><div class="chart-box" style="height:240px"><canvas id="chProfit"></canvas></div></div>
         </div>
         <div class="card">
@@ -630,18 +633,21 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
       <!-- candidates -->
       <section data-page="onboarding" class="hidden">
         <div class="page-h"><h3>Onboarding</h3><p>Accepted offers that have not started yet. Click a card for the full pay package.</p></div>
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div class="sumstrip" id="sumOnb"></div>
         <div class="ccards" id="ccOnb"></div>
       </section>
 
       <section data-page="started" class="hidden">
         <div class="page-h"><h3>Active Clinicians</h3><p>Clinicians currently working (marked started on the Soloh Compliance Board), including running extensions. Click a card for the full pay package.</p></div>
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div class="sumstrip" id="sumStarted"></div>
         <div class="ccards" id="ccStarted"></div>
       </section>
 
       <section data-page="completed" class="hidden">
         <div class="page-h"><h3>Completed Assignments/Extensions</h3><p>Assignments and extensions whose end date has passed move here automatically, each with its own pay package and margin. Included in the Overview totals.</p></div>
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div class="sumstrip" id="sumCompleted"></div>
         <h4 class="grp-h">Completed assignments</h4>
         <div class="ccards" id="ccCompleted"></div>
@@ -684,12 +690,14 @@ tbody tr:hover{background:linear-gradient(90deg,rgba(99,102,241,.08),rgba(20,184
       <!-- cancelled -->
       <section data-page="cancelled" class="hidden">
         <div class="page-h"><h3>Cancelled offers</h3><p>From the "Cancelled Offers" sheet. Not counted in the active KPIs.</p></div>
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div id="cancelList" class="ccards" style="grid-template-columns:1fr"></div>
       </section>
 
       <!-- fees -->
       <section data-page="fees" class="hidden">
         <div class="page-h"><h3>Client Health, Methods and Fees</h3><p>Client health KPIs, the CFO's method, and the MSP fee and NBO hours used for each client.</p></div>
+        <div class="est-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>These numbers are estimated based on the number of weeks and guaranteed hours for each contract. For exact figures, we need timesheet hours for all clinicians.</span></div>
         <div class="card" style="margin-bottom:12px"><div class="card-h"><h3>Client Health</h3><span class="hint">hover a figure for the counts behind it</span></div>
           <div class="tbl-wrap" style="max-height:none"><table id="healthTbl"></table></div>
           <div class="foot" style="padding:8px 12px 12px" id="healthFoot"></div></div>
@@ -863,8 +871,8 @@ function renderKPIs(rs){
     {id:"count",lbl:"Assignments",tag:"count",val:act.length,sub:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} active · ${act.filter(r=>r.status==="Completed").length} completed · ${uniqueNames.size} unique${S.cancelled?` · ${rs.length-act.length} cancelled`:""}`,accent:true,action:"Sort table by candidate"},
     {id:"clients",lbl:"Clients · Facilities",tag:"count",val:`${clients.size} <span style="font-weight:500;color:var(--ink-3);font-size:15px">/ ${facs.size}</span>`,sub:[...clients].map(c=>c.replace(/ \(.*\)/,"").replace(" Health","")).join(", ")+" · facilities",action:"Sort table by client"},
     {id:"grossRev",lbl:"Gross revenue",tag:"total",val:kfmt(gross),sub:`Net of MSP ${kfmt(sum(act.map(r=>r.netRev)))}`,action:"Sort table by gross revenue"},
-    {id:"netProfit",lbl:"Net profit",tag:"total",val:kfmt(profit),sub:`${pct(bookM(act))} of net revenue · ${money(wkProfit)}/wk`,dot:"var(--teal)",action:"Sort table by net profit"},
-    {id:"marginBook",lbl:"Net margin vs "+pct(TGT(),0)+" target",tag:"total",val:pct(bookM(act)),sub:`${ppts(bookM(act)==null?null:bookM(act)-TGT())} vs target · profit ÷ net revenue`,accent:true,action:"Sort table by margin"},
+    {id:"netProfit",lbl:"Estimated net profit",tag:"total",val:kfmt(profit),sub:`${pct(bookM(act))} of estimated net revenue · ${money(wkProfit)}/wk`,dot:"var(--teal)",action:"Sort table by estimated net profit"},
+    {id:"marginBook",lbl:"Net margin vs "+pct(TGT(),0)+" target",tag:"total",val:pct(bookM(act)),sub:`${ppts(bookM(act)==null?null:bookM(act)-TGT())} vs target · estimated net profit ÷ estimated net revenue`,accent:true,action:"Sort table by margin"},
     {id:"belowT",lbl:"Below "+pct(TGT(),0)+" target",tag:"count",val:act.filter(r=>tStat(r.marginPct)==="below").length,sub:(act.filter(r=>tStat(r.marginPct)==="below").map(r=>esc(r.candidate)).join(", ")||"All offers meet the target")+(act.some(r=>r.marginPct==null)?` · ${act.filter(r=>r.marginPct==null).length} not calculated`:""),action:"Sort table by margin, lowest first"},
     {id:"weeklyGross",lbl:"Top weekly pay",tag:"individual",val:top?money(top.weeklyGross):"—",sub:top?esc(top.candidate):"",action:"Open this candidate"},
     {id:"start",lbl:"Next start",tag:"individual",val:next?fdateS(next.start):"—",sub:next?`${esc(next.candidate)} · ${in14} in next 14 days`:"No upcoming starts",action:"Sort table by start date"},
@@ -880,9 +888,9 @@ function renderKPIs(rs){
   const nBelow = act.filter(r=>tStat(r.marginPct)==="below").length;
   const hero = [
     {k:"count",v:act.length,l:"Assignments",s:`${act.filter(r=>r.status==="Onboarding").length} onboarding · ${act.filter(r=>r.status==="Started").length} active · ${act.filter(r=>r.status==="Completed").length} completed`},
-    {k:"netRev",v:kfmt(sum(act.map(r=>r.netRev))),l:"Net Revenue",s:`Gross ${kfmt(gross)} less MSP`},
-    {k:"payCost",v:kfmt(payCost),l:"Total Pay Cost",s:"Pay + OT + NBO (13% burden) + stipend"},
-    {k:"netProfit",v:kfmt(profit),l:"Net Profit",s:`${pct(bookM(act))} net margin · ${money(wkProfit)}/wk`},
+    {k:"netRev",v:kfmt(sum(act.map(r=>r.netRev))),l:"Estimated Net Revenue",s:`Gross ${kfmt(gross)} less MSP`},
+    {k:"payCost",v:kfmt(payCost),l:"Estimated Total Pay Cost",s:"Pay + OT + NBO (13% burden) + stipend"},
+    {k:"netProfit",v:kfmt(profit),l:"Estimated Net Profit",s:`${pct(bookM(act))} net margin · ${money(wkProfit)}/wk`},
     {k:"belowT",v:nBelow,l:"Below 10% Target",s:nBelow?act.filter(r=>tStat(r.marginPct)==="below").map(r=>r.candidate).join(", "):"All offers meet the target",bad:nBelow>0},
   ];
   $("#hero").innerHTML = hero.map(h=>`<div class="htile${h.bad?" bad":""}${S.sort===({count:"candidate",belowT:"marginPct"}[h.k]||h.k)?" on":""}" data-k="${h.k}" role="button" tabindex="0" title="${esc(h.s)}"><div class="hv num">${h.v}</div><div class="hl">${h.l}</div><div class="hs">${esc(h.s)}</div></div>`).join("");
@@ -938,7 +946,7 @@ function renderCharts(rs){
   mk("chProfit",{type:"bar",data:{labels:BANDS.map(b=>b.l),datasets:[{data:groups.map(g=>g.length),
       backgroundColor:BANDS.map((b,i)=>S.band&&S.band!==b.k?"#D6D3D1":b.c),borderRadius:5,maxBarThickness:34}]},
     options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:90,top:6}},plugins:{legend:{display:false},
-      tooltip:{...tip,callbacks:{title:c=>`${BANDS[c[0].dataIndex].l} net margin`,label:c=>{const g=groups[c.dataIndex]; return [`${g.length} candidate${g.length===1?"":"s"} · ${money(sum(g.map(r=>r.netProfit)))} net profit`, ...g.slice(0,12).map(r=>`  ${r.candidate}${r.kind==="Extension"?" (ext.)":""}: ${pct(r.marginPct)}`), ...(g.length>12?[`  + ${g.length-12} more`]:[])];}}}},
+      tooltip:{...tip,callbacks:{title:c=>`${BANDS[c[0].dataIndex].l} net margin`,label:c=>{const g=groups[c.dataIndex]; return [`${g.length} candidate${g.length===1?"":"s"} · ${money(sum(g.map(r=>r.netProfit)))} estimated net profit`, ...g.slice(0,12).map(r=>`  ${r.candidate}${r.kind==="Extension"?" (ext.)":""}: ${pct(r.marginPct)}`), ...(g.length>12?[`  + ${g.length-12} more`]:[])];}}}},
       scales:{x:{grid,border:{display:false},beginAtZero:true,ticks:{precision:0,maxTicksLimit:6}},y:{grid:{display:false},border:{display:false},ticks:{font:{size:12,weight:"600"}}}},
       onClick:(e,els)=>{ if(els.length){ const k=BANDS[els[0].index].k; S.band = S.band===k?"":k; setTimeout(render,0); } },
       onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"},
@@ -951,16 +959,16 @@ function renderCharts(rs){
   const g = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netRev)));
   const p = cl.map(c=>sum(act.filter(r=>r.client===c&&LIVE(r)).map(r=>r.netProfit)));
   const n = cl.map(c=>act.filter(r=>r.client===c&&LIVE(r)).length);
-  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Net revenue",data:g,backgroundColor:cl.map(c=>color(c)),borderRadius:3,maxBarThickness:26},{label:"Net profit",data:p,backgroundColor:"#10B981",borderRadius:3,maxBarThickness:26}]},
+  mk("chClient",{type:"bar",data:{labels:cl.map(c=>c.replace(" (via HWL)","").replace(" Health","")),datasets:[{label:"Estimated net revenue",data:g,backgroundColor:cl.map(c=>color(c)),borderRadius:3,maxBarThickness:26},{label:"Estimated net profit",data:p,backgroundColor:"#10B981",borderRadius:3,maxBarThickness:26}]},
     options:{maintainAspectRatio:false,layout:{padding:{top:4}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${cl[c[0].dataIndex]} · ${n[c[0].dataIndex]} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`,footer:c=>{ const i=c[0].dataIndex; return g[i]?`Net margin: ${pct(p[i]/g[i])}`:""; }}}},
       scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}},
       onClick:(e,els)=>{ if(els.length){ const c=cl[els[0].index]; setTimeout(()=>{ S.client = S.client===c?"":c; render(); },0); } }, onHover:(e,els)=>e.native.target.style.cursor=els.length?"pointer":"default"}});
-  // 2b. net revenue vs pay cost by start month
+  // 2b. estimated net revenue vs pay cost by start month
   const mons = [...new Set(act.filter(r=>r.start&&LIVE(r)).map(r=>monthKey(r.start)))].sort();
   const pc = r => r.cfo&&r.cfo.net!=null ? r.cfo.regular+r.cfo.ot+r.cfo.stipend+r.cfo.nbo : 0;
   mk("chMonth",{type:"bar",data:{labels:mons.map(m=>monthLbl(m)),datasets:[
-      {label:"Net revenue",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(r=>r.netRev))),backgroundColor:cssv("--bar-muted"),borderRadius:3,maxBarThickness:46},
-      {label:"Total pay cost",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(pc))),backgroundColor:cssv("--teal"),borderRadius:3,maxBarThickness:46}]},
+      {label:"Estimated net revenue",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(r=>r.netRev))),backgroundColor:cssv("--bar-muted"),borderRadius:3,maxBarThickness:46},
+      {label:"Estimated total pay cost",data:mons.map(m=>sum(act.filter(r=>LIVE(r)&&monthKey(r.start)===m).map(pc))),backgroundColor:cssv("--teal"),borderRadius:3,maxBarThickness:46}]},
     plugins:[valLabels(kfmt,false)],
     options:{maintainAspectRatio:false,layout:{padding:{top:16}},interaction:{mode:"index",intersect:false},plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:c=>`${c[0].label} starts · ${act.filter(r=>LIVE(r)&&monthKey(r.start)===mons[c[0].dataIndex]).length} offer(s)`,label:c=>`${c.dataset.label}: ${money(c.raw)}`}}},
       scales:{y:{grid,border:{display:false},ticks:{callback:v=>kfmt(v),maxTicksLimit:5}},x:{grid:{display:false},border:{display:false}}}}});
@@ -990,8 +998,8 @@ const COLS = [
   {k:"w2",t:"W2 / OT",r:1,f:r=>`${money2(r.w2)}<span class="s">OT ${money2(r.ot)}</span>`},
   //{k:"weeklyGross",t:"Gross pay/wk",r:1,f:r=>`<b>${money(r.weeklyGross)}</b><span class="s">stipend ${money(r.stipend)}</span>`},
   {k:"bill",t:"Bill rate",r:1,f:r=>`${money2(r.bill)}<span class="s">MSP ${pct(r.msp,1)}</span>`},
-  {k:"netRev",t:"Net revenue",r:1,f:r=>`${money(r.netRev)}<span class="s">gross ${money(r.grossRev)}</span>`,cls:"hide-m"},
-  {k:"netProfit",t:"Net profit",r:1,f:r=>`<b>${money(r.netProfit)}</b><span class="s">${money(r.weeklyProfit)}/wk</span>`},
+  {k:"netRev",t:"Estimated net revenue",r:1,f:r=>`${money(r.netRev)}<span class="s">gross ${money(r.grossRev)}</span>`,cls:"hide-m"},
+  {k:"netProfit",t:"Estimated net profit",r:1,f:r=>`<b>${money(r.netProfit)}</b><span class="s">${money(r.weeklyProfit)}/wk</span>`},
   {k:"marginPct",t:"Net margin",r:1,f:r=>`${pct(r.marginPct)}${tPill(r.marginPct)}<span class="mbar" title="Bar runs 0–20%; marker = ${pct(TGT(),0)} target"><i class="${tStat(r.marginPct)==="below"?"below":""}" style="width:${Math.max(0,Math.min(100,(r.marginPct||0)/(2*TGT())*100))}%"></i><b class="tgt"></b></span><span class="s">${ppts(r.marginPct==null?null:r.marginPct-TGT())}</span>`},
 ];
 function setSort(k,dir){ if(S.sort===k && dir==null) S.dir*=-1; else { S.sort=k; S.dir=dir ?? (["candidate","client","unit","start"].includes(k)?1:-1); } render(); }
@@ -1026,14 +1034,14 @@ function ccard(r){
     <div class="loc">${esc(r.unit)} · ${r.hrsShift&&Number.isInteger(Math.round(r.guarHrs/r.hrsShift*100)/100)?`${r.hrsShift}h × ${Math.round(r.guarHrs/r.hrsShift*100)/100}`:`${(Math.round(r.guarHrs*10)/10)} hrs/wk avg`} · ${r.status==="Completed"?`${fdate(r.start)} – ${fdate(r.end)}`:`starts ${fdate(r.start)}`} (${r.weeks} wks)</div>
     ${r.recruiter||r.team?`<div class="loc"><span class="pill p-team">${esc(r.team||"No team")}</span> Recruiter: <b style="color:var(--ink-2)">${esc(r.recruiter||"—")}</b></div>`:""}
     <div class="row3"><div class="mini"><span>W2 / hr</span><b class="num">${money2(r.w2)}</b></div><div class="mini"><span>Pay / wk</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div></div>
-    <div class="row3"><div class="mini"><span>Stipend / wk</span><b class="num">${money(r.stipend)}</b></div><div class="mini"><span>Net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
+    <div class="row3"><div class="mini"><span>Stipend / wk</span><b class="num">${money(r.stipend)}</b></div><div class="mini"><span>Estimated net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
   </div>`;
 }
 function renderCards(rs, status){
   const box = status==="Started" ? "#ccStarted" : "#ccOnb", sumBox = status==="Started" ? "#sumStarted" : "#sumOnb";
   rs = rs.filter(r=>r.status===status);
   const g=sum(rs.map(r=>r.netRev)), p=sum(rs.map(r=>r.netProfit));
-  $(sumBox).innerHTML = [["Candidates",rs.length],["Net revenue",money(g)],["Net profit",money(p)],["Net margin",pct(bookM(rs))],["Below "+pct(TGT(),0)+" target",rs.filter(r=>tStat(r.marginPct)==="below").length]]
+  $(sumBox).innerHTML = [["Candidates",rs.length],["Estimated net revenue",money(g)],["Estimated net profit",money(p)],["Net margin",pct(bookM(rs))],["Below "+pct(TGT(),0)+" target",rs.filter(r=>tStat(r.marginPct)==="below").length]]
     .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
   const none = status==="Started"
     ? `<div class="empty card">No active clinicians yet. When the Compliance Board marks a candidate as started, they move here with their full calculations.</div>`
@@ -1044,7 +1052,7 @@ function renderCards(rs, status){
 function renderCompleted(){
   const rs = filtered({status:"Completed"});
   const ext = rs.filter(r=>r.kind==="Extension"), done = rs.filter(r=>r.kind!=="Extension");
-  $("#sumCompleted").innerHTML = [["Completed assignments",done.length],["Extensions",ext.length],["Net revenue",money(sum(rs.map(r=>r.netRev)))],["Net profit",money(sum(rs.map(r=>r.netProfit)))],["Net margin",pct(bookM(rs))]]
+  $("#sumCompleted").innerHTML = [["Completed assignments",done.length],["Extensions",ext.length],["Estimated net revenue",money(sum(rs.map(r=>r.netRev)))],["Estimated net profit",money(sum(rs.map(r=>r.netProfit)))],["Net margin",pct(bookM(rs))]]
     .map(([l,v])=>`<div class="mini"><span>${l}</span><b class="num">${v}</b></div>`).join("");
   $("#ccCompleted").innerHTML = done.length ? sortRows(done).map(ccard).join("") : `<div class="empty card">No completed assignments added yet.</div>`;
   $("#ccExtensions").innerHTML = ext.length ? sortRows(ext).map(ccard).join("") : `<div class="empty card">No extensions added yet.</div>`;
@@ -1116,7 +1124,7 @@ function openDrawer(row, sheet){
   const c = r.cfo||{}, load = c.burden ?? D.method.burden;
   const parts = c.net!=null ? [["Regular pay (W2 × "+pct(1+load,0)+")",c.regular,"#3A3A3A"],["OT pay (OT × "+pct(1+load,0)+")",c.ot,"#6B6B6B"],["Stipend",c.stipend,"#A3A3A3"],["NBO (hrs × W2 × "+pct(1+load,0)+")",c.nbo,"#FEC346"]] : [];
   if(c.net!=null && (c.clientFees||0)) parts.push([c.bonus?"Client fees (incl. $"+c.bonus+" bonus)":c.oneTime?"Client fees (onboarding + one-time costs)":"Client fees (onboarding)",c.clientFees,"#C2410C"]);
-  if(c.net!=null) parts.push(["Net profit",r.netProfit,"#F28F45"]);
+  if(c.net!=null) parts.push(["Estimated net profit",r.netProfit,"#F28F45"]);
   const tot = r.netRev||1;
   const notes = D.quality.filter(q=>q.sheet===r.sheet && q.row===r.row);
   const list = sortRows(filtered()); const i = list.findIndex(x=>x.row===row&&x.sheet===sheet);
@@ -1130,7 +1138,7 @@ function openDrawer(row, sheet){
     <div class="db">
       ${r.reason?`<div class="note red">${esc(r.reason)}</div>`:""}
       ${notes.map(q=>`<div class="note${q.sev==="error"?" red":""}">${esc(q.msg)}</div>`).join("")}
-      <div class="big3"><div class="mini"><span>Gross pay / week</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Net profit${r.status==="Cancelled"?" (est.)":""}</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
+      <div class="big3"><div class="mini"><span>Gross pay / week</span><b class="num">${money(r.weeklyGross)}</b></div><div class="mini"><span>Estimated net profit</span><b class="num">${money(r.netProfit)}</b></div><div class="mini"><span>Net margin</span><b class="num">${pct(r.marginPct)}</b>${tPill(r.marginPct)}</div></div>
       ${c.net!=null?`<div class="sec"><h5>Against the ${pct(TGT(),0)} target</h5><div class="kv">
         <div><span>Profit needed for ${pct(TGT(),0)}</span><b class="num">${money(c.targetProfit)}</b></div><div><span>${c.gapToTarget>=0?"Cushion above target":"Short of target"}</span><b class="num" style="color:${c.gapToTarget>=0?"#0B7F7B":"#B42318"}">${money(Math.abs(c.gapToTarget))}</b></div>
         <div><span>Variance</span><b class="num">${ppts(c.variance)}</b></div><div><span>Per week</span><b class="num">${money(c.gapToTarget/(r.weeks||1))}/wk</b></div></div></div>`:`<div class="note red">Margin not calculated. Missing: ${esc((c.missing||[]).join(", "))}.</div>`}
@@ -1149,22 +1157,22 @@ function openDrawer(row, sheet){
         <div><span>Bill rate</span><b class="num">${money2(r.bill)}</b></div><div><span>Weekly billing</span><b class="num">${money(r.weeklyBill)}</b></div>
         ${r.billAfter?`<div><span>Bill after increase</span><b class="num">${money2(r.billAfter)}</b></div><div><span></span><b></b></div>`:""}
         <div><span>MSP fee</span><b class="num">${pct(r.msp,1)}</b></div><div><span>NBO hours</span><b class="num">${nfmt(r.nbo)}</b></div>
-        <div><span>Gross revenue</span><b class="num">${money(r.grossRev)}</b></div><div><span>Net revenue</span><b class="num">${money(r.netRev)}</b></div></div></div>
+        <div><span>Gross revenue</span><b class="num">${money(r.grossRev)}</b></div><div><span>Estimated net revenue</span><b class="num">${money(r.netRev)}</b></div></div></div>
       ${c.net!=null?`<div class="sec"><h5>How this was calculated (CFO sheet columns)</h5><table class="calc">
         <tr><td>Gross revenue (P)</td><td class="f">${money2(r.bill)} × ${nfmt(r.guarHrs)} hrs × ${r.weeks} wks</td><td class="r num">${money(c.gross)}</td></tr>
-        <tr><td>Net revenue (Q)</td><td class="f">× (1 − ${pct(r.msp,1)} MSP)</td><td class="r num">${money(c.net)}</td></tr>
+        <tr><td>Estimated net revenue (Q)</td><td class="f">× (1 − ${pct(r.msp,1)} MSP)</td><td class="r num">${money(c.net)}</td></tr>
         <tr><td>− Regular (S)</td><td class="f">${r.weeks} × ${Math.min(r.guarHrs,40)} × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.regular)}</td></tr>
         <tr><td>− OT (T)</td><td class="f">${r.weeks} × ${Math.max(r.guarHrs-40,0)} × ${money2(r.ot)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.ot)}</td></tr>
         <tr><td>− Stipend (U)</td><td class="f">${r.stipendProrated?`${money(r.stipend)} × ${nfmt(Math.round(r.guarHrs*r.weeks*100)/100)} hrs ÷ 40 (prorated)`:`${money(r.stipend)} × ${r.weeks}`}</td><td class="r num">${money(c.stipend)}</td></tr>
         <tr><td>− NBO (V)</td><td class="f">${nfmt(r.nbo)} hrs × ${money2(r.w2)} × ${(1+load).toFixed(2)}</td><td class="r num">${money(c.nbo)}</td></tr>
         <tr><td>− Client fees (W)</td><td class="f">onboarding ${money(c.onboarding)}${c.oneTime?` + one-time ${money(c.oneTime)}`:""}${c.bonus?` + bonus ${money(c.bonus)}`:""}</td><td class="r num">${money(c.clientFees)}</td></tr>
-        <tr class="tot"><td>Net profit (X)</td><td class="f">÷ net revenue = ${pct(r.marginPct,2)} (Y)</td><td class="r num">${money(r.netProfit)}</td></tr></table>
+        <tr class="tot"><td>Estimated net profit (X)</td><td class="f">÷ estimated net revenue = ${pct(r.marginPct,2)} (Y)</td><td class="r num">${money(r.netProfit)}</td></tr></table>
         <div class="foot">For reference, Peter's column Z (NBO at bill rate × (1 − MSP)) gives ${money(c.colZ)} · ${pct(c.colZMargin)}.${r.orig&&r.orig.netProfit!=null?` The original Margin Dashboard showed ${money(r.orig.netProfit)} · ${pct(r.orig.marginPctGross)} of gross revenue (${pct(D.method.sourceLoad,0)} load).`:""}</div></div>`:""}
-      <div class="sec"><h5>Where the net revenue goes</h5>
+      <div class="sec"><h5>Where the estimated net revenue goes</h5>
         <div class="stack">${parts.map(([l,v,c])=>`<i title="${esc(l)}: ${money(v)}" style="width:${Math.max(0,(v||0)/tot*100)}%;background:${c}"></i>`).join("")}</div>
         <div class="slegend">${parts.map(([l,v,c])=>`<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c};margin-right:6px"></i>${esc(l)}</span><b class="num" style="text-align:right">${money(v)}</b><em class="num">${pct((v||0)/tot)}</em>`).join("")}
-        <span style="border-top:1px solid var(--line);padding-top:3px"><b>Net revenue</b></span><b class="num" style="text-align:right;border-top:1px solid var(--line);padding-top:3px">${money(r.netRev)}</b><em style="border-top:1px solid var(--line);padding-top:3px">100%</em></div>
-        <div class="foot">CFO formula: net revenue − (regular + OT) × (1 + ${pct(load,0)} burden) − stipends − NBO hours × W2 × (1 + ${pct(load,0)}) − client fees. Net margin = net profit ÷ net revenue.</div></div>
+        <span style="border-top:1px solid var(--line);padding-top:3px"><b>Estimated net revenue</b></span><b class="num" style="text-align:right;border-top:1px solid var(--line);padding-top:3px">${money(r.netRev)}</b><em style="border-top:1px solid var(--line);padding-top:3px">100%</em></div>
+        <div class="foot">CFO formula: estimated net revenue − (regular + OT) × (1 + ${pct(load,0)} burden) − stipends − NBO hours × W2 × (1 + ${pct(load,0)}) − client fees. Net margin = estimated net profit ÷ estimated net revenue.</div></div>
       ${extra.length?`<div class="sec"><h5>Other columns</h5><div class="kv one">${extra.map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("")}</div></div>`:""}
     </div>`;
   $("#drawer").classList.add("on"); $("#scrim").classList.add("on"); $("#drawer").setAttribute("aria-hidden","false");
@@ -1211,7 +1219,7 @@ function renderHealth(){
       <td>${kpi(h.startRate,"startRate",`${h.S} started of ${h.S+h.C} offers that have resolved (started or cancelled); ${h.O} still onboarding`)}</td>
       <td>${kpi(h.cancelRate,"cancelRate",`${h.C} cancelled of ${h.offers} accepted offers`)}</td>
       <td>${kpi(h.extRate,"extRate",h.ended?`${h.retained} of ${h.ended} finished first contracts extended`:"No first contract has finished yet")}</td>
-      <td>${kpi(h.margin,"margin","Net profit ÷ net revenue across active, onboarding and completed contracts (CFO method)")}</td></tr>`).join("")+`</tbody>`;
+      <td>${kpi(h.margin,"margin","Estimated net profit ÷ estimated net revenue across active, onboarding and completed contracts (CFO method)")}</td></tr>`).join("")+`</tbody>`;
   $("#healthFoot").innerHTML=`<b>Start rate</b> = started ÷ (started + cancelled), counted once per candidate's first contract; onboarding offers are left out until they start or cancel. <b>Cancellation rate</b> = cancelled ÷ all accepted offers. <b>Extension rate</b> = finished first contracts that extended ÷ finished first contracts (— until one finishes). <b>Net margin</b> = CFO method, target 10%.
     Colors (suggested thresholds): start rate <span class="hpill h-good">90%+</span> <span class="hpill h-mid">75–89%</span> <span class="hpill h-bad">&lt;75%</span> · cancellation <span class="hpill h-good">≤10%</span> <span class="hpill h-mid">11–25%</span> <span class="hpill h-bad">&gt;25%</span> · extension <span class="hpill h-good">60%+</span> <span class="hpill h-mid">40–59%</span> <span class="hpill h-bad">&lt;40%</span> · margin <span class="hpill h-good">15%+</span> <span class="hpill h-mid">10–14.9%</span> <span class="hpill h-bad">&lt;10%</span>. Baptist and Baptist Winter Reduced MSP count as one client; so do both NYC H+H rows.`;
 }
@@ -1223,12 +1231,12 @@ function renderFees(){
   const m = D.method;
   $("#settingsBox").innerHTML = `<h3 style="margin:0 0 8px;font-size:13px">CFO calculation method</h3>
     <div class="kv one" style="margin-bottom:10px"><div><span>Burden (load)</span><b>${pct(m.burden,0)}</b></div><div><span>Target net margin</span><b>${pct(m.target,0)} minimum</b></div>
-    <div><span>Net margin</span><b>Net profit ÷ Net revenue</b></div><div><span>Recruiting + onboarding cost</span><b>${money(m.onboarding)}</b></div>
+    <div><span>Net margin</span><b>Estimated net profit ÷ Estimated net revenue</b></div><div><span>Recruiting + onboarding cost</span><b>${money(m.onboarding)}</b></div>
     <div><span>Method</span><b>${esc(m.version)}</b></div></div>
-    <table class="calc"><tr><td>Gross revenue</td><td class="f">Bill × guaranteed hrs × weeks</td></tr><tr><td>Net revenue</td><td class="f">Gross × (1 − MSP %)</td></tr>
+    <table class="calc"><tr><td>Gross revenue</td><td class="f">Bill × guaranteed hrs × weeks</td></tr><tr><td>Estimated net revenue</td><td class="f">Gross × (1 − MSP %)</td></tr>
     <tr><td>Regular</td><td class="f">Weeks × min(hrs,40) × W2 × (1 + burden)</td></tr><tr><td>OT</td><td class="f">Weeks × hrs over 40 × OT rate × (1 + burden)</td></tr>
     <tr><td>Stipend</td><td class="f">Weekly stipend × weeks (no burden)</td></tr><tr><td>NBO</td><td class="f">NBO hrs × W2 × (1 + burden)</td></tr>
-    <tr><td>Client fees</td><td class="f">Onboarding cost${m.oneTimeIncluded?" + candidate one-time costs":""}</td></tr><tr class="tot"><td>Net profit</td><td class="f">Net revenue − all of the above</td></tr></table>
+    <tr><td>Client fees</td><td class="f">Onboarding cost${m.oneTimeIncluded?" + candidate one-time costs":""}</td></tr><tr class="tot"><td>Estimated net profit</td><td class="f">Estimated net revenue − all of the above</td></tr></table>
     <p class="muted" style="margin:8px 0 6px">Weeks = round((end − start) ÷ 7). No other rounding. Target status is judged on the margin shown to one decimal.</p>
     <p class="muted" style="margin:0 0 6px">Candidate data comes from the Margin Dashboard (updated ${esc(D.source&&D.source.builtAt)}). That dashboard uses an ${pct(m.sourceLoad,0)} load, NBO at the bill rate and margin on gross revenue, so its figures differ from these.</p>
     ${(D.feeNotes||[]).map(n=>`<div class="note">${esc(n)}</div>`).join("")}`;
@@ -1285,7 +1293,7 @@ function init(){
   $("#cntCompleted").textContent = D.records.filter(r=>r.status==="Completed").length;
   $("#cntCancelled").textContent = D.records.filter(r=>r.status==="Cancelled").length;
   $("#cntQuality").textContent = D.quality.filter(q=>q.sev!=="info").length || "";
-  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = net profit ÷ net revenue; target 10% minimum. Overview includes Onboarding, Started and Completed Assignments/Extensions (cancelled offers only when "Show cancelled" is on). KPI tags: TOTAL = sum of assignments, AVG = mean per assignment, INDIVIDUAL = one candidate.`;
+  $("#footNote").textContent = `Pay figures are from the workbook (W2, OT, stipend, bill rate). Weekly gross pay = min(guaranteed hrs, 40) × W2 + hours over 40 × OT + stipend. Estimated net profit uses the CFO method (13% burden on W2 + OT and NBO hours; NBO at the W2 rate). Net margin = estimated net profit ÷ estimated net revenue; target 10% minimum. Overview includes Onboarding, Started and Completed Assignments/Extensions (cancelled offers only when "Show cancelled" is on). KPI tags: TOTAL = sum of assignments, AVG = mean per assignment, INDIVIDUAL = one candidate.`;
   $("#cntInv").textContent = INV ? "" : "";
   $("#invLock").onsubmit = async e=>{ e.preventDefault(); const b=$("#invBtn"); b.disabled=true; b.textContent="Unlocking…"; $("#invErr").textContent="";
     const ok=await unlockInv($("#invPw").value,true); b.disabled=false; b.textContent="Unlock Invoice Eligibility"; if(!ok) $("#invErr").textContent="Wrong password."; };
