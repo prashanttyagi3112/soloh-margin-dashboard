@@ -129,6 +129,7 @@ EXTRA_FEES = {
     "NYC H+H / RightSourcing": {"msp": 0.07, "nbo": 16.0, "source": "Provided by Prashant 11/2/2026"},
     "NYC H+H / RightSourcing (Allied)": {"msp": 0.07, "nbo": 8.0, "source": "Provided by Prashant 11/2/2026: 8 NBO hours on the first contract for all Allied roles"},
     "SGHS - Brunswick (BudE)": {"msp": 0.065, "nbo": 0.0, "source": "Provided by Prashant 11/4/2026"},
+    "NYC H+H / RightSourcing (Ancillary)": {"msp": 0.07, "nbo": 8.0, "source": "Provided by Prashant 11/23/2026: 8 NBO hours for the CNA - SNF roles (Joanne Sokora, Marly Alexandre)"},
 }
 EXTRA_RECORDS = [
     {"row": 1001, "sheet": "Completed Assignments", "status": "Completed", "kind": "Contract",
@@ -357,6 +358,22 @@ EXTRA_RECORDS = [
      "w2": 56.49, "ot": 80.00, "stipend": 1267.0, "bill": 130.00, "billAfter": None, "msp": 0.065, "nbo": 12.0,
      "team": "TTT", "recruiter": "Momin Ginai", "oneTime": 0, "bonus": 500.0, "reason": None, "extra": {},
      "note": "Signed Soloh offer letter (SignNow 11/6/2026): $56.49 W2 + up to $1,267/wk stipend ($3,300/wk at 36 hrs), OT $80, 3x12 nights, $500 joining bonus (deducted). Bill $130 per Baptist MSP offer notification. Agency switch from Flexcare; offer after 10/21/2026, so Baptist winter reduced MSP 6.5%, NBO 12. Accepted 11/6/2026."},
+    {"row": 1030, "sheet": "Onboarding", "status": "Onboarding", "kind": "Contract",
+     "candidate": "Joanne Sokora", "client": "NYC H+H / RightSourcing (Ancillary)",
+     "facilityUnit": "Coler Memorial Hospital, New York NY, Long Term Care (BSC01 C53/54)", "facility": "Coler Memorial Hospital",
+     "unit": "CNA - SNF (Long Term Care)", "req": "Req 37831336 · Eng 37936401",
+     "start": "2026-12-14", "end": "2027-03-13", "shift": "Evenings", "hrsShift": 8.0, "guarHrs": 40.0,
+     "w2": 33.00, "ot": 56.00, "stipend": 0.0, "bill": 56.65, "billAfter": None, "msp": 0.07, "nbo": 8.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed Soloh Local Assignment Confirmation (SignNow 11/20/2026): $33/hr all W2, OT $56 after 40 hrs, 5x8 evenings 3:30 PM-12:00 AM, local (no stipend). Bill $56.65 per Magnit Fill Notification 11/19/2026 (Magnit start 12/8; board and letter start 12/14). NBO 8 per Prashant 11/23/2026. Accepted 11/20/2026."},
+    {"row": 1031, "sheet": "Onboarding", "status": "Onboarding", "kind": "Contract",
+     "candidate": "Marly Alexandre", "client": "NYC H+H / RightSourcing (Ancillary)",
+     "facilityUnit": "Coler Memorial Hospital, New York NY", "facility": "Coler Memorial Hospital",
+     "unit": "CNA - SNF", "req": "Eng 37953939",
+     "start": "2026-12-15", "end": "2027-03-20", "shift": "Nights", "hrsShift": 8.0, "guarHrs": 40.0,
+     "w2": 40.00, "ot": 60.00, "stipend": 0.0, "bill": 56.65, "billAfter": None, "msp": 0.07, "nbo": 8.0,
+     "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed Soloh offer letter (SignNow 11/23/2026): $40/hr all W2, OT/holiday $60 after 40 hrs, 5x8 nights 11:30 PM-8:00 AM, local (no stipend). Bill $56.65, same as Joanne Sokora per Prashant 11/23/2026. Dates per NYC H+H MSP offer 12/15/2026-3/20/2027 (letter says 12/14-3/13). NBO 8 per Prashant. Accepted 11/23/2026."},
 ]
 
 # Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
