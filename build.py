@@ -379,9 +379,9 @@ EXTRA_RECORDS = [
      "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology Diagnostic", "facility": "Kings County Hospital",
      "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 6th extension",
      "start": "2026-11-15", "end": "2027-01-09", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
-     "w2": round((2950 - 1967) / 40, 4), "ot": 90.00, "stipend": 1967.0, "bill": 95.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "w2": round((2950 - 1967) / 40, 4), "ot": 95.00, "stipend": 1967.0, "bill": 98.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
      "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
-     "note": "Signed Local Assignment Confirmation (SignNow 11/20/2026): $2,950/wk, OT $90 after 40 hrs, 5x8, 11/14/2026-1/9/2027 (dashboard starts 11/15, the day after the 5th extension ends). Split per Prashant 11/23/2026: stipend $1,967/wk + W2 $24.575/hr; bill rate $95 (was $98). No NBO on extensions."},
+     "note": "Signed Local Assignment Confirmation (SignNow 11/20/2026): $2,950/wk, OT $90 after 40 hrs, 5x8, 11/14/2026-1/9/2027 (dashboard starts 11/15, the day after the 5th extension ends). Split per Prashant 11/23/2026: stipend $1,967/wk + W2 $24.575/hr. OT $95 per Prashant 11/23/2026 (signed form says $90). Bill rate $98, same as before, per Prashant 11/23/2026. No NBO on extensions."},
 ]
 
 # Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
