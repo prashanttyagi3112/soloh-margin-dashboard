@@ -374,6 +374,14 @@ EXTRA_RECORDS = [
      "w2": 40.00, "ot": 60.00, "stipend": 0.0, "bill": 56.65, "billAfter": None, "msp": 0.07, "nbo": 8.0,
      "team": "TTT", "recruiter": "Prashant Tyagi", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
      "note": "Signed Soloh offer letter (SignNow 11/23/2026): $40/hr all W2, OT/holiday $60 after 40 hrs, 5x8 nights 11:30 PM-8:00 AM, local (no stipend). Bill $56.65, same as Joanne Sokora per Prashant 11/23/2026. Dates per NYC H+H MSP offer 12/15/2026-3/20/2027 (letter says 12/14-3/13). NBO 8 per Prashant. Accepted 11/23/2026."},
+    {"row": 1032, "sheet": "Extensions", "status": "Started", "kind": "Extension",
+     "candidate": "Graydon Massiah", "client": "NYC H+H / RightSourcing",
+     "facilityUnit": "Kings County Hospital, Brooklyn NY, Radiology Diagnostic", "facility": "Kings County Hospital",
+     "unit": "Radiologic Technologist - Radiographer", "req": "Eng 36330117 · 6th extension",
+     "start": "2026-11-15", "end": "2027-01-09", "shift": "Days", "hrsShift": 8.0, "guarHrs": 40.0,
+     "w2": round((2950 - 1967) / 40, 4), "ot": 90.00, "stipend": 1967.0, "bill": 95.00, "billAfter": None, "msp": 0.07, "nbo": 0.0,
+     "team": "TTT", "recruiter": "Sky (Suryakant)", "oneTime": 0, "bonus": 0.0, "reason": None, "extra": {},
+     "note": "Signed Local Assignment Confirmation (SignNow 11/20/2026): $2,950/wk, OT $90 after 40 hrs, 5x8, 11/14/2026-1/9/2027 (dashboard starts 11/15, the day after the 5th extension ends). Split per Prashant 11/23/2026: stipend $1,967/wk + W2 $24.575/hr; bill rate $95 (was $98). No NBO on extensions."},
 ]
 
 # Projected Invoice tab: months whose TackleHire invoice payment Prashant has confirmed received, e.g. {"2026-01": True}
