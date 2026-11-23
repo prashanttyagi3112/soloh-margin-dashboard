@@ -414,7 +414,8 @@ def main():
     # Status moves Prashant made on this dashboard (10/28/2026): kept on every rebuild
     STATUS_OVERRIDES = {"blessing madu": "Started", "suze etienne": "Started",
                         "shannen amy charles": "Started",   # started 11/9/2026 per Prashant
-                        "matthew conia": "Started", "tiana mccullom": "Started"}   # started per Prashant 11/17/2026
+                        "matthew conia": "Started", "tiana mccullom": "Started",   # started per Prashant 11/17/2026
+                        "nitashia fryman": "Started"}   # started 11/22/2026 per Soloh Compliance Board, synced 11/23/2026
     for r in D["records"]:
         k = (r.get("candidate") or "").strip().lower()
         if k in STATUS_OVERRIDES and r.get("status") != "Cancelled":
@@ -422,6 +423,7 @@ def main():
     # Offers the Soloh Compliance Board shows as declined/closed: moved to Cancelled offers on every rebuild
     CANCELLED_OVERRIDES = {
         "nicole brooks": "Declined after acceptance on 11/4/2026 for personal reasons; Norton cancelled Req 37782350 (Eng 37795817 withdrawn). Per Soloh Compliance Board, synced 11/17/2026.",
+        "anna fofung": "Engagement cancelled after acceptance: Norton MSP (Magnit) sent a Requisition Cancellation Notification for Req 37774276 / Eng 37826425 on 11/18/2026 (no reason given). Per Soloh Compliance Board, synced 11/23/2026.",
     }
     for r in D["records"]:
         k = (r.get("candidate") or "").strip().lower()
